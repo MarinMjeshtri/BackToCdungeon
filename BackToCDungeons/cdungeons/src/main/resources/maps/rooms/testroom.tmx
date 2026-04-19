@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" source="../../../../../../../../../New folder (5)/tilesWalls.tsx"/>
+ <tileset firstgid="193" source="../../../../../../../../../New folder (5)/tilesFloor.tsx"/>
+ <tileset firstgid="391" source="../../../../../../../../../New folder (5)/spriteSheet_tiledLiquids_16x16.tsx"/>
+ <tileset firstgid="439" source="../../../../../../../../../New folder (5)/tilesStuff.tsx"/>
+ <layer id="1" name="OuterWallsCOLLISION" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBjZwAiImXFgVjxy5AJ+KBYEYjkglkfDClA5fhIwMXbC3G0PxFpArI2GdYDYDo9/0TEhu2HylIQVNoBsPy57KY0jcuymhV/R7R61d9ReWtmLbjct8xHMXmx+plW5QchemN208DOhMhPZz5TaTUk5TSkmtV5Ctp9STC6ghhn4AAA0FQfB
+  </data>
+ </layer>
+ <layer id="2" name="Floor" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxTYWBgUBnBmFxAb/socQstATF2WjAyMJQzUocmZDcyaILqoQatScBuXHaiY3LdQMheYswgxy2k+peQncTaTYl/CeFR/2L6F91uBgrtJta/+OwlNz3jcwsue3HZTY38iw4Ilc+UlFO4wGCqG2hh/0C3I3BhAFuLbQg=
+  </data>
+ </layer>
+ <layer id="5" name="COLLISION" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFowACPIHYC4i9kWgfKI0uNgqGFuhgxMQDYSc97B61d3jbi8vu4QRA3mEmEVMLyAGxPBArALEgEXxqAS0g1gZiHSCWJYI/FAAAm7gelQ==
+  </data>
+ </layer>
+ <layer id="6" name="FloorPlus" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjILhA6oYcWNaglZG3HgUjIJRMPIAAPLVBwg=
+  </data>
+ </layer>
+ <layer id="4" name="DecorationsCOLLISION" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwmoMjMwqDHT314voJ3eNLbXghFTLB9oZwGSvUpAtjIzglZhpk+YuAPN92BG0J7MiDAh1/4ERlRMCMDsQ6dpDWBxgE5TApwJ6CckPwqIA0MxnAtp6CZS8xwp5hECgzGsR8HAAgCXcQ/4
+  </data>
+ </layer>
+ <layer id="7" name="Decorations" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgx3cZMJO0xr8Y8JOD3egyszAoMZMXTN/Egg7QvLkAjkC/iAkTy5wJmAuIXlyASXhzESBmygJZ3UK7KUknH1oFAcwQKs0TQjQKk0TArRK06Ng6AIApTUNSw==
+  </data>
+ </layer>
+</map>
