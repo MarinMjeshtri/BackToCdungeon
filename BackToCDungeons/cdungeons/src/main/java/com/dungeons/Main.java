@@ -1,5 +1,6 @@
 package com.dungeons;
 
+import com.dungeons.dialogueManager.DialogueManager;
 import com.dungeons.screens.GameScreen;
 
 import javafx.application.Application;
@@ -18,6 +19,16 @@ public class Main extends Application {
         stage.show();
 
         game.startLoop();
+
+        DialogueManager dialogueManager = new DialogueManager();
+        dialogueManager.load();
+
+//    // Test a dialogue
+//        dialogueManager.startDialogue("trader_shop");
+//
+//        while (!dialogueManager.isFinished()) {
+//            System.out.println(dialogueManager.getNextLine());
+//        }
     }
 
     public static void main(String[] args) {
