@@ -1,0 +1,19 @@
+{
+  "dialogues":{
+    "character_1_intro": {
+      "lines": [
+        "line1",
+        "line2",
+        "line3"
+      ]
+    },
+    "trader_shop": {
+      "character": "trader",
+      "lines": [
+        "line1",
+        "line2",
+        "line3"
+      ]
+    }
+  }
+}
