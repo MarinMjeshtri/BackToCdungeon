@@ -6,29 +6,46 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
+<Pane xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.dungeons.Controllers.OptionsNStartingController"
+      prefHeight="600.0"
+      prefWidth="800.0">
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <AnchorPane layoutY="25.0" prefHeight="98.0" prefWidth="600.0">
-         <children>
-            <Label layoutX="79.0" layoutY="14.0" text="WELCOME TO C DUNGEON">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <Label layoutX="464.0" layoutY="379.0" text="SCHOOL PROJECT DEMO 0.0.1">
-         <font>
-            <Font size="9.0" />
-         </font>
-      </Label>
-      <AnchorPane layoutX="170.0" layoutY="140.0" prefHeight="227.0" prefWidth="261.0">
-         <children>
-            <Button layoutX="51.0" layoutY="158.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="159.0" text="CREDITS" />
-            <Button layoutX="51.0" layoutY="86.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="159.0" text="OPTIONS" />
-            <Button layoutX="51.0" layoutY="14.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="159.0" text="PLAY" />
-         </children>
-      </AnchorPane>
-   </children>
+    <children>
+
+        <Label layoutX="223.0" layoutY="122.0" text="WELCOME TO LABDUNG">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Label>
+
+        <Label layoutX="664.0" layoutY="580.0" text="SCHOOL PROJECT DEMO 0.0.1">
+            <font>
+                <Font size="9.0" />
+            </font>
+        </Label>
+
+        <AnchorPane layoutX="270.0" layoutY="261.0" prefHeight="227.0" prefWidth="261.0">
+
+            <children>
+                <Button layoutX="51.0" layoutY="14.0"
+                        prefHeight="55.0" prefWidth="160.0"
+                        text="PLAY"
+                        onAction="#handleButton3" />
+
+                <Button layoutX="51.0" layoutY="86.0"
+                        prefHeight="55.0" prefWidth="160.0"
+                        text="OPTIONS"
+                        onAction="#handleButton2" />
+
+                <Button layoutX="51.0" layoutY="158.0"
+                        prefHeight="55.0" prefWidth="160.0"
+                        text="CREDITS"
+                        onAction="#handleButton1" />
+            </children>
+
+        </AnchorPane>
+
+    </children>
 </Pane>

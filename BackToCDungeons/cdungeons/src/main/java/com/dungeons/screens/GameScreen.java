@@ -45,7 +45,7 @@ public class GameScreen {
     private final CollisionMap collisionMap = new CollisionMap(layers);
 
     // --- Player ---
-    private final Player player = new Player(100, 100);
+    private final Player player = new Player(150, 100);
 
     // --- Camera ---
     // Offset so the view follows the player around the map
