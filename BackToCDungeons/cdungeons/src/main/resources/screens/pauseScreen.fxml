@@ -4,33 +4,40 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="301.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="600.0" prefWidth="801.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.dungeons.Controllers.PauseController">
    <children>
-      <AnchorPane layoutX="51.0" layoutY="14.0" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: gray;">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="600.0" opacity="0.34" stroke="BLACK" strokeType="INSIDE" width="801.0" />
+      <AnchorPane layoutX="285.0" layoutY="158.0" prefHeight="285.0" prefWidth="231.0" style="-fx-background-color: red;">
          <children>
-            <Label layoutX="56.0" layoutY="7.0" text="PAUSED">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="51.0" layoutY="79.0" prefHeight="63.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
-         <children>
-            <Button id="resumeGame" layoutX="33.0" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="133.0" text="RESUME" />
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="50.0" layoutY="150.0" prefHeight="63.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
-         <children>
-            <Button id="optionsButton" layoutX="33.0" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="133.0" text="OPTIONS" />
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="50.0" layoutY="223.0" prefHeight="63.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
-         <children>
-            <Button id="exitButton" layoutX="33.0" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="133.0" text="EXIT" />
+            <AnchorPane layoutX="16.0" layoutY="214.0" prefHeight="63.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
+               <children>
+                  <Button onAction="#exit" id="exitButton" layoutX="33.0" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="133.0" text="EXIT" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="16.0" layoutY="143.0" prefHeight="63.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
+               <children>
+                  <Button onAction="#options" id="optionsButton" layoutX="33.0" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="133.0" text="OPTIONS" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="16.0" layoutY="69.0" prefHeight="63.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
+               <children>
+                  <Button onAction="#resume" id="resumeGame" layoutX="33.0" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="133.0" text="RESUME" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="16.0" layoutY="14.0" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: gray;">
+               <children>
+                  <Label layoutX="56.0" layoutY="7.0" text="PAUSED">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
