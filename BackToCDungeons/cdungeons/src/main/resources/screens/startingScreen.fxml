@@ -6,12 +6,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutY="25.0" prefHeight="98.0" prefWidth="600.0">
          <children>
-            <Label layoutX="79.0" layoutY="14.0" text="WELCOME TO C DUNGEON">
+            <Label layoutX="101.0" layoutY="14.0" text="WELCOME TO LABDUNG">
                <font>
                   <Font size="36.0" />
                </font>
