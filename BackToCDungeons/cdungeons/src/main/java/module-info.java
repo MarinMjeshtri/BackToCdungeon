@@ -10,4 +10,5 @@ module com.dungeons {
     exports com.dungeons to javafx.graphics;
     exports com.dungeons.screens to javafx.graphics, javafx.fxml;
     exports com.dungeons.dialogueManager to com.google.gson;
+    opens com.dungeons.characters to com.google.gson;
 }
