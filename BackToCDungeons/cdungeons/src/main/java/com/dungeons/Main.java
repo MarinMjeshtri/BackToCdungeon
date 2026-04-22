@@ -24,11 +24,11 @@ public class Main extends Application {
         dialogueManager.load();
 
 //    // Test a dialogue
-//        dialogueManager.startDialogue("trader_shop");
-//
-//        while (!dialogueManager.isFinished()) {
-//            System.out.println(dialogueManager.getNextLine());
-//        }
+        dialogueManager.startDialogue("trader_shop");
+
+        while (!dialogueManager.isFinished()) {
+            System.out.println(dialogueManager.getNextLine());
+        }
     }
 
     public static void main(String[] args) {
