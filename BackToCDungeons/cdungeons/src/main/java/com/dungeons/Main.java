@@ -16,23 +16,23 @@ public class Main extends Application {
 
         startingScreen screen = new startingScreen();
 
+        OptionsNStartingController controller =
+                screen.getLoader().getController();
 
-//        GameScreen game = new GameScreen();
+        controller.setStage(stage);
 
-        Scene scene = new Scene(screen.getRoot(), 800,600);
-
-
-//        Scene switchScreen = new Scene(game.getRoot(), 800, 600);
-//        stage.setTitle("Back to Dungeons");
-        stage.setScene(scene);
+        stage.setScene(new Scene(screen.getRoot(), 800, 600));
         stage.show();
 
+
+//        GameScreen game = new GameScreen();
+//        Scene switchScreen = new Scene(game.getRoot(), 800, 600);
+//        stage.setTitle("Back to Dungeons");
 //        game.startLoop();
 
 //        DialogueManager dialogueManager = new DialogueManager();
 //        dialogueManager.load();
-
-//    // Test a dialogue
+//        Test a dialogue
 //        dialogueManager.startDialogue("trader_shop");
 //
 //        while (!dialogueManager.isFinished()) {

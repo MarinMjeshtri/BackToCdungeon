@@ -18,7 +18,7 @@ public class Player {
     public Player(double startX, double startY) {
         this.x     = startX;
         this.y     = startY;
-        this.sheet = new SpriteSheet("/sprites/technoblade.png", 16);
+        this.sheet = new SpriteSheet("/sprites/characters/technoblade.png", 16);
         System.out.println("Player created at " + x + ", " + y);
     }
 
