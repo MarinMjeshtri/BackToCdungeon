@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.dungeons.Controllers.OptionsNStartingController"
+      prefHeight="600.0"
+      prefWidth="800.0">
+
+    <children>
+
+        <Label layoutX="223.0" layoutY="122.0" text="WELCOME TO LABDUNG">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Label>
+
+        <Label layoutX="664.0" layoutY="580.0" text="SCHOOL PROJECT DEMO 0.0.1">
+            <font>
+                <Font size="9.0" />
+            </font>
+        </Label>
+
+        <AnchorPane layoutX="270.0" layoutY="261.0" prefHeight="227.0" prefWidth="261.0">
+
+            <children>
+                <Button layoutX="51.0" layoutY="14.0"
+                        prefHeight="55.0" prefWidth="160.0"
+                        text="PLAY"
+                        onAction="#handleButton1" />
+
+                <Button layoutX="51.0" layoutY="86.0"
+                        prefHeight="55.0" prefWidth="160.0"
+                        text="OPTIONS"
+                        onAction="#handleButton2" />
+
+                <Button layoutX="51.0" layoutY="158.0"
+                        prefHeight="55.0" prefWidth="160.0"
+                        text="CREDITS"
+                        onAction="#handleButton3" />
+            </children>
+
+        </AnchorPane>
+
+    </children>
+</Pane>
