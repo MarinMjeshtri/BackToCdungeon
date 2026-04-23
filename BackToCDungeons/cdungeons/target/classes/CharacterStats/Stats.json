@@ -9,6 +9,7 @@
         "hp": 500
       },
 
+<<<<<<< HEAD
       "abilities": {
 
         "ability1":{
@@ -29,6 +30,25 @@
         }
 
       }
+=======
+      "abilities": [
+        {
+          "name": "Lightning Storm",
+          "desc": "Launches lightning strikes",
+          "effects": {
+            "damage": 150
+          }
+        },
+        {
+          "name": "Stun Lock",
+          "desc": "Causes paralysis",
+          "effects": {
+            "damage": 25,
+            "status": "STUN"
+          }
+        }
+      ]
+>>>>>>> 873d515d87bd259a5ae96bd8e1d4f26cdf72cd8e
 
     },
 
@@ -41,6 +61,7 @@
         "hp": 800
       },
 
+<<<<<<< HEAD
       "abilities": {
 
         "ability1": {
@@ -58,6 +79,27 @@
         }
 
       }
+=======
+      "abilities": [
+        {
+          "name": "Spawn Wall",
+          "desc": "Creates a mob called WALL",
+          "effects": {}
+        },
+        {
+          "name": "Spawn Turrets",
+          "desc": "Spawns an attacking turret",
+          "effects": {}
+        },
+        {
+          "name": "Doing and Repairs",
+          "desc": "Repairs the spawners",
+          "effects": {
+            "heal": 100
+          }
+        }
+      ]
+>>>>>>> 873d515d87bd259a5ae96bd8e1d4f26cdf72cd8e
     },
 
     "Turret": {
@@ -83,6 +125,7 @@
         "hp": 100
       },
 
+<<<<<<< HEAD
       "abilities": {
         "ability1": {
           "name": "Clone",
@@ -98,6 +141,29 @@
           "dmg": 67
         }
       }
+=======
+      "abilities": [
+        {
+          "name": "Clone",
+          "desc": "Doubles the number of enemies",
+          "effects": {}
+        },
+        {
+          "name": "Feminist Literature",
+          "desc": "Bores you to death",
+          "effects": {
+            "status": "SLEEP"
+          }
+        },
+        {
+          "name": "Punch",
+          "desc": "A straightforward punch",
+          "effects": {
+            "damage": 67
+          }
+        }
+      ]
+>>>>>>> 873d515d87bd259a5ae96bd8e1d4f26cdf72cd8e
     },
 
 
@@ -107,6 +173,7 @@
         "def": 999,
         "hp": 999
       },
+<<<<<<< HEAD
       "abilities": {
         "ability1": {
           "name": "Cock Glock",
@@ -124,6 +191,31 @@
           "dmg": 50
         }
       }
+=======
+      "abilities": [
+        {
+          "name": "Cock Glock",
+          "desc": "Shoots a fireball",
+          "effects": {
+            "damage": 999
+          }
+        },
+        {
+          "name": "I'm Tweaking",
+          "desc": "Gives damage boost",
+          "effects": {
+            "ATKbuff": 25
+          }
+        },
+        {
+          "name": "Dih Sword",
+          "desc": "Slaps it in your face (AoE)",
+          "effects": {
+            "damage": 50
+          }
+        }
+      ]
+>>>>>>> 873d515d87bd259a5ae96bd8e1d4f26cdf72cd8e
     },
 
 
@@ -148,8 +240,12 @@
         "atk": 1,
         "def": 0,
         "hp": 9
+<<<<<<< HEAD
       },
       "exp": 200
+=======
+      }
+>>>>>>> 873d515d87bd259a5ae96bd8e1d4f26cdf72cd8e
     }
   }
 }

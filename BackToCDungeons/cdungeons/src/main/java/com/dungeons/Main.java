@@ -1,5 +1,7 @@
 package com.dungeons;
 
+import com.dungeons.characters.Characters;
+import com.dungeons.characters.CharactersManager;
 import com.dungeons.dialogueManager.DialogueManager;
 import com.dungeons.screens.GameScreen;
 import com.dungeons.screens.startingScreen;
@@ -40,7 +42,17 @@ public class Main extends Application {
 //        while (!dialogueManager.isFinished()) {
 //            System.out.println(dialogueManager.getNextLine());
 //        }
+//        CharactersManager characterManager = new CharactersManager();
+//        characterManager.load();
+
+// Test a character
+//        Characters freki = characterManager.getCharacter("FrekiRelah");
+//        System.out.println(freki.stats.hp);
+//        System.out.println(freki.stats.atk);
+//        System.out.println(freki.abilities.get(0).name);
     }
+
+
 
     public static void main(String[] args) {
         launch(args);

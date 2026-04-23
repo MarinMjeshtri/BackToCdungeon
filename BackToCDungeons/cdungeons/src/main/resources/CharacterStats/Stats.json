@@ -9,26 +9,23 @@
         "hp": 500
       },
 
-      "abilities": {
-
-        "ability1":{
+      "abilities": [
+        {
           "name": "Lightning Storm",
           "desc": "Launches lightning strikes",
-          "dmg": 150
+          "effects": {
+            "damage": 150
+          }
         },
-        "ability2": {
+        {
           "name": "Stun Lock",
-          "desc": "Causes paralysis, stuns you for 1 turn",
-          "status": "STUN",
-          "dmg": 25
-        },
-        "ability3":{
-          "name": "Hairdo",
-          "desc": "Wraps his hair around you",
-          "dmg": 50
+          "desc": "Causes paralysis",
+          "effects": {
+            "damage": 25,
+            "status": "STUN"
+          }
         }
-
-      }
+      ]
 
     },
 
@@ -41,23 +38,25 @@
         "hp": 800
       },
 
-      "abilities": {
-
-        "ability1": {
-          "name": "Spawn wall",
-          "desc": "Creates a mob called WALL"
+      "abilities": [
+        {
+          "name": "Spawn Wall",
+          "desc": "Creates a mob called WALL",
+          "effects": {}
         },
-        "ability2": {
-          "name": "Spawn turrets",
-          "desc": "Spawns an attacking turret"
+        {
+          "name": "Spawn Turrets",
+          "desc": "Spawns an attacking turret",
+          "effects": {}
         },
-        "anility3": {
+        {
           "name": "Doing and Repairs",
           "desc": "Repairs the spawners",
-          "heal": 100
+          "effects": {
+            "heal": 100
+          }
         }
-
-      }
+      ]
     },
 
     "Turret": {
@@ -83,21 +82,27 @@
         "hp": 100
       },
 
-      "abilities": {
-        "ability1": {
+      "abilities": [
+        {
           "name": "Clone",
-          "desc": "Doubles the number of enemies"
+          "desc": "Doubles the number of enemies",
+          "effects": {}
         },
-        "ability2": {
+        {
           "name": "Feminist Literature",
           "desc": "Bores you to death",
-          "status": "SLEEP"
+          "effects": {
+            "status": "SLEEP"
+          }
         },
-        "ability3": {
+        {
           "name": "Punch",
-          "dmg": 67
+          "desc": "A straightforward punch",
+          "effects": {
+            "damage": 67
+          }
         }
-      }
+      ]
     },
 
 
@@ -107,23 +112,29 @@
         "def": 999,
         "hp": 999
       },
-      "abilities": {
-        "ability1": {
+      "abilities": [
+        {
           "name": "Cock Glock",
           "desc": "Shoots a fireball",
-          "dmg": 999
+          "effects": {
+            "damage": 999
+          }
         },
-        "ability2": {
+        {
           "name": "I'm Tweaking",
           "desc": "Gives damage boost",
-          "ATKbuff": 25
+          "effects": {
+            "ATKbuff": 25
+          }
         },
-        "ability3": {
+        {
           "name": "Dih Sword",
-          "desc": "Slaps it in your face, (AoE)",
-          "dmg": 50
+          "desc": "Slaps it in your face (AoE)",
+          "effects": {
+            "damage": 50
+          }
         }
-      }
+      ]
     },
 
 
@@ -148,8 +159,7 @@
         "atk": 1,
         "def": 0,
         "hp": 9
-      },
-      "exp": 200
+      }
     }
   }
 }
