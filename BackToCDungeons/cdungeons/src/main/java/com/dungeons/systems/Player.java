@@ -1,6 +1,7 @@
 package com.dungeons.systems;
-
-import com.dungeons.world.CollisionMap;
+import com.dungeons.world.Map;
+import com.dungeons.world.MapRenderer;
+import com.dungeons.world.TilesetManager;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -8,64 +9,93 @@ import javafx.scene.input.KeyCode;
 public class Player {
 
     private double x, y;
-    private final SpriteSheet sheet;
-    private CollisionMap collisionMap;
+    private Map map; // collision map
 
     private boolean up, down, left, right;
-    private static final double SPEED = 3;
-    private static final double SIZE  = 48;
 
+    private static final double SPEED = 2.0;
+    private static final int TILE_SIZE = 16;
+    private static final int SIZE = 14; // player hitbox (slightly smaller than tile)
+
+    // Placeholder (you can reconnect SpriteSheet later)
     public Player(double startX, double startY) {
-        this.x     = startX;
-        this.y     = startY;
-        this.sheet = new SpriteSheet("/sprites/characters/technoblade.png", 16);
-        System.out.println("Player created at " + x + ", " + y);
+        this.x = startX;
+        this.y = startY;
     }
 
-    public void setCollisionMap(CollisionMap collisionMap) {
-        this.collisionMap = collisionMap;
+    public void setMap(Map map) {
+        this.map = map;
     }
+
+    // ---------------- INPUT ----------------
 
     public void keyPressed(KeyCode key) {
-        if (key == KeyCode.UP    || key == KeyCode.W) up    = true;
-        if (key == KeyCode.DOWN  || key == KeyCode.S) down  = true;
-        if (key == KeyCode.LEFT  || key == KeyCode.A) left  = true;
-        if (key == KeyCode.RIGHT || key == KeyCode.D) right = true;
+        if (key == KeyCode.W || key == KeyCode.UP) up = true;
+        if (key == KeyCode.S || key == KeyCode.DOWN) down = true;
+        if (key == KeyCode.A || key == KeyCode.LEFT) left = true;
+        if (key == KeyCode.D || key == KeyCode.RIGHT) right = true;
     }
 
     public void keyReleased(KeyCode key) {
-        if (key == KeyCode.UP    || key == KeyCode.W) up    = false;
-        if (key == KeyCode.DOWN  || key == KeyCode.S) down  = false;
-        if (key == KeyCode.LEFT  || key == KeyCode.A) left  = false;
-        if (key == KeyCode.RIGHT || key == KeyCode.D) right = false;
+        if (key == KeyCode.W || key == KeyCode.UP) up = false;
+        if (key == KeyCode.S || key == KeyCode.DOWN) down = false;
+        if (key == KeyCode.A || key == KeyCode.LEFT) left = false;
+        if (key == KeyCode.D || key == KeyCode.RIGHT) right = false;
     }
+
+    // ---------------- UPDATE ----------------
 
     public void update() {
-        if (up)    tryMove(0,     -SPEED);
-        if (down)  tryMove(0,     +SPEED);
-        if (left)  tryMove(-SPEED, 0);
-        if (right) tryMove(+SPEED, 0);
+
+        double dx = 0;
+        double dy = 0;
+
+        if (up) dy -= SPEED;
+        if (down) dy += SPEED;
+        if (left) dx -= SPEED;
+        if (right) dx += SPEED;
+
+        move(dx, dy);
     }
 
-    private void tryMove(double dx, double dy) {
-        double newX = x + dx;
-        double newY = y + dy;
+    private void move(double dx, double dy) {
 
-        if (collisionMap == null) {
-            x = newX;
-            y = newY;
-            return;
+        // X movement
+        if (!collides(x + dx, y)) {
+            x += dx;
         }
 
-        if (!collisionMap.isSolid(newX, newY, SIZE, SIZE, 48.0)) {
-            x = newX;
-            y = newY;
+        // Y movement
+        if (!collides(x, y + dy)) {
+            y += dy;
         }
     }
+
+    // ---------------- COLLISION ----------------
+
+    private boolean collides(double px, double py) {
+
+        if (map == null) return false;
+
+        // Convert player bounds to tile coordinates
+        int leftTile   = (int)(px / TILE_SIZE);
+        int rightTile  = (int)((px + SIZE) / TILE_SIZE);
+        int topTile    = (int)(py / TILE_SIZE);
+        int bottomTile = (int)((py + SIZE) / TILE_SIZE);
+
+        return map.isSolid(leftTile, topTile) ||
+                map.isSolid(rightTile, topTile) ||
+                map.isSolid(leftTile, bottomTile) ||
+                map.isSolid(rightTile, bottomTile);
+    }
+
+    // ---------------- RENDER ----------------
 
     public void render(GraphicsContext gc) {
-        sheet.draw(gc, 0, 0, x, y, 3.0);
+        gc.fillRect(x, y, SIZE, SIZE); // placeholder
     }
+
+    // ---------------- GETTERS ----------------
 
     public double getX() { return x; }
     public double getY() { return y; }
