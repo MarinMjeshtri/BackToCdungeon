@@ -9,7 +9,7 @@ import java.util.List;
 public class CombatEngine {
 
     private final Player player;
-    private final Boss boss;
+    private final BossLoader bossLoader;
 
     private int roundNumber = 0;
     private CombatResult result = CombatResult.ONGOING;
@@ -17,9 +17,9 @@ public class CombatEngine {
     private final List<TurnLog> history = new ArrayList<>();
 
    
-    public CombatEngine(Player player, Boss boss) {
+    public CombatEngine(Player player, BossLoader bossLoader) {
         this.player = player;
-        this.boss = boss;
+        this.bossLoader = bossLoader;
     }
 
     /**
@@ -52,14 +52,14 @@ public class CombatEngine {
             case MOVE_1: {
                 Move move = getMoveByIndex(0);
                 playerMoveName    = move.getName();
-                playerDamageDealt = executeAttack(player, boss, move);
+                playerDamageDealt = executeAttack(player, bossLoader, move);
                 break;
             }
 
             case MOVE_2: {
                 Move move = getMoveByIndex(1);
                 playerMoveName    = move.getName();
-                playerDamageDealt = executeAttack(player, boss, move);
+                playerDamageDealt = executeAttack(player, bossLoader, move);
                 break;
             }
 
@@ -87,20 +87,20 @@ public class CombatEngine {
         }
 
        //Win conditions
-        if (boss.isDefeated()) {
+        if (bossLoader.isDefeated()) {
             result = CombatResult.PLAYER_WIN;
             TurnLog log = buildLog(roundNumber, action, playerMoveName, playerDamageDealt,
                     itemUsedName, playerHpRestored,
                     null, 0,
-                    player.getCurrentHp(), boss.getCurrentHp(), result);
+                    player.getCurrentHp(), bossLoader.getCurrentHp(), result);
             history.add(log);
             return log;
         }
 
        //Bos turn
-        Move bossMove     = boss.chooseMove();
+        Move bossMove     = bossLoader.chooseMove();
         bossMoveName      = bossMove.getName();
-        bossDamageDealt   = executeAttack(boss, player, bossMove);
+        bossDamageDealt   = executeAttack(bossLoader, player, bossMove);
 
         //Win conditions
         if (player.isDefeated()) {
@@ -111,7 +111,7 @@ public class CombatEngine {
         TurnLog log = buildLog(roundNumber, action, playerMoveName, playerDamageDealt,
                 itemUsedName, playerHpRestored,
                 bossMoveName, bossDamageDealt,
-                player.getCurrentHp(), boss.getCurrentHp(), result);
+                player.getCurrentHp(), bossLoader.getCurrentHp(), result);
         history.add(log);
         return log;
     }
@@ -165,7 +165,7 @@ public class CombatEngine {
     public CombatResult getResult()   { return result; }
     public int getRoundNumber()        { return roundNumber; }
     public Player getPlayer()          { return player; }
-    public Boss getBoss()              { return boss; }
+    public BossLoader getBoss()              { return bossLoader; }
     public List<TurnLog> getHistory()  { return history; }
     public boolean isOngoing()         { return result == CombatResult.ONGOING; }
 }
