@@ -1,3 +1,5 @@
+package com.dungeons.world;
+
 import javafx.scene.image.*;
 import java.util.HashMap;
 
@@ -10,7 +12,6 @@ public class TilesetManager {
     String path = "C:\\Users\\User\\BackToCdungeon\\BackToCDungeons\\cdungeons\\src\\main\\resources\\tiles\\";
 
     public void loadAll() {
-
         load("tilesFloor.png", "floor");
         load("tilesWalls.png", "walls");
         load("tilesStuff.png", "stuff");
@@ -18,31 +19,32 @@ public class TilesetManager {
     }
 
     private void load(String file, String key) {
-
         Image img = new Image("file:" + path + file);
 
-        int cols = (int) (img.getWidth() / TILE_SIZE);
+        int cols = (int)(img.getWidth() / TILE_SIZE);
+        int rows = (int)(img.getHeight() / TILE_SIZE);
+        int tileCount = cols * rows;
 
-        Image[] tiles = new Image[600];
+        Image[] tiles = new Image[tileCount];
 
-        for (int i = 0; i < tiles.length; i++) {
-
+        for (int i = 0; i < tileCount; i++) {
             int x = (i % cols) * TILE_SIZE;
             int y = (i / cols) * TILE_SIZE;
-
-            if (x >= img.getWidth()) break;
 
             tiles[i] = new WritableImage(
                     img.getPixelReader(),
                     x, y,
-                    TILE_SIZE, TILE_SIZE
+                    TILE_SIZE,
+                    TILE_SIZE
             );
         }
 
         tilesets.put(key, tiles);
     }
 
-    public Image get(String tileset, int id) {
-        return tilesets.get(tileset)[id - 1];
+    public Image get(String tileset, int localId) {
+        Image[] t = tilesets.get(tileset);
+        if (t == null || localId < 0 || localId >= t.length) return null;
+        return t[localId];
     }
 }
