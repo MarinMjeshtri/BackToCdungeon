@@ -4,22 +4,27 @@ import com.dungeons.dialogueManager.DialogueManager;
 import com.dungeons.screens.GameScreen;
 import com.dungeons.screens.startingScreen;
 import com.dungeons.Controllers.OptionsNStartingController;
+import com.dungeons.screens.combatScreen;
+import com.dungeons.Controllers.CombatController;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
 
-        startingScreen screen = new startingScreen();
-
-        OptionsNStartingController controller =
-                screen.getLoader().getController();
-
-        controller.setStage(stage);
+//        startingScreen screen = new startingScreen();
+//
+//        OptionsNStartingController controller =
+//                screen.getLoader().getController();
+//
+//        controller.setStage(stage);
+        combatScreen screen = new combatScreen();
 
         stage.setScene(new Scene(screen.getRoot(), 800, 600));
         stage.show();
