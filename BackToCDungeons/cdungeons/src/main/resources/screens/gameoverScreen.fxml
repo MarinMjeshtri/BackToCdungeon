@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="801.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane id="gameOverPane" layoutX="56.0" layoutY="44.0" prefHeight="230.0" prefWidth="688.0">
+         <children>
+            <Label layoutX="80.0" layoutY="44.0" text="GAME OVER">
+               <font>
+                  <Font size="96.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane id="buttonsPane" layoutX="56.0" layoutY="317.0" prefHeight="200.0" prefWidth="688.0">
+         <children>
+            <Button id="RestartButton" layoutX="43.0" layoutY="61.0" mnemonicParsing="false" text="START OVER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Button>
+            <Button id="exitButton" layoutX="418.0" layoutY="61.0" mnemonicParsing="false" text="EXIT BITCH">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>
