@@ -1,6 +1,6 @@
 package com.dungeons.systems;
 
-import com.dungeons.world.CollisionMap;
+//import com.dungeons.world.CollisionMap;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -9,7 +9,7 @@ public class Player {
 
     private double x, y;
     private final SpriteSheet sheet;
-    private CollisionMap collisionMap;
+//    private CollisionMap collisionMap;
 
     private boolean up, down, left, right;
     private static final double SPEED = 3;
@@ -22,9 +22,9 @@ public class Player {
         System.out.println("Player created at " + x + ", " + y);
     }
 
-    public void setCollisionMap(CollisionMap collisionMap) {
-        this.collisionMap = collisionMap;
-    }
+//    public void setCollisionMap(CollisionMap collisionMap) {
+//        this.collisionMap = collisionMap;
+//    }
 
     public void keyPressed(KeyCode key) {
         if (key == KeyCode.UP    || key == KeyCode.W) up    = true;
@@ -51,16 +51,16 @@ public class Player {
         double newX = x + dx;
         double newY = y + dy;
 
-        if (collisionMap == null) {
-            x = newX;
-            y = newY;
-            return;
-        }
-
-        if (!collisionMap.isSolid(newX, newY, SIZE, SIZE, 48.0)) {
-            x = newX;
-            y = newY;
-        }
+//        if (collisionMap == null) {
+//            x = newX;
+//            y = newY;
+//            return;
+//        }
+//
+//        if (!collisionMap.isSolid(newX, newY, SIZE, SIZE, 48.0)) {
+//            x = newX;
+//            y = newY;
+//        }
     }
 
     public void render(GraphicsContext gc) {

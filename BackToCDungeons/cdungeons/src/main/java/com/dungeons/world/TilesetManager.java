@@ -1,3 +1,5 @@
+package com.dungeons.world;
+
 import javafx.scene.image.*;
 import java.util.HashMap;
 
