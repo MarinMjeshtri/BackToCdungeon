@@ -12,7 +12,7 @@ public class shopScreen {
     public shopScreen() {
         try {
             loader = new FXMLLoader(
-                    getClass().getResource("/screens/shopScreem.fxml")
+                    getClass().getResource("/screens/shopScreen.fxml")
             );
 
             root = loader.load();
