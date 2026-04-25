@@ -22,7 +22,7 @@ public class GameScreen {
     private final Player player = new Player(150, 100);
     private AnimationTimer loop;
 
-    // ← add setter so Main.java can pass the stage in
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -73,8 +73,6 @@ public class GameScreen {
     private void update() { player.update(); }
 
     private void render() {
-        gc.setFill(Color.rgb(20, 20, 20));
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setImageSmoothing(false);
         player.render(gc);
     }
