@@ -1,33 +1,49 @@
 package com.dungeons;
 
+import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.dialogueManager.DialogueManager;
+import com.dungeons.screens.DialoguesScreen;
 import com.dungeons.screens.startingScreen;
 import com.dungeons.Controllers.OptionsNStartingController;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        // load font once — not twice
-        Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/REANO.ttf"), 10);
 
-        startingScreen screen = new startingScreen();
+        // Load dialogue manager
+        DialogueManager dialogueManager = new DialogueManager();
+        dialogueManager.load();
 
-        OptionsNStartingController controller = screen.getLoader().getController();
-        controller.setStage(stage);
+        // Test dialogue box
+        try {
+            DialoguesScreen dialogueScreen = new DialoguesScreen();
+            DialogueBoxController dController = dialogueScreen.getLoader().getController();
+            dController.setDialogueManager(dialogueManager);
+            dController.startDialogue("johnmkati_intro");
 
-        Scene scene = new Scene(screen.getRoot(), 800, 600);
+            stage.setScene(new Scene(dialogueScreen.getRoot(), 600, 400));
+            stage.setTitle("Dialogue Test");
+            stage.show();
 
-        scene.getStylesheets().add(
-                getClass().getResource("/sprites/style.css").toExternalForm()
-        );
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
 
-        stage.setScene(scene);
-        stage.setTitle("LabDungeons 0.0.1");
-        stage.show();
+        try {
+            java.io.File dialogueSprites = new java.io.File(getClass().getResource("/sprites/DialogueSprites").toURI());
+            System.out.println("Contents of DialogueSprites:");
+            for (java.io.File f : dialogueSprites.listFiles()) {
+                System.out.println(" - " + f.getName());
+            }
+        } catch (Exception e) {
+            System.out.println("Error listing files: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
