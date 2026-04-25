@@ -35,20 +35,20 @@ public class StatsLoader {
         return player;
     }
 
-    public Boss loadBoss(String characterName) {
+    public BossLoader loadBoss(String characterName) {
         String block = extractCharacterBlock(characterName);
 
         String statsBlock = extractBlock(block, "\"stats\"");
-        Boss boss = new Boss();
-        boss.setId(characterName);
-        boss.setName(characterName);
-        boss.setTitle(""); 
-        boss.setMaxHp(extractInt(statsBlock, "hp"));
-        boss.setCurrentHp(extractInt(statsBlock, "hp"));
-        boss.setAttack(extractInt(statsBlock, "atk"));
-        boss.setDefense(extractInt(statsBlock, "def"));
-        boss.setMoves(parseAbilities(block));
-        return boss;
+        BossLoader bossLoader = new BossLoader();
+        bossLoader.setId(characterName);
+        bossLoader.setName(characterName);
+        bossLoader.setTitle("");
+        bossLoader.setMaxHp(extractInt(statsBlock, "hp"));
+        bossLoader.setCurrentHp(extractInt(statsBlock, "hp"));
+        bossLoader.setAttack(extractInt(statsBlock, "atk"));
+        bossLoader.setDefense(extractInt(statsBlock, "def"));
+        bossLoader.setMoves(parseAbilities(block));
+        return bossLoader;
     }
 
     // ---------------------------------------------------------------

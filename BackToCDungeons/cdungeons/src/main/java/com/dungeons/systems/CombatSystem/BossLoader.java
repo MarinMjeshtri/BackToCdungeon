@@ -5,13 +5,13 @@ package com.dungeons.systems.CombatSystem;
 import java.util.Random;
 
 
-public class Boss extends Combatant {
+public class BossLoader extends Combatant {
 
     private String id;
     private String title;          
     private final Random rng = new Random();
 
-    public Boss() {}
+    public BossLoader() {}
 
     /**
      *

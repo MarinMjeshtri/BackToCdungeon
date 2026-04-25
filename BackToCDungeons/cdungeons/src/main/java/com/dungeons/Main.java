@@ -24,7 +24,7 @@ public class Main extends Application {
             DialoguesScreen dialogueScreen = new DialoguesScreen();
             DialogueBoxController dController = dialogueScreen.getLoader().getController();
             dController.setDialogueManager(dialogueManager);
-            dController.startDialogue("opening");
+            dController.startDialogue("johnmkati_intro");
 
             stage.setScene(new Scene(dialogueScreen.getRoot(), 600, 400));
             stage.setTitle("Dialogue Test");
@@ -33,6 +33,16 @@ public class Main extends Application {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
+        }
+
+        try {
+            java.io.File dialogueSprites = new java.io.File(getClass().getResource("/sprites/DialogueSprites").toURI());
+            System.out.println("Contents of DialogueSprites:");
+            for (java.io.File f : dialogueSprites.listFiles()) {
+                System.out.println(" - " + f.getName());
+            }
+        } catch (Exception e) {
+            System.out.println("Error listing files: " + e.getMessage());
         }
     }
 

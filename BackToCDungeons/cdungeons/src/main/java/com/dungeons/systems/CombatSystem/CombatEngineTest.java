@@ -1,62 +1,86 @@
-//Testimi per balanca etj
+package com.dungeons.systems.CombatSystem;
 
-package com.dungeons.systems.CombatSystem; 
+import com.dungeons.Controllers.CombatController;
+import com.dungeons.screens.combatScreen;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
+public class CombatEngineTest extends Application {
 
-public class CombatEngineTest {
+    @Override
+    public void start(Stage stage) throws Exception {
 
-    public static void main(String[] args) {
+        combatScreen screen = new combatScreen();
+        CombatController control = screen.getLoader().getController();
 
-        System.out.println("====================================");
-        System.out.println("  DUNGEON COMBAT — TEST");
-        System.out.println("====================================\n");
+        stage.setScene(new Scene(screen.getRoot(), 800, 600));
+        stage.show(); // show BEFORE starting combat
 
         StatsLoader loader = new StatsLoader();
-
-        // Change these names to test different matchups.
-        // Must match exactly as written in stats.json.
         Player player = loader.loadPlayer("FrekiRelah");
-        Boss   boss   = loader.loadBoss("CassieYarn");
+        BossLoader boss = loader.loadBoss("CassieYarn");
+
+        // set initial UI state
+        control.setStart(player.getName(), boss.getName(), boss.getMaxHp());
 
         CombatEngine engine = new CombatEngine(player, boss);
 
-        System.out.println("FIGHT: " + player.getName() + " vs " + boss.getName());
-        System.out.printf("  %s — HP: %d | ATK: %d | DEF: %d%n",
-                player.getName(), player.getMaxHp(), player.getAttack(), player.getDefense());
-        System.out.printf("  %s — HP: %d | ATK: %d | DEF: %d%n",
-                boss.getName(), boss.getMaxHp(), boss.getAttack(), boss.getDefense());
-        System.out.println("--------------------------------------------\n");
+        // store max HP for percentage calculations
+        int playerMaxHp = player.getMaxHp();
+        int bossMaxHp   = boss.getMaxHp();
 
-        while (engine.isOngoing()) {
+        // instead of while loop, use a Timeline that fires every 1 second
+        // this lets JavaFX update the UI between each round
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), e -> {
+
+            if (!engine.isOngoing()) {
+                timeline.stop();
+
+                // show result
+                if (engine.getResult() == CombatResult.PLAYER_WIN) {
+                    control.setTurnLog("VICTORY — " + boss.getName() + " defeated!");
+                } else {
+                    control.setTurnLog("DEFEATED — " + player.getName() + " fell...");
+                }
+                return;
+            }
+
+            // process one round
             PlayerAction action = (engine.getRoundNumber() % 2 == 0)
                     ? PlayerAction.MOVE_1
                     : PlayerAction.MOVE_2;
 
             TurnLog log = engine.processTurn(action, null);
 
-            System.out.println("Round " + log.getRoundNumber());
-            System.out.println("  Player used: " + log.getPlayerMoveName()
-                    + " → " + log.getPlayerDamageDealt() + " damage dealt");
+            // update turn number
+            control.setTurnNr(log.getRoundNumber());
 
+            // update turn log text
+            String logText = "Round " + log.getRoundNumber() + ": "
+                    + player.getName() + " dealt " + log.getPlayerDamageDealt() + " dmg. ";
             if (log.getBossMoveName() != null) {
-                System.out.println("  Boss used:   " + log.getBossMoveName()
-                        + " → " + log.getBossDamageDealt() + " damage taken");
+                logText += boss.getName() + " dealt " + log.getBossDamageDealt() + " dmg.";
             } else {
-                System.out.println("  Boss was defeated before acting!");
+                logText += boss.getName() + " was defeated!";
             }
+            control.setTurnLog(logText);
 
-            System.out.println("  " + player.getName() + " HP: " + log.getPlayerHpAfter()
-                    + " | " + boss.getName() + " HP: " + log.getBossHpAfter());
-            System.out.println();
-        }
+            // update HP bars as percentage of max HP
+            control.updateBossHP(log.getBossHpAfter(), bossMaxHp);
+            control.updatePlayerHP(log.getPlayerHpAfter(), playerMaxHp);
+        }));
 
-        System.out.println("============================================");
-        if (engine.getResult() == CombatResult.PLAYER_WIN) {
-            System.out.println("  RESULT: VICTORY — " + boss.getName() + " defeated!");
-        } else {
-            System.out.println("  RESULT: DEFEATED — " + player.getName() + " fell...");
-        }
-        System.out.println("  Total rounds: " + engine.getRoundNumber());
-        System.out.println("============================================");
+        timeline.play();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

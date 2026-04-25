@@ -4,6 +4,9 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class MapRenderer {
 
+    private static final int TILE_SIZE = 16;
+    private static final int SCALE = 3;
+
     private final Map map;
     private final TilesetManager tiles;
 
@@ -13,44 +16,34 @@ public class MapRenderer {
     }
 
     public void render(GraphicsContext gc) {
-
         for (String layerName : map.layers.keySet()) {
-
             int[] layer = map.layers.get(layerName);
-
-            String tileset = getTileset(layerName);
-
-            drawLayer(gc, layer, tileset);
+            drawLayer(gc, layer);
         }
     }
 
-    private void drawLayer(GraphicsContext gc, int[] layer, String tileset) {
-
+    private void drawLayer(GraphicsContext gc, int[] layer) {
         for (int y = 0; y < map.height; y++) {
             for (int x = 0; x < map.width; x++) {
 
-                int id = layer[y * map.width + x];
+                int raw = layer[y * map.width + x];
+                Object[] resolved = map.resolveTile(raw);
+                if (resolved == null) continue;
 
-                if (id == 0) continue;
+                String tilesetKey = (String) resolved[0];
+                int localId       = (int)   resolved[1];
+
+                javafx.scene.image.Image tile = tiles.get(tilesetKey, localId);
+                if (tile == null) continue;
 
                 gc.drawImage(
-                        tiles.get(tileset, id),
-                        x * 16,
-                        y * 16
+                        tile,
+                        x * TILE_SIZE * SCALE,
+                        y * TILE_SIZE * SCALE,
+                        TILE_SIZE * SCALE,
+                        TILE_SIZE * SCALE
                 );
             }
         }
-    }
-
-    private String getTileset(String layerName) {
-
-        layerName = layerName.toLowerCase();
-
-        if (layerName.contains("floor")) return "floor";
-        if (layerName.contains("wall") || layerName.contains("sides")) return "walls";
-        if (layerName.contains("stuff") || layerName.contains("decoration")) return "stuff";
-        if (layerName.contains("liquid")) return "liquids";
-
-        return "floor";
     }
 }
