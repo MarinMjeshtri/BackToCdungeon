@@ -42,7 +42,7 @@ public class CombatController {
         bossHPnumber.setText(bossMaxHp + " / " + bossMaxHp);
 
         Image playerImg = new Image(getClass().getResourceAsStream("/sprites/DialougeSprites/KejviCharacterDialougeSprite-NBR.png"));
-        Image enemyIMG = new Image(getClass().getResourceAsStream("/sprites/DialougeSprites/SindiCharacterDialougeSprite-NBR.png"));
+        Image enemyIMG = new Image(getClass().getResourceAsStream("/sprites/lmfao/SindiNarratorDialougeSprite.png"));
         //SPRITE LOADING BHAAHAHAHAHAHAHA
         playercharacterSprite.setImage(playerImg);
         enemycharacterSprite.setImage(enemyIMG);

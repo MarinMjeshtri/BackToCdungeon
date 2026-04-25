@@ -1,0 +1,30 @@
+*{
+-fx-font-family: 'Reano';
+}
+
+#startingScreenPane{
+-fx-background-image: url('../sprites/UiDecor/startingScreenDecor.png');
+-fx-background-size: cover;
+-fx-background-position: center
+}
+#mainNAME{
+-fx-font-size: 48px;
+-fx-text-fill: white;
+}
+
+.nonGameSelector{
+-fx-background-color: white;
+}
+
+#gameVersion{
+-fx-text-fill: white;
+}
+
+/*yes i found the rgb manually shut up*/
+#anchorQuit{
+-fx-background-color: rgb(185,189,193,0.9);
+}
+
+#labelQuit{
+-fx-text-fill: white;
+}

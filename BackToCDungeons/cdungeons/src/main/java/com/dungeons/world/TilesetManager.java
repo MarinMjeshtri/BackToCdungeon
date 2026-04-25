@@ -19,7 +19,8 @@ public class TilesetManager {
     }
 
     private void load(String file, String key) {
-        Image img = new Image("file:" + path + file);
+        Image img = new Image(
+                getClass().getResourceAsStream("/tiles/" + file));
 
         int cols = (int)(img.getWidth() / TILE_SIZE);
         int rows = (int)(img.getHeight() / TILE_SIZE);

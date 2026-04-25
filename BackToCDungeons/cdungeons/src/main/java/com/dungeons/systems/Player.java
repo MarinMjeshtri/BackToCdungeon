@@ -73,17 +73,18 @@ public class Player {
 
     // ---------------- COLLISION ----------------
 
-    private boolean collides(double px, double py) {
+    private static final int SCALE = 3; // must match GameScreen
 
+    private boolean collides(double px, double py) {
         if (map == null) return false;
 
-        // Convert player bounds to tile coordinates
-        int leftTile   = (int)(px / TILE_SIZE);
-        int rightTile  = (int)((px + SIZE) / TILE_SIZE);
-        int topTile    = (int)(py / TILE_SIZE);
-        int bottomTile = (int)((py + SIZE) / TILE_SIZE);
+        // divide by scaled tile size, not raw tile size
+        int leftTile   = (int)(px / (TILE_SIZE * SCALE));
+        int rightTile  = (int)((px + SIZE) / (TILE_SIZE * SCALE));
+        int topTile    = (int)(py / (TILE_SIZE * SCALE));
+        int bottomTile = (int)((py + SIZE) / (TILE_SIZE * SCALE));
 
-        return map.isSolid(leftTile, topTile) ||
+        return map.isSolid(leftTile, topTile)  ||
                 map.isSolid(rightTile, topTile) ||
                 map.isSolid(leftTile, bottomTile) ||
                 map.isSolid(rightTile, bottomTile);
@@ -92,11 +93,16 @@ public class Player {
     // ---------------- RENDER ----------------
 
     public void render(GraphicsContext gc) {
-        gc.fillRect(x, y, SIZE, SIZE); // placeholder
+        gc.fillRect(x, y, SIZE, SIZE); // now correctly 42x42px on screen
     }
 
     // ---------------- GETTERS ----------------
 
     public double getX() { return x; }
     public double getY() { return y; }
+
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
 }

@@ -3,7 +3,8 @@ package com.dungeons.world;
 import com.google.gson.*;
 import java.io.FileReader;
 import java.util.*;
-
+import java.io.InputStream;
+import java.io.InputStreamReader;
 public class Map {
 
     public int width, height;
@@ -56,8 +57,16 @@ public class Map {
         this.currentMapName = mapName;
 
         try {
+            // load from classpath — no hardcoded path needed
+            InputStream is = Map.class.getResourceAsStream("/maps/" + mapName + ".json");
+
+            if (is == null) {
+                System.out.println("Map not found: /maps/" + mapName + ".json");
+                return;
+            }
+
             JsonObject json = JsonParser.parseReader(
-                    new FileReader(path + mapName + ".json")
+                    new InputStreamReader(is)
             ).getAsJsonObject();
 
             width  = json.get("width").getAsInt();
@@ -81,7 +90,6 @@ public class Map {
 
                 if (type.equals("tilelayer")) {
                     loadTileLayer(layer, name);
-
                 } else if (type.equals("objectgroup")) {
                     loadObjectLayer(layer, name);
                 }

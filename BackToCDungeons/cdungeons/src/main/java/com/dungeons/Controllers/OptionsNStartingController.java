@@ -7,6 +7,7 @@ import com.dungeons.screens.areYouSureScreen;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -16,6 +17,12 @@ import java.io.IOException;
 public class OptionsNStartingController {
     private Stage stage;
     //OPEN THE GAME
+    @FXML private Pane startingScreenPane;
+
+    @FXML
+    public void initialize() {
+//use css, unless ur a lazy bum and want to just hard code it in (did i mention ur a bum if u do that) cough cough past me
+    }
     @FXML
     private void handleButton1() throws IOException {
 
