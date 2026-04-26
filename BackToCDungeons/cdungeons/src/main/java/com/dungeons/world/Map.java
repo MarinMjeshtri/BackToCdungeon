@@ -3,7 +3,8 @@ package com.dungeons.world;
 import com.google.gson.*;
 import java.io.FileReader;
 import java.util.*;
-
+import java.io.InputStream;
+import java.io.InputStreamReader;
 public class Map {
 
     public int width, height;
@@ -21,33 +22,35 @@ public class Map {
 
     // Maps each object layer name to what target map it transitions to
     private static final HashMap<String, String> TRANSITION_TARGETS = new HashMap<>();
+
     static {
-        TRANSITION_TARGETS.put("transition_mobroom1",     "MobRoom1");
-        TRANSITION_TARGETS.put("transition_mobroom2",     "MobRoom2");
-        TRANSITION_TARGETS.put("transition_k3jvibossroom","k3jviBossroom");
-        TRANSITION_TARGETS.put("transition_mobroom3",     "MobRoom3");
-        TRANSITION_TARGETS.put("transition_mobroom4",     "MobRoom4");
-        TRANSITION_TARGETS.put("transition_roomkledi",    "RoomKledi");
-        TRANSITION_TARGETS.put("transition_mobroom5",     "MobRoom5");
+        TRANSITION_TARGETS.put("transition_mobroom1", "MobRoom1");
+        TRANSITION_TARGETS.put("transition_mobroom2", "MobRoom2");
+        TRANSITION_TARGETS.put("transition_k3jvibossroom", "k3jviBossroom");
+        TRANSITION_TARGETS.put("transition_mobroom3", "MobRoom3");
+        TRANSITION_TARGETS.put("transition_mobroom4", "MobRoom4");
+        TRANSITION_TARGETS.put("transition_roomkledi", "RoomKledi");
+        TRANSITION_TARGETS.put("transition_mobroom5", "MobRoom5");
         TRANSITION_TARGETS.put("transition_bossroomjoni", "BossRoomJoni");
-        TRANSITION_TARGETS.put("transitionshop",          "ShopRoom");
-        TRANSITION_TARGETS.put("transitionchest",         "ChestRoom");
-        TRANSITION_TARGETS.put("transition",              null); // resolved per map at runtime
+        TRANSITION_TARGETS.put("transitionshop", "ShopRoom");
+        TRANSITION_TARGETS.put("transitionchest", "ChestRoom");
+        TRANSITION_TARGETS.put("transition", null); // resolved per map at runtime
     }
 
     // Which map each map's "Transition" layer leads to
     private static final HashMap<String, String> MAP_TRANSITION_CHAIN = new HashMap<>();
+
     static {
-        MAP_TRANSITION_CHAIN.put("MobRoom1",      "MobRoom2");
-        MAP_TRANSITION_CHAIN.put("MobRoom2",      "k3jviBossroom");
+        MAP_TRANSITION_CHAIN.put("MobRoom1", "MobRoom2");
+        MAP_TRANSITION_CHAIN.put("MobRoom2", "k3jviBossroom");
         MAP_TRANSITION_CHAIN.put("k3jviBossroom", "MobRoom3");
-        MAP_TRANSITION_CHAIN.put("MobRoom3",      "MobRoom4");
-        MAP_TRANSITION_CHAIN.put("MobRoom4",      "RoomKledi");
-        MAP_TRANSITION_CHAIN.put("RoomKledi",     "MobRoom5");
-        MAP_TRANSITION_CHAIN.put("MobRoom5",      "BossRoomJoni");
-        MAP_TRANSITION_CHAIN.put("ShopRoom",      "RoomKledi");
-        MAP_TRANSITION_CHAIN.put("ChestRoom",     "RoomKledi");
-        MAP_TRANSITION_CHAIN.put("BossRoomJoni",  null); // end of game
+        MAP_TRANSITION_CHAIN.put("MobRoom3", "MobRoom4");
+        MAP_TRANSITION_CHAIN.put("MobRoom4", "RoomKledi");
+        MAP_TRANSITION_CHAIN.put("RoomKledi", "MobRoom5");
+        MAP_TRANSITION_CHAIN.put("MobRoom5", "BossRoomJoni");
+        MAP_TRANSITION_CHAIN.put("ShopRoom", "RoomKledi");
+        MAP_TRANSITION_CHAIN.put("ChestRoom", "RoomKledi");
+        MAP_TRANSITION_CHAIN.put("BossRoomJoni", null); // end of game
     }
 
     private String currentMapName;
@@ -56,11 +59,19 @@ public class Map {
         this.currentMapName = mapName;
 
         try {
+            // load from classpath — no hardcoded path needed
+            InputStream is = Map.class.getResourceAsStream("/maps/" + mapName + ".json");
+
+            if (is == null) {
+                System.out.println("Map not found: /maps/" + mapName + ".json");
+                return;
+            }
+
             JsonObject json = JsonParser.parseReader(
-                    new FileReader(path + mapName + ".json")
+                    new InputStreamReader(is)
             ).getAsJsonObject();
 
-            width  = json.get("width").getAsInt();
+            width = json.get("width").getAsInt();
             height = json.get("height").getAsInt();
 
             // Load tilesets
@@ -81,7 +92,6 @@ public class Map {
 
                 if (type.equals("tilelayer")) {
                     loadTileLayer(layer, name);
-
                 } else if (type.equals("objectgroup")) {
                     loadObjectLayer(layer, name);
                 }
@@ -112,6 +122,8 @@ public class Map {
             JsonObject obj = objEl.getAsJsonObject();
             int tileX = (int)(obj.get("x").getAsFloat() / 16);
             int tileY = (int)(obj.get("y").getAsFloat() / 16);
+            int rectW = (int)Math.ceil(obj.get("width").getAsFloat() / 16);
+            int rectH = (int)Math.ceil(obj.get("height").getAsFloat() / 16);
 
             if (nameLower.equals("spawnpoint")) {
                 spawnX = tileX;
@@ -120,25 +132,47 @@ public class Map {
             } else if (nameLower.equals("transition")) {
                 String target = MAP_TRANSITION_CHAIN.get(currentMapName);
                 if (target != null) {
-                    // Spawn at spawnpoint of target — resolved when target loads
-                    transitions.add(new TransitionZone(tileX, tileY, target, -1, -1));
+                    for (int ty = tileY; ty < tileY + rectH; ty++) {
+                        for (int tx = tileX; tx < tileX + rectW; tx++) {
+                            transitions.add(new TransitionZone(tx, ty, target, -1, -1));
+                        }
+                    }
                 }
-                // If target is null (BossRoomJoni) we just don't add it — does nothing
 
-            } else if (nameLower.equals("transitionshop")) {
-                transitions.add(new TransitionZone(tileX, tileY, "ShopRoom", -1, -1));
+            } else if (nameLower.equals("transitionshoproom")) {
+                for (int ty = tileY; ty < tileY + rectH; ty++) {
+                    for (int tx = tileX; tx < tileX + rectW; tx++) {
+                        transitions.add(new TransitionZone(tx, ty, "ShopRoom", -1, -1));
+                    }
+                }
 
-            } else if (nameLower.equals("transitionchest")) {
-                transitions.add(new TransitionZone(tileX, tileY, "ChestRoom", -1, -1));
+            } else if (nameLower.equals("transitionchestroom")) {
+                for (int ty = tileY; ty < tileY + rectH; ty++) {
+                    for (int tx = tileX; tx < tileX + rectW; tx++) {
+                        transitions.add(new TransitionZone(tx, ty, "ChestRoom", -1, -1));
+                    }
+                }
 
             } else if (nameLower.equals("fight")) {
-                interactZones.add(new InteractZone(tileX, tileY, "fight"));
+                for (int ty = tileY; ty < tileY + rectH; ty++) {
+                    for (int tx = tileX; tx < tileX + rectW; tx++) {
+                        interactZones.add(new InteractZone(tx, ty, "fight"));
+                    }
+                }
 
             } else if (nameLower.equals("shop")) {
-                interactZones.add(new InteractZone(tileX, tileY, "shop"));
+                for (int ty = tileY; ty < tileY + rectH; ty++) {
+                    for (int tx = tileX; tx < tileX + rectW; tx++) {
+                        interactZones.add(new InteractZone(tx, ty, "shop"));
+                    }
+                }
 
             } else if (nameLower.equals("chest")) {
-                interactZones.add(new InteractZone(tileX, tileY, "chest"));
+                for (int ty = tileY; ty < tileY + rectH; ty++) {
+                    for (int tx = tileX; tx < tileX + rectW; tx++) {
+                        interactZones.add(new InteractZone(tx, ty, "chest"));
+                    }
+                }
             }
         }
     }
@@ -154,22 +188,28 @@ public class Map {
         String tilesetKey = tilesetRanges.get(firstgid);
         int localId = gid - firstgid;
 
-        return new Object[]{ tilesetKey, localId };
+        return new Object[]{tilesetKey, localId};
     }
 
     private String resolveTilesetKey(String source) {
         source = source.toLowerCase();
-        if (source.contains("floor"))   return "floor";
-        if (source.contains("wall"))    return "walls";
-        if (source.contains("stuff"))   return "stuff";
-        if (source.contains("liquid"))  return "liquids";
+        if (source.contains("floor")) return "floor";
+        if (source.contains("wall")) return "walls";
+        if (source.contains("stuff")) return "stuff";
+        if (source.contains("liquid")) return "liquids";
+        if (source.contains("drcassieyarn"))  return "cassie";
+        if (source.contains("drfrekirelah"))  return "freki";
         return "floor";
     }
 
     public boolean isSolid(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) return true;
         for (int[] layer : collisionLayers) {
-            if (layer[y * width + x] != 0) return true;
+            int val = layer[y * width + x];
+            if (val != 0) {
+                System.out.println("Solid at tile " + x + "," + y + " value=" + val);
+                return true;
+            }
         }
         return false;
     }
