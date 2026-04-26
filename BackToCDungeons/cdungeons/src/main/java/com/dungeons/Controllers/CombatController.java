@@ -1,5 +1,11 @@
 package com.dungeons.Controllers;
+//who tf used chatgpt on my beloved combat script and why is it terminal :sob:
+//I have to practically scarp everything but cant very nice
 
+// Necessary imports for loading gameloop
+import com.dungeons.screens.GameScreen;
+
+// Necessary imports for Combat
 import com.dungeons.systems.CombatSystem.BossLoader;
 import com.dungeons.systems.CombatSystem.CombatEngine;
 import com.dungeons.systems.CombatSystem.CombatResult;
@@ -8,6 +14,8 @@ import com.dungeons.systems.CombatSystem.Player;
 import com.dungeons.systems.CombatSystem.PlayerAction;
 import com.dungeons.systems.CombatSystem.StatsLoader;
 import com.dungeons.systems.CombatSystem.TurnLog;
+
+// Necessary imports for JAVAFX
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -53,15 +62,32 @@ public class CombatController {
     private int playerMaxHp;
     private int bossMaxHp;
 
-    
+    GameScreen gameScreen;
+    private Stage stage;
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    // call this from wherever combat ends in your existing code
+    public void returnToGame() {
+        gameScreen.returnFromCombat();
+    }
+
+
+
     // Called by JavaFX after FXML loads to load stats and wire the buttons (attack, guard, item, talk to their correspoding submenus)
-   
+
     @FXML
     public void initialize() {
         // Load player and boss from Stats.json
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player"); //IDK tf to put here so i just left it as before for testing. Then ill make a loop or something, idk how it will be implemented yet
-        boss   = loader.loadBoss("JohnMKati"); 
+        boss   = loader.loadBoss("JohnMKati");
 
         playerMaxHp = player.getMaxHp();
         bossMaxHp   = boss.getMaxHp();
@@ -102,7 +128,9 @@ public class CombatController {
     }
 }
 
-    // Wire buttons that dont have stuff yet (items, guard, talk and their submenus) 
+
+
+    // Wire buttons that dont have stuff yet (items, guard, talk and their submenus)
     private void wirePlaceholderButtons() {
     List<Button> itemButtons = pressItem.getChildren()
             .stream()
@@ -128,7 +156,7 @@ public class CombatController {
                 log("🛡️ " + btn.getText());
                 goBack();
             }));
-    //Talk 
+    //Talk
     pressTalk.getChildren().stream()
             .filter(n -> n instanceof Button && !((Button) n).getText().equals("GO BACK"))
             .map(n -> (Button) n)
@@ -168,7 +196,7 @@ public class CombatController {
         goBack();
     }
 
-    
+
     // Update UI after every turn
     private void updateAfterTurn(TurnLog turnLog) {
         // Update turn number
@@ -199,16 +227,17 @@ public class CombatController {
         }
 
         // HP summary
-        sb.append(" Your HP: ").append(turnLog.getPlayerHpAfter()) 
+        sb.append(" Your HP: ").append(turnLog.getPlayerHpAfter())
           .append("      ||  Boss HP: ").append(turnLog.getBossHpAfter()).append("\n");
 
         // Result
         if (turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN) {
-            sb.append("🏆 VICTORY! ").append(boss.getName()).append(" has been defeated!\n");
             disableAllActions();
+            returnToGame(); // ← add this
         } else if (turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE) {
-            sb.append("💀 DEFEATED... ").append(player.getName()).append(" has fallen...\n"); // Biggest skill issue btw
+            sb.append("💀 DEFEATED... ").append(player.getName()).append(" has fallen...\n");
             disableAllActions();
+            returnToGame(); // ← add this
         }
 
         log(sb.toString());
@@ -232,7 +261,7 @@ public class CombatController {
 
         try {
             Image playerImg = new Image(getClass().getResourceAsStream(
-                "/sprites/DialougeSprites/KejviCharacterDialougeSprite-NBR.png")); 
+                "/sprites/DialougeSprites/KejviCharacterDialougeSprite-NBR.png"));
             Image enemyImg  = new Image(getClass().getResourceAsStream(
                 "/sprites/DialougeSprites/SindiCharacterDialougeSprite-NBR.png"));
             playercharacterSprite.setImage(playerImg);

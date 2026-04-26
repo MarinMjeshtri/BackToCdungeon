@@ -10,8 +10,6 @@ public class CombatEngineTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // Load the combat screen — controller initializes itself via initialize()
-        // which loads player + boss from Stats.json and wires all buttons
         combatScreen screen = new combatScreen();
         CombatController controller = screen.getController();
 

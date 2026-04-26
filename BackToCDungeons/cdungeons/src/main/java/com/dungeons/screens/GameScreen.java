@@ -1,5 +1,6 @@
 package com.dungeons.screens;
 
+import com.dungeons.Controllers.CombatController;
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
@@ -7,6 +8,7 @@ import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,6 +25,7 @@ public class GameScreen {
     private static final int SCALE = 2;
 
     private pauseScreen pauseScreen;
+    private Pane gameRoot; // ← fixed name
     private Stage stage;
 
     private final Canvas canvas = new Canvas(800, 600);
@@ -50,7 +53,6 @@ public class GameScreen {
         mapManager = new MapManager(
                 tilesetManager,
 
-                // Map changed — spawn coords are tile coords from the map
                 (newMap, spawnX, spawnY) -> {
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
@@ -61,12 +63,23 @@ public class GameScreen {
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
 
-                // Interact trigger
+                // SINDI SINDI SINDI JON JON JON JON JON JON JON JON JON JON JON this is where u place most of the dialogue :D ~yours truly
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
+
                     if (type.equals("fight")) {
-                        // TODO: character team hooks battle here
-                        // When done they call: mapManager.markFightDone(tileX, tileY)
+                        loop.stop();
+                        Platform.runLater(() -> {
+                            try {
+                                combatScreen combat = new combatScreen();
+                                CombatController control = combat.getLoader().getController();
+                                control.setGameScreen(this);
+                                control.setStage(stage);
+                                stage.getScene().setRoot(combat.getRoot());
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        });
                     }
                     if (type.equals("shop")) {
                         // TODO: shop team hooks here
@@ -92,6 +105,7 @@ public class GameScreen {
         root.getChildren().add(ps.getRoot());
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
+        this.gameRoot = root; // ← stores the root correctly now
 
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
@@ -105,39 +119,46 @@ public class GameScreen {
         return root;
     }
 
+    public void returnFromCombat() {
+        stage.getScene().setRoot(gameRoot);
+        canvas.requestFocus();
+        startLoop();
+    }
+
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
         if (nowPaused) loop.stop();
-        else           loop.start();
+        else loop.start();
     }
 
     public void startLoop() {
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update();
+                try {
+                    update();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 render();
             }
         };
         loop.start();
     }
 
-    private void update() {
+    private void update() throws Exception {
         player.update();
         updateCamera();
-
-        // Use getTileX/Y() — no manual math needed, already correct
         mapManager.checkInteractions(player.getTileX(), player.getTileY());
     }
 
     private void updateCamera() {
         Map map = mapManager.getCurrentMap();
-
-        cameraX = player.getX() - canvas.getWidth()  / 2;
+        cameraX = player.getX() - canvas.getWidth() / 2;
         cameraY = player.getY() - canvas.getHeight() / 2;
 
-        double mapW = map.width  * TILE_SIZE * SCALE;
+        double mapW = map.width * TILE_SIZE * SCALE;
         double mapH = map.height * TILE_SIZE * SCALE;
 
         cameraX = Math.max(0, Math.min(cameraX, mapW - canvas.getWidth()));
@@ -157,4 +178,5 @@ public class GameScreen {
 
         gc.restore();
     }
+
 }
