@@ -24,7 +24,7 @@ public class Main extends Application {
             DialoguesScreen dialogueScreen = new DialoguesScreen();
             DialogueBoxController dController = dialogueScreen.getLoader().getController();
             dController.setDialogueManager(dialogueManager);
-            dController.startDialogue("johnmkati_intro");
+            dController.startDialogue("track2_revelation");
 
             stage.setScene(new Scene(dialogueScreen.getRoot(), 600, 400));
             stage.setTitle("Dialogue Test");
