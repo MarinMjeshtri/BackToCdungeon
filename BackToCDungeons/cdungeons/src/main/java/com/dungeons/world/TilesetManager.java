@@ -16,6 +16,8 @@ public class TilesetManager {
         load("tilesWalls.png", "walls");
         load("tilesStuff.png", "stuff");
         load("spriteSheet_tiledLiquids_16x16.png", "liquids");
+        load("drCassieYarnSprite.png", "cassie");
+        load("drFrekiRelahSprite.png", "freki");
     }
 
     private void load(String file, String key) {
