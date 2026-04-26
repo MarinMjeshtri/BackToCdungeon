@@ -16,10 +16,13 @@ public class TilesetManager {
         load("tilesWalls.png", "walls");
         load("tilesStuff.png", "stuff");
         load("spriteSheet_tiledLiquids_16x16.png", "liquids");
+        load("drCassieYarnSprite.png", "cassie");
+        load("drFrekiRelahSprite.png", "freki");
     }
 
     private void load(String file, String key) {
-        Image img = new Image("file:" + path + file);
+        Image img = new Image(
+                getClass().getResourceAsStream("/tiles/" + file));
 
         int cols = (int)(img.getWidth() / TILE_SIZE);
         int rows = (int)(img.getHeight() / TILE_SIZE);

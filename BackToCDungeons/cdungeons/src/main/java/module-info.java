@@ -12,6 +12,7 @@ module com.dungeons {
     opens com.dungeons.systems.CombatSystem to javafx.graphics;
     opens com.dungeons.characters to com.google.gson;
 
+
     exports com.dungeons to javafx.graphics;
     exports com.dungeons.screens to javafx.graphics, javafx.fxml;
     exports com.dungeons.systems.CombatSystem to javafx.graphics; // ← add this

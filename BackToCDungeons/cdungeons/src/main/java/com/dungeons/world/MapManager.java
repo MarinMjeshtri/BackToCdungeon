@@ -15,7 +15,7 @@ public class MapManager {
     public interface InteractListener {
         // Called when player steps on a fight/shop/chest tile
         // type = "fight", "shop", "chest"
-        void onInteract(String type, int tileX, int tileY);
+        void onInteract(String type, int tileX, int tileY) throws Exception;
     }
 
     public MapManager(TilesetManager tilesets,
@@ -37,7 +37,7 @@ public class MapManager {
     }
 
     // Call this every frame with character's tile position
-    public void checkInteractions(int charTileX, int charTileY) {
+    public void checkInteractions(int charTileX, int charTileY) throws Exception {
         checkTransitions(charTileX, charTileY);
         checkInteractZones(charTileX, charTileY);
     }
@@ -58,7 +58,7 @@ public class MapManager {
         }
     }
 
-    private void checkInteractZones(int charTileX, int charTileY) {
+    private void checkInteractZones(int charTileX, int charTileY) throws Exception {
         for (InteractZone zone : currentMap.interactZones) {
             if (zone.triggered) continue;
             if (zone.x == charTileX && zone.y == charTileY) {
