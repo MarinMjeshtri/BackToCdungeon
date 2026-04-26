@@ -19,27 +19,24 @@ import java.io.IOException;
 
 public class GameScreen {
 
+    private static final int TILE_SIZE = 16;
+    private static final int SCALE = 2;
+
     private pauseScreen pauseScreen;
     private Stage stage;
 
     private final Canvas canvas = new Canvas(800, 600);
     private final GraphicsContext gc = canvas.getGraphicsContext2D();
 
-    // --- World ---
     private final TilesetManager tilesetManager = new TilesetManager();
     private MapManager mapManager;
     private MapRenderer mapRenderer;
 
-    // --- Player ---
-    private final Player player = new Player(150, 100);
+    private final Player player = new Player(0, 0);
 
-    // --- Camera ---
     private double cameraX = 0;
     private double cameraY = 0;
-    private static final int TILE_SIZE = 16;
-    private static final int SCALE     = 3;
 
-    // --- Game loop ---
     private AnimationTimer loop;
 
     public void setStage(Stage stage) {
@@ -48,16 +45,15 @@ public class GameScreen {
 
     public Parent getRoot() throws IOException {
 
-        // load tilesets once
         tilesetManager.loadAll();
 
-        // set up map manager with listeners
         mapManager = new MapManager(
                 tilesetManager,
 
-                // called when player walks into a transition zone
+                // Map changed — spawn coords are tile coords from the map
                 (newMap, spawnX, spawnY) -> {
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
+                    player.setMap(newMap);
                     player.setPosition(
                             spawnX * TILE_SIZE * SCALE,
                             spawnY * TILE_SIZE * SCALE
@@ -65,29 +61,31 @@ public class GameScreen {
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
 
-                // called when player steps on fight/shop/chest
+                // Interact trigger
                 (type, tileX, tileY) -> {
-                    System.out.println("Interact: " + type + " at " + tileX + "," + tileY);
-                    // TODO: open combat/shop/chest screen based on type
-                    switch (type) {
-//                        case "fight" -> { /* open combat */ }
-//                        case "shop"  -> { /* open shop   */ }
-//                        case "chest" -> { /* open chest  */ }
+                    System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
+                    if (type.equals("fight")) {
+                        // TODO: character team hooks battle here
+                        // When done they call: mapManager.markFightDone(tileX, tileY)
+                    }
+                    if (type.equals("shop")) {
+                        // TODO: shop team hooks here
+                    }
+                    if (type.equals("chest")) {
+                        // TODO: chest team hooks here
                     }
                 }
         );
 
-        // load starting map
-        mapManager.loadMap("k3jviBossroom");
-        mapRenderer = new MapRenderer(mapManager.getCurrentMap(), tilesetManager);
-
-        // set player spawn from map
+        mapManager.loadMap("MobRoom1");
+        Map currentMap = mapManager.getCurrentMap();
+        mapRenderer = new MapRenderer(currentMap, tilesetManager);
+        player.setMap(currentMap);
         player.setPosition(
-                mapManager.getCurrentMap().spawnX * TILE_SIZE * SCALE,
-                mapManager.getCurrentMap().spawnY * TILE_SIZE * SCALE
+                currentMap.spawnX * TILE_SIZE * SCALE,
+                currentMap.spawnY * TILE_SIZE * SCALE
         );
 
-        // pause screen
         pauseScreen ps = new pauseScreen(this, stage);
         Pane root = new Pane(canvas);
         root.setPrefSize(800, 600);
@@ -95,9 +93,9 @@ public class GameScreen {
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
 
-        // input
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
+
         canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) togglePause();
             else player.keyPressed(e.getCode());
@@ -129,14 +127,13 @@ public class GameScreen {
         player.update();
         updateCamera();
 
-        // convert pixel position to tile coordinates
-        int tileX = (int)(player.getX() / (TILE_SIZE * SCALE));
-        int tileY = (int)(player.getY() / (TILE_SIZE * SCALE));
-        mapManager.checkInteractions(tileX, tileY);
+        // Use getTileX/Y() — no manual math needed, already correct
+        mapManager.checkInteractions(player.getTileX(), player.getTileY());
     }
 
     private void updateCamera() {
         Map map = mapManager.getCurrentMap();
+
         cameraX = player.getX() - canvas.getWidth()  / 2;
         cameraY = player.getY() - canvas.getHeight() / 2;
 
@@ -148,19 +145,14 @@ public class GameScreen {
     }
 
     private void render() {
-        // clear
         gc.setFill(Color.rgb(20, 20, 20));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setImageSmoothing(false);
 
-        // apply camera
         gc.save();
         gc.translate(-cameraX, -cameraY);
 
-        // draw map
         mapRenderer.render(gc);
-
-        // draw player
         player.render(gc);
 
         gc.restore();
