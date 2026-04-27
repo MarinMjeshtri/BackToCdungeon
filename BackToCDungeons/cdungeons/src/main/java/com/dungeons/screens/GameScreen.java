@@ -1,6 +1,8 @@
 package com.dungeons.screens;
 
 import com.dungeons.Controllers.CombatController;
+import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.dialogueManager.DialogueManager;
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
@@ -19,10 +21,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+
 public class GameScreen {
 
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 2;
+
+    private DialogueManager dialogueManager;
+    private DialogueBoxController activeDialogue = null;
+    private Parent activeDialogueNode = null;
 
     private pauseScreen pauseScreen;
     private Pane gameRoot; // ← fixed name
@@ -76,6 +84,23 @@ public class GameScreen {
                                 control.setGameScreen(this);
                                 control.setStage(stage);
                                 stage.getScene().setRoot(combat.getRoot());
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        });
+                    }
+                    if (type.startsWith("dialogue:")) {
+                        String dialogueId = type.split(":")[1];
+                        loop.stop();
+                        Platform.runLater(() -> {
+                            try {
+                                DialoguesScreen dialogueScreen = new DialoguesScreen();
+                                DialogueBoxController dController = dialogueScreen.getLoader().getController();
+                                dController.setDialogueManager(dialogueManager);
+                                dController.startDialogue(dialogueId);
+                                activeDialogue = dController;
+                                activeDialogueNode = dialogueScreen.getRoot();
+                                gameRoot.getChildren().add(activeDialogueNode);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
@@ -151,6 +176,13 @@ public class GameScreen {
         player.update();
         updateCamera();
         mapManager.checkInteractions(player.getTileX(), player.getTileY());
+
+        if (activeDialogue != null && activeDialogue.isDialogueFinished()) {
+            gameRoot.getChildren().remove(activeDialogueNode);
+            activeDialogue = null;
+            activeDialogueNode = null;
+            loop.start();
+        }
     }
 
     private void updateCamera() {

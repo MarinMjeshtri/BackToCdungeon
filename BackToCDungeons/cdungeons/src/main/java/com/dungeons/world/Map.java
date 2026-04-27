@@ -173,6 +173,18 @@ public class Map {
                         interactZones.add(new InteractZone(tx, ty, "chest"));
                     }
                 }
+            } else if (nameLower.equals("cassie_encounter") ||
+                    nameLower.equals("freki_encounter") ||
+                    nameLower.equals("merchant_enter") ||
+                    nameLower.equals("johnmkati_lab_reveal") ||
+                    nameLower.equals("johnmkati_intro") ||
+                    nameLower.equals("freki_mid_battle") ||
+                    nameLower.equals("johnmkati_before_fight")) {
+                for (int ty = tileY; ty < tileY + rectH; ty++) {
+                    for (int tx = tileX; tx < tileX + rectW; tx++) {
+                        interactZones.add(new InteractZone(tx, ty, "dialogue:" + name));
+                    }
+                }
             }
         }
     }

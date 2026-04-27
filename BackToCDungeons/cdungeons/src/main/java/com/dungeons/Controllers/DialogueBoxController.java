@@ -22,6 +22,12 @@ public class DialogueBoxController {
 
     private DialogueManager dialogueManager;
 
+    private boolean finished = false;
+
+    public boolean isDialogueFinished() {
+        return finished;
+    }
+
     @FXML
     public void initialize() {
 
@@ -86,6 +92,7 @@ public class DialogueBoxController {
         if (!dialogueManager.isFinished()) {
             dialogueText.setText(dialogueManager.getNextLine());
         } else {
+            finished = true;
             dialogueText.getScene().getRoot().setVisible(false);
         }
     }
