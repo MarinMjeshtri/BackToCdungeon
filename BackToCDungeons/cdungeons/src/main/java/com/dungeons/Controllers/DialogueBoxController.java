@@ -20,6 +20,8 @@ public class DialogueBoxController {
     @FXML
     private ImageView character1;
 
+    private boolean finished = false;
+
     private DialogueManager dialogueManager;
 
     @FXML
@@ -88,5 +90,9 @@ public class DialogueBoxController {
         } else {
             dialogueText.getScene().getRoot().setVisible(false);
         }
+    }
+
+    public boolean isDialogueFinished() {
+        return finished;
     }
 }

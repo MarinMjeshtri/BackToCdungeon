@@ -1,5 +1,8 @@
 package com.dungeons.screens;
 
+import com.dungeons.Controllers.CombatController;
+import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.dialogueManager.DialogueManager;
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
@@ -7,6 +10,7 @@ import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,12 +21,19 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+
 public class GameScreen {
 
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 2;
 
+    private DialogueManager dialogueManager;
+    private DialogueBoxController activeDialogue = null;
+    private Parent activeDialogueNode = null;
+
     private pauseScreen pauseScreen;
+    private Pane gameRoot; // ← fixed name
     private Stage stage;
 
     private final Canvas canvas = new Canvas(800, 600);
@@ -38,13 +49,6 @@ public class GameScreen {
     private double cameraY = 0;
 
     private AnimationTimer loop;
-
-    // Dialogue state
-    private Object activeDialogue = null;   // DialogueBoxController — typed as Object until other team pushes
-    private Object activeDialogueNode = null; // Parent node — typed as Object until other team pushes
-    private int lastDialogueTileX = -1;
-    private int lastDialogueTileY = -1;
-    private Pane gameRoot;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -67,48 +71,46 @@ public class GameScreen {
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
 
+                // SINDI SINDI SINDI JON JON JON JON JON JON JON JON JON JON JON this is where u place most of the dialogue :D ~yours truly
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
                     if (type.equals("fight")) {
-                        // TODO: character team hooks battle here
-                        // When done they call: mapManager.markFightDone(tileX, tileY)
+                        loop.stop();
+                        Platform.runLater(() -> {
+                            try {
+                                combatScreen combat = new combatScreen();
+                                CombatController control = combat.getLoader().getController();
+                                control.setGameScreen(this);
+                                control.setStage(stage);
+                                stage.getScene().setRoot(combat.getRoot());
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        });
                     }
-
+                    if (type.startsWith("dialogue:")) {
+                        String dialogueId = type.split(":")[1];
+                        loop.stop();
+                        Platform.runLater(() -> {
+                            try {
+                                DialoguesScreen dialogueScreen = new DialoguesScreen();
+                                DialogueBoxController dController = dialogueScreen.getLoader().getController();
+                                dController.setDialogueManager(dialogueManager);
+                                dController.startDialogue(dialogueId);
+                                activeDialogue = dController;
+                                activeDialogueNode = dialogueScreen.getRoot();
+                                gameRoot.getChildren().add(activeDialogueNode);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        });
+                    }
                     if (type.equals("shop")) {
                         // TODO: shop team hooks here
                     }
-
                     if (type.equals("chest")) {
                         // TODO: chest team hooks here
-                    }
-
-                    if (type.startsWith("dialogue:")) {
-                        // Store tile coords so we can mark it done when dialogue finishes
-                        lastDialogueTileX = tileX;
-                        lastDialogueTileY = tileY;
-                        loop.stop();
-
-                        // TODO: uncomment this block when dialogue team pushes their code
-                        // String dialogueId = type.split(":")[1];
-                        // Platform.runLater(() -> {
-                        //     try {
-                        //         DialoguesScreen dialogueScreen = new DialoguesScreen();
-                        //         DialogueBoxController dController = dialogueScreen.getLoader().getController();
-                        //         dController.setDialogueManager(dialogueManager);
-                        //         dController.startDialogue(dialogueId);
-                        //         activeDialogue = dController;
-                        //         activeDialogueNode = dialogueScreen.getRoot();
-                        //         gameRoot.getChildren().add(activeDialogueNode);
-                        //     } catch (Exception ex) {
-                        //         ex.printStackTrace();
-                        //     }
-                        // });
-
-                        // Temporary: just print and resume immediately for testing
-                        System.out.println("Dialogue triggered: " + type.split(":")[1]);
-                        mapManager.markDialogueDone(tileX, tileY);
-                        loop.start();
                     }
                 }
         );
@@ -122,13 +124,13 @@ public class GameScreen {
                 currentMap.spawnY * TILE_SIZE * SCALE
         );
 
-        gameRoot = new Pane(canvas);
-        gameRoot.setPrefSize(800, 600);
-
         pauseScreen ps = new pauseScreen(this, stage);
-        gameRoot.getChildren().add(ps.getRoot());
+        Pane root = new Pane(canvas);
+        root.setPrefSize(800, 600);
+        root.getChildren().add(ps.getRoot());
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
+        this.gameRoot = root; // ← stores the root correctly now
 
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
@@ -139,49 +141,56 @@ public class GameScreen {
         });
         canvas.setOnKeyReleased(e -> player.keyReleased(e.getCode()));
 
-        return gameRoot;
+        return root;
+    }
+
+    public void returnFromCombat() {
+        stage.getScene().setRoot(gameRoot);
+        canvas.requestFocus();
+        startLoop();
     }
 
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
         if (nowPaused) loop.stop();
-        else           loop.start();
+        else loop.start();
     }
 
     public void startLoop() {
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update();
+                try {
+                    update();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 render();
             }
         };
         loop.start();
     }
 
-    private void update() {
+    private void update() throws Exception {
         player.update();
         updateCamera();
         mapManager.checkInteractions(player.getTileX(), player.getTileY());
 
-        // When dialogue team pushes their code, replace the block below
-        // if (activeDialogue != null && activeDialogue.isDialogueFinished()) {
-        //     gameRoot.getChildren().remove(activeDialogueNode);
-        //     mapManager.markDialogueDone(lastDialogueTileX, lastDialogueTileY);
-        //     activeDialogue = null;
-        //     activeDialogueNode = null;
-        //     loop.start();
-        // }
+        if (activeDialogue != null && activeDialogue.isDialogueFinished()) {
+            gameRoot.getChildren().remove(activeDialogueNode);
+            activeDialogue = null;
+            activeDialogueNode = null;
+            loop.start();
+        }
     }
 
     private void updateCamera() {
         Map map = mapManager.getCurrentMap();
-
-        cameraX = player.getX() - canvas.getWidth()  / 2;
+        cameraX = player.getX() - canvas.getWidth() / 2;
         cameraY = player.getY() - canvas.getHeight() / 2;
 
-        double mapW = map.width  * TILE_SIZE * SCALE;
+        double mapW = map.width * TILE_SIZE * SCALE;
         double mapH = map.height * TILE_SIZE * SCALE;
 
         cameraX = Math.max(0, Math.min(cameraX, mapW - canvas.getWidth()));
@@ -201,4 +210,5 @@ public class GameScreen {
 
         gc.restore();
     }
+
 }
