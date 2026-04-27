@@ -217,16 +217,16 @@
          "name":"Fight",
          "objects":[
                 {
-                 "height":79.5606060606061,
+                 "height":80,
                  "id":2,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":32.0454545454545,
+                 "width":32,
                  "x":288,
-                 "y":97.9090909090909
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -257,8 +257,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
- "nextobjectid":6,
+ "nextlayerid":12,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

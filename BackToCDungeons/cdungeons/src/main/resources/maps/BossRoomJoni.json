@@ -236,6 +236,29 @@
         }, 
         {
          "draworder":"topdown",
+         "id":10,
+         "name":"johnmkati_lab_reveal",
+         "objects":[
+                {
+                 "height":32.7485380116959,
+                 "id":5,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":285.964912280702,
+                 "x":97.0760233918129,
+                 "y":111.695906432749
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":8,
          "name":"Transition",
          "objects":[
@@ -257,8 +280,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":5,
+ "nextlayerid":11,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

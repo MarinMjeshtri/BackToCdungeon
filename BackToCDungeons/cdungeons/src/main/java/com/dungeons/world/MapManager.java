@@ -13,8 +13,6 @@ public class MapManager {
     }
 
     public interface InteractListener {
-        // Called when player steps on a fight/shop/chest tile
-        // type = "fight", "shop", "chest"
         void onInteract(String type, int tileX, int tileY);
     }
 
@@ -36,7 +34,6 @@ public class MapManager {
         return currentMap;
     }
 
-    // Call this every frame with character's tile position
     public void checkInteractions(int charTileX, int charTileY) {
         checkTransitions(charTileX, charTileY);
         checkInteractZones(charTileX, charTileY);
@@ -48,9 +45,7 @@ public class MapManager {
                 Map newMap = new Map();
                 newMap.load(zone.targetMap);
                 currentMap = newMap;
-
                 if (mapChangeListener != null) {
-                    // Use the spawnpoint defined in the target map
                     mapChangeListener.onMapChanged(newMap, newMap.spawnX, newMap.spawnY);
                 }
                 return;
@@ -65,9 +60,9 @@ public class MapManager {
                 if (interactListener != null) {
                     interactListener.onInteract(zone.type, zone.x, zone.y);
                 }
-                // For shop and chest, mark immediately as triggered
-                // For fight, character team calls markFightDone() when battle ends
-                if (!zone.type.equals("fight")) {
+                // Dialogues and fights are marked done externally
+                // Shop and chest trigger once immediately
+                if (!zone.type.equals("fight") && !zone.type.startsWith("dialogue:")) {
                     zone.triggered = true;
                 }
                 return;
@@ -75,10 +70,18 @@ public class MapManager {
         }
     }
 
-    // Character team calls this when a fight is over at a given tile
     public void markFightDone(int tileX, int tileY) {
         for (InteractZone zone : currentMap.interactZones) {
             if (zone.type.equals("fight") && zone.x == tileX && zone.y == tileY) {
+                zone.triggered = true;
+                return;
+            }
+        }
+    }
+
+    public void markDialogueDone(int tileX, int tileY) {
+        for (InteractZone zone : currentMap.interactZones) {
+            if (zone.type.startsWith("dialogue:") && zone.x == tileX && zone.y == tileY) {
                 zone.triggered = true;
                 return;
             }

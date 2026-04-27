@@ -39,6 +39,13 @@ public class GameScreen {
 
     private AnimationTimer loop;
 
+    // Dialogue state
+    private Object activeDialogue = null;   // DialogueBoxController — typed as Object until other team pushes
+    private Object activeDialogueNode = null; // Parent node — typed as Object until other team pushes
+    private int lastDialogueTileX = -1;
+    private int lastDialogueTileY = -1;
+    private Pane gameRoot;
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -50,7 +57,6 @@ public class GameScreen {
         mapManager = new MapManager(
                 tilesetManager,
 
-                // Map changed — spawn coords are tile coords from the map
                 (newMap, spawnX, spawnY) -> {
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
@@ -61,18 +67,48 @@ public class GameScreen {
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
 
-                // Interact trigger
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
+
                     if (type.equals("fight")) {
                         // TODO: character team hooks battle here
                         // When done they call: mapManager.markFightDone(tileX, tileY)
                     }
+
                     if (type.equals("shop")) {
                         // TODO: shop team hooks here
                     }
+
                     if (type.equals("chest")) {
                         // TODO: chest team hooks here
+                    }
+
+                    if (type.startsWith("dialogue:")) {
+                        // Store tile coords so we can mark it done when dialogue finishes
+                        lastDialogueTileX = tileX;
+                        lastDialogueTileY = tileY;
+                        loop.stop();
+
+                        // TODO: uncomment this block when dialogue team pushes their code
+                        // String dialogueId = type.split(":")[1];
+                        // Platform.runLater(() -> {
+                        //     try {
+                        //         DialoguesScreen dialogueScreen = new DialoguesScreen();
+                        //         DialogueBoxController dController = dialogueScreen.getLoader().getController();
+                        //         dController.setDialogueManager(dialogueManager);
+                        //         dController.startDialogue(dialogueId);
+                        //         activeDialogue = dController;
+                        //         activeDialogueNode = dialogueScreen.getRoot();
+                        //         gameRoot.getChildren().add(activeDialogueNode);
+                        //     } catch (Exception ex) {
+                        //         ex.printStackTrace();
+                        //     }
+                        // });
+
+                        // Temporary: just print and resume immediately for testing
+                        System.out.println("Dialogue triggered: " + type.split(":")[1]);
+                        mapManager.markDialogueDone(tileX, tileY);
+                        loop.start();
                     }
                 }
         );
@@ -86,10 +122,11 @@ public class GameScreen {
                 currentMap.spawnY * TILE_SIZE * SCALE
         );
 
+        gameRoot = new Pane(canvas);
+        gameRoot.setPrefSize(800, 600);
+
         pauseScreen ps = new pauseScreen(this, stage);
-        Pane root = new Pane(canvas);
-        root.setPrefSize(800, 600);
-        root.getChildren().add(ps.getRoot());
+        gameRoot.getChildren().add(ps.getRoot());
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
 
@@ -102,7 +139,7 @@ public class GameScreen {
         });
         canvas.setOnKeyReleased(e -> player.keyReleased(e.getCode()));
 
-        return root;
+        return gameRoot;
     }
 
     public void togglePause() {
@@ -126,9 +163,16 @@ public class GameScreen {
     private void update() {
         player.update();
         updateCamera();
-
-        // Use getTileX/Y() — no manual math needed, already correct
         mapManager.checkInteractions(player.getTileX(), player.getTileY());
+
+        // When dialogue team pushes their code, replace the block below
+        // if (activeDialogue != null && activeDialogue.isDialogueFinished()) {
+        //     gameRoot.getChildren().remove(activeDialogueNode);
+        //     mapManager.markDialogueDone(lastDialogueTileX, lastDialogueTileY);
+        //     activeDialogue = null;
+        //     activeDialogueNode = null;
+        //     loop.start();
+        // }
     }
 
     private void updateCamera() {

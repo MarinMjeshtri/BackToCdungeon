@@ -298,6 +298,29 @@
         }, 
         {
          "draworder":"topdown",
+         "id":15,
+         "name":"cassie_encounter",
+         "objects":[
+                {
+                 "height":62.5730994152047,
+                 "id":8,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":94.0818713450292,
+                 "x":272,
+                 "y":110.526315789474
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":11,
          "name":"Transition",
          "objects":[
@@ -319,8 +342,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":15,
- "nextobjectid":8,
+ "nextlayerid":16,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
