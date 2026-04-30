@@ -118,7 +118,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":20,
          "id":4,
-         "name":"DecorationCollisionMobRoom2",
+         "name":"DecorationMobRoom2",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -186,7 +186,7 @@
          "name":"Fight",
          "objects":[
                 {
-                 "height":80,
+                 "height":9.90860384494169,
                  "id":8,
                  "name":"",
                  "opacity":1,
@@ -195,7 +195,7 @@
                  "visible":true,
                  "width":64,
                  "x":320,
-                 "y":80
+                 "y":150.091396155058
                 }],
          "opacity":1,
          "type":"objectgroup",

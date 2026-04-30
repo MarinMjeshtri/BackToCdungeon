@@ -40,6 +40,9 @@ public class GameScreen {
     private double cameraX = 0;
     private double cameraY = 0;
 
+    private int fightTileX;
+    private int fightTileY;
+
     private AnimationTimer loop;
 
     public void setStage(Stage stage) {
@@ -68,6 +71,8 @@ public class GameScreen {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
                     if (type.equals("fight")) {
+                        fightTileX = tileX;
+                        fightTileY = tileY;
                         loop.stop();
                         Platform.runLater(() -> {
                             try {
@@ -120,6 +125,7 @@ public class GameScreen {
     }
 
     public void returnFromCombat() {
+        mapManager.markFightDone(fightTileX, fightTileY);  // mark zone triggered
         stage.getScene().setRoot(gameRoot);
         canvas.requestFocus();
         startLoop();
