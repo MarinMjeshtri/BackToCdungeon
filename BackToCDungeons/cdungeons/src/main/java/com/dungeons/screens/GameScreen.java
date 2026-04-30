@@ -4,10 +4,7 @@ import com.dungeons.Controllers.CombatController;
 import com.dungeons.Controllers.DialogueBoxController;
 import com.dungeons.dialogueManager.DialogueManager;
 import com.dungeons.systems.Player;
-import com.dungeons.world.Map;
-import com.dungeons.world.MapManager;
-import com.dungeons.world.MapRenderer;
-import com.dungeons.world.TilesetManager;
+import com.dungeons.world.*;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -31,6 +28,7 @@ public class GameScreen {
     private DialogueManager dialogueManager;
     private DialogueBoxController activeDialogue = null;
     private Parent activeDialogueNode = null;
+    private boolean dialoguePlayed = false;
 
     private pauseScreen pauseScreen;
     private Pane gameRoot; // ← fixed name
@@ -58,10 +56,14 @@ public class GameScreen {
 
         tilesetManager.loadAll();
 
+        dialogueManager = new DialogueManager();
+        dialogueManager.load();
+
         mapManager = new MapManager(
                 tilesetManager,
 
                 (newMap, spawnX, spawnY) -> {
+                    dialoguePlayed = false;
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
                     player.setPosition(
@@ -75,21 +77,24 @@ public class GameScreen {
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
-                    if (type.equals("fight")) {
-                        loop.stop();
-                        Platform.runLater(() -> {
-                            try {
-                                combatScreen combat = new combatScreen();
-                                CombatController control = combat.getLoader().getController();
-                                control.setGameScreen(this);
-                                control.setStage(stage);
-                                stage.getScene().setRoot(combat.getRoot());
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        });
-                    }
+//                    if (type.equals("fight")) {
+//                        loop.stop();
+//                        Platform.runLater(() -> {
+//                            try {
+//                                combatScreen combat = new combatScreen();
+//                                CombatController control = combat.getLoader().getController();
+//                                control.setGameScreen(this);
+//                                control.setStage(stage);
+//                                stage.getScene().setRoot(combat.getRoot());
+//                            } catch (Exception ex) {
+//                                ex.printStackTrace();
+//                            }
+//                        });
+//                    }
                     if (type.startsWith("dialogue:")) {
+                        if(dialoguePlayed) { return;}
+                        dialoguePlayed = true;
+                        System.out.println("Dialogue triggered: " + type); // add this
                         String dialogueId = type.split(":")[1];
                         loop.stop();
                         Platform.runLater(() -> {
@@ -98,6 +103,7 @@ public class GameScreen {
                                 DialogueBoxController dController = dialogueScreen.getLoader().getController();
                                 dController.setDialogueManager(dialogueManager);
                                 dController.startDialogue(dialogueId);
+                                dController.setGameScreen(this);
                                 activeDialogue = dController;
                                 activeDialogueNode = dialogueScreen.getRoot();
                                 gameRoot.getChildren().add(activeDialogueNode);
@@ -115,7 +121,13 @@ public class GameScreen {
                 }
         );
 
-        mapManager.loadMap("MobRoom1");
+        mapManager.loadMap("k3jviBossroom");
+
+        System.out.println("Interact zones loaded:");
+        for (InteractZone zone : mapManager.getCurrentMap().interactZones) {
+            System.out.println(" - " + zone.type + " at " + zone.x + ", " + zone.y);
+        }
+
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
@@ -123,6 +135,8 @@ public class GameScreen {
                 currentMap.spawnX * TILE_SIZE * SCALE,
                 currentMap.spawnY * TILE_SIZE * SCALE
         );
+
+
 
         pauseScreen ps = new pauseScreen(this, stage);
         Pane root = new Pane(canvas);
@@ -178,10 +192,14 @@ public class GameScreen {
         mapManager.checkInteractions(player.getTileX(), player.getTileY());
 
         if (activeDialogue != null && activeDialogue.isDialogueFinished()) {
-            gameRoot.getChildren().remove(activeDialogueNode);
-            activeDialogue = null;
-            activeDialogueNode = null;
-            loop.start();
+            Platform.runLater(() -> {
+                gameRoot.getChildren().remove(activeDialogueNode);
+                activeDialogue = null;
+                activeDialogueNode = null;
+                canvas.requestFocus();
+                loop.start();
+
+            });
         }
     }
 
@@ -211,4 +229,13 @@ public class GameScreen {
         gc.restore();
     }
 
+    public void resumeFromDialogue() {
+        Platform.runLater(() -> {
+            gameRoot.getChildren().remove(activeDialogueNode);
+            activeDialogue = null;
+            activeDialogueNode = null;
+            canvas.requestFocus();
+            loop.start();
+        });
+    }
 }

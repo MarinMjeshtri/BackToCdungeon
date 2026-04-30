@@ -1,12 +1,14 @@
 package com.dungeons.Controllers;
 
 import com.dungeons.dialogueManager.DialogueManager;
+import com.dungeons.screens.GameScreen;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 
 import java.io.InputStream;
 
@@ -20,9 +22,23 @@ public class DialogueBoxController {
     @FXML
     private ImageView character1;
 
-    private boolean finished = false;
+    @FXML
+    private Pane dialogueRoot;
 
     private DialogueManager dialogueManager;
+
+    private boolean finished = false;
+
+    public boolean isDialogueFinished() {
+        return finished;
+    }
+
+
+    private GameScreen gameScreen;
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
 
     @FXML
     public void initialize() {
@@ -39,14 +55,14 @@ public class DialogueBoxController {
 
         dialogueText.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
-                newScene.setOnKeyPressed(event -> {
-                    if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                newScene.setOnKeyPressed(e -> {
+                    if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                         nextLine();
                     }
                 });
 
-                newScene.setOnMouseClicked(event -> {
-                    if (event.getButton() == MouseButton.PRIMARY) {
+                newScene.setOnMouseClicked(e -> {
+                    if (e.getButton() == MouseButton.PRIMARY) {
                         nextLine();
                     }
                 });
@@ -88,11 +104,11 @@ public class DialogueBoxController {
         if (!dialogueManager.isFinished()) {
             dialogueText.setText(dialogueManager.getNextLine());
         } else {
-            dialogueText.getScene().getRoot().setVisible(false);
+            finished = true;
+            dialogueRoot.setVisible(false);
+            if (gameScreen != null) {
+                gameScreen.resumeFromDialogue();
+            }
         }
-    }
-
-    public boolean isDialogueFinished() {
-        return finished;
     }
 }

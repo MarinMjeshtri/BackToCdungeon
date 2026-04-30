@@ -92,7 +92,10 @@ public class Map {
 
     private void loadObjectLayer(JsonObject layer, String name) {
         String nameLower = name.toLowerCase();
+        System.out.println("Loading object layer: '" + name + "' -> lowercase: '" + nameLower + "'");
         JsonArray objects = layer.getAsJsonArray("objects");
+
+
 
         for (JsonElement objEl : objects) {
             JsonObject obj = objEl.getAsJsonObject();
@@ -157,7 +160,7 @@ public class Map {
                 for (int ty = tileY; ty < tileY + rectH; ty++) {
                     for (int tx = tileX; tx < tileX + rectW; tx++) {
                         // Use original name (not lowercased) to match dialogue JSON keys
-                        interactZones.add(new InteractZone(tx, ty, "dialogue:" + name));
+                        interactZones.add(new InteractZone(tx, ty, "dialogue:" + nameLower));
                     }
                 }
             }
