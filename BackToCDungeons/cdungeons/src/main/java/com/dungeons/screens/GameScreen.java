@@ -27,6 +27,7 @@ public class GameScreen {
     private static final int SCALE = 2;
 
     private pauseScreen pauseScreen;
+    private Pane gameRoot;
     private Stage stage;
 
     private final Canvas canvas = new Canvas(800, 600);
@@ -42,9 +43,12 @@ public class GameScreen {
     private double cameraX = 0;
     private double cameraY = 0;
 
+    private int fightTileX;
+    private int fightTileY;
+
     private AnimationTimer loop;
 
-    // Interaction lock — prevents multiple triggers while dialogue/combat is open
+    // Interaction lock
     private boolean interactionLocked = false;
 
     // Dialogue state
@@ -52,13 +56,6 @@ public class GameScreen {
     private Parent activeDialogueNode = null;
     private int lastDialogueTileX = -1;
     private int lastDialogueTileY = -1;
-
-    // Combat state
-    private Parent activeCombatNode = null;
-    private int lastFightTileX = -1;
-    private int lastFightTileY = -1;
-
-    private Pane gameRoot;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -86,19 +83,17 @@ public class GameScreen {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
                     if (type.equals("fight")) {
-                        lastFightTileX = tileX;
-                        lastFightTileY = tileY;
+                        fightTileX = tileX;
+                        fightTileY = tileY;
                         interactionLocked = true;
                         loop.stop();
-
                         Platform.runLater(() -> {
                             try {
-                                combatScreen cs = new combatScreen();
-                                CombatController cController = cs.getController();
-                                cController.setGameScreen(GameScreen.this);
-                                cController.setStage(stage);
-                                activeCombatNode = cs.getRoot();
-                                gameRoot.getChildren().add(activeCombatNode);
+                                combatScreen combat = new combatScreen();
+                                CombatController control = combat.getLoader().getController();
+                                control.setGameScreen(this);
+                                control.setStage(stage);
+                                stage.getScene().setRoot(combat.getRoot());
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
@@ -155,13 +150,13 @@ public class GameScreen {
                 currentMap.spawnY * TILE_SIZE * SCALE
         );
 
-        gameRoot = new Pane(canvas);
-        gameRoot.setPrefSize(800, 600);
-
         pauseScreen ps = new pauseScreen(this, stage);
-        gameRoot.getChildren().add(ps.getRoot());
+        Pane root = new Pane(canvas);
+        root.setPrefSize(800, 600);
+        root.getChildren().add(ps.getRoot());
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
+        this.gameRoot = root;
 
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
@@ -172,41 +167,41 @@ public class GameScreen {
         });
         canvas.setOnKeyReleased(e -> player.keyReleased(e.getCode()));
 
-        return gameRoot;
+        return root;
     }
 
     public void returnFromCombat() {
-        Platform.runLater(() -> {
-            if (activeCombatNode != null) {
-                gameRoot.getChildren().remove(activeCombatNode);
-                activeCombatNode = null;
-            }
-            mapManager.markFightDone(lastFightTileX, lastFightTileY);
-            interactionLocked = false;
-            canvas.requestFocus();
-            loop.start();
-        });
+        mapManager.markFightDone(fightTileX, fightTileY);
+        interactionLocked = false;
+        stage.getScene().setRoot(gameRoot);
+        player.clearInput();
+        canvas.requestFocus();
+        startLoop();
     }
-
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
         if (nowPaused) loop.stop();
-        else           loop.start();
+        else loop.start();
     }
 
     public void startLoop() {
+        if (loop != null) loop.stop();
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update();
+                try {
+                    update();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 render();
             }
         };
         loop.start();
     }
 
-    private void update() {
+    private void update() throws Exception {
         player.update();
         updateCamera();
         if (!interactionLocked) {
@@ -216,11 +211,10 @@ public class GameScreen {
 
     private void updateCamera() {
         Map map = mapManager.getCurrentMap();
-
-        cameraX = player.getX() - canvas.getWidth()  / 2;
+        cameraX = player.getX() - canvas.getWidth() / 2;
         cameraY = player.getY() - canvas.getHeight() / 2;
 
-        double mapW = map.width  * TILE_SIZE * SCALE;
+        double mapW = map.width * TILE_SIZE * SCALE;
         double mapH = map.height * TILE_SIZE * SCALE;
 
         cameraX = Math.max(0, Math.min(cameraX, mapW - canvas.getWidth()));

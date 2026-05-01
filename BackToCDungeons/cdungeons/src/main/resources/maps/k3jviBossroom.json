@@ -256,16 +256,16 @@
          "name":"Spawnpoint",
          "objects":[
                 {
-                 "height":16.9590643274854,
+                 "height":16,
                  "id":4,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16.9590643274854,
-                 "x":109.356725146199,
-                 "y":128.654970760234
+                 "width":16,
+                 "x":112,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -279,16 +279,16 @@
          "name":"Fight",
          "objects":[
                 {
-                 "height":12.1476345554505,
+                 "height":128,
                  "id":1,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":11.2967048359421,
-                 "x":326.546906187625,
-                 "y":132.209265679168
+                 "width":16,
+                 "x":304,
+                 "y":80
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -298,20 +298,20 @@
         }, 
         {
          "draworder":"topdown",
-         "id":16,
+         "id":15,
          "name":"cassie_encounter",
          "objects":[
                 {
-                 "height":62.5730994152047,
+                 "height":128,
                  "id":8,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":78.3625730994152,
-                 "x":287.719298245614,
-                 "y":110.526315789474
+                 "width":16,
+                 "x":304,
+                 "y":80
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -342,7 +342,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":17,
+ "nextlayerid":16,
  "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",

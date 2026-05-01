@@ -156,7 +156,7 @@ public class Map {
                     || nameLower.equals("johnmkati_lab_reveal")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++) {
                     for (int tx = tileX; tx < tileX + rectW; tx++) {
-                        // Use original name (not lowercased) to match dialogue JSON keys
+                        // Use original name not lowercased to match dialogue JSON keys
                         interactZones.add(new InteractZone(tx, ty, "dialogue:" + name));
                     }
                 }

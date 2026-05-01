@@ -8,8 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
-import java.io.InputStream;
-
 public class DialogueBoxController {
     @FXML
     private Label dialogueText;
