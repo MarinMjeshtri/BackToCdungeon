@@ -11,15 +11,15 @@
       xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.dungeons.Controllers.quitController">
    <children>
-      <AnchorPane layoutX="202.0" layoutY="201.0" prefHeight="198.0" prefWidth="395.0" style="-fx-background-color: lightgray;">
+      <AnchorPane id="anchorQuit" fx:id="anchorDecor" layoutX="202.0" layoutY="201.0" prefHeight="198.0" prefWidth="395.0">
          <children>
-            <Label layoutX="49.0" layoutY="41.0" text="ARE YOU SURE YOU WANT TO QUIT?">
+            <Label id="labelQuit" layoutX="35.0" layoutY="41.0" text="ARE YOU SURE YOU WANT TO QUIT?">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button onAction="#returnBack" fx:id="noQuit" layoutX="235.0" layoutY="107.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="112.0" text="NOOOO" />
-            <Button onAction="#closeEntirely" fx:id="yesQuit" layoutX="49.0" layoutY="107.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="112.0" text="YEEES" />
+            <Button styleClass="yeeees" onAction="#returnBack" fx:id="noQuit" layoutX="235.0" layoutY="107.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="112.0" text="NOOOO" />
+            <Button styleClass="nooooo" onAction="#closeEntirely" fx:id="yesQuit" layoutX="49.0" layoutY="107.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="112.0" text="YEEES" />
          </children>
       </AnchorPane>
    </children>

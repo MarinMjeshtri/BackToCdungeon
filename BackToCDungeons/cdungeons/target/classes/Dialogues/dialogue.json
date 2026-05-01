@@ -3,6 +3,7 @@
 
     "opening": {
       "character": "NARRATOR",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "For many years, one of the most important laboratories in the world stood at the heart of human discovery. Until the day everyone now calls... The Explosion.",
         "No one knows what truly happened. What is known is this: not a single person who entered that laboratory ever came back out.",
@@ -14,6 +15,7 @@
 
     "johnmkati_intro": {
       "character": "JohnMKati",
+      "sprite": "JoniCharacterDialougeSprite-Talk.png",
       "lines": [
         "Welcome, traveler. This dungeon is a beautiful place, truly. I built it myself. Nothing dangerous here at all. Just... architecture.",
         "No really, feel free to explore! My friends are here too. Very welcoming people. Especially Cassie.",
@@ -23,6 +25,7 @@
 
     "merchant_enter": {
       "character": "MERCHANT",
+      "sprite": "MarinCharacterDialougeSprite-Talk.png",
       "lines": [
         "Ah. A living one. How refreshing.",
         "Sit. Or don't. I don't actually have chairs."
@@ -31,6 +34,7 @@
 
     "merchant_map": {
       "character": "MERCHANT",
+      "sprite": "MarinCharacterDialougeSprite-Talk.png",
       "lines": [
         "The map. Yes. I have it. It will show you where the laboratory is. Whether you WANT to find it is another matter entirely.",
         "FrekiRelah guards the path. Man of few words. Many lightning bolts. You have met worse, probably.",
@@ -40,6 +44,7 @@
 
     "merchant_spells": {
       "character": "MERCHANT",
+      "sprite": "MarinCharacterDialougeSprite-Talk.png",
       "lines": [
         "Spells. Fine. This one makes you faster. This one hits harder. This one... I'm not entirely sure what this one does. Half price.",
         "I'd recommend the speed one if you're fighting Cassie. She says ya yaaa a lot but she is surprisingly fast for someone that enthusiastic."
@@ -48,6 +53,7 @@
 
     "merchant_johnmkati": {
       "character": "MERCHANT",
+      "sprite": "MarinCharacterDialougeSprite-Talk.png",
       "lines": [
         "JohnMKati. He came in once. Very polite. Bought nothing. Complained about the color of my candles for eleven minutes because they were colorful and not just black and white.",
         "Take this. No charge. You'll need it."
@@ -56,6 +62,7 @@
 
     "merchant_leave": {
       "character": "MERCHANT",
+      "sprite": "MarinCharacterDialougeSprite-Talk.png",
       "lines": [
         "Good luck. I mean that in the most neutral possible way."
       ]
@@ -63,6 +70,7 @@
 
     "cassie_encounter": {
       "character": "CassieYarn",
+      "sprite": "KejviCharacterDialougeSprite-NBR.png",
       "lines": [
         "Ya yaaa! Look who walked in!",
         "I was SO bored! The turrets are good company but they never laugh at my jokes.",
@@ -72,6 +80,7 @@
 
     "cassie_wall_broken": {
       "character": "CassieYarn",
+      "sprite": "KejviCharacterDialougeSprite-NBR.png",
       "lines": [
         "YA YAAA— wait, WHAT?!",
         "Nobody breaks my walls! That took me THREE repairs to build!",
@@ -81,6 +90,7 @@
 
     "cassie_defeat": {
       "character": "CassieYarn",
+      "sprite": "KejviCharacterDialougeSprite-NBR.png",
       "lines": [
         "Ya... ya... Okay fine. You win.",
         "But JohnMKati is going to be SO annoyed with me. He said I was the reliable one.",
@@ -90,6 +100,7 @@
 
     "freki_encounter": {
       "character": "FrekiRelah",
+      "sprite": "KlediCharacterDialougeSprite-NBR.png",
       "lines": [
         "...",
         "...",
@@ -99,6 +110,7 @@
 
     "freki_mid_battle": {
       "character": "FrekiRelah",
+      "sprite": "KlediCharacterDialougeSprite-NBR.png",
       "lines": [
         "...you should have run.",
         "NIHAAAA!!"
@@ -107,6 +119,7 @@
 
     "freki_defeat": {
       "character": "FrekiRelah",
+      "sprite": "KlediCharacterDialougeSprite-NBR.png",
       "lines": [
         "...strong.",
         "JohnMKati... is not what he seems."
@@ -115,6 +128,7 @@
 
     "track2_narrator_enter": {
       "character": "NARRATOR",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "The bosses here are stronger. Darker. Like they were made from something — or someone — that once knew what it meant to be human.",
         "This one is the last before the truth. And somehow... it feels familiar."
@@ -123,6 +137,7 @@
 
     "track2_revelation": {
       "character": "FINAL_BOSS",
+      "sprite": "JoniCharacterDialougeSprite-Angry.png",
       "lines": [
         "You... you don't remember, do you.",
         "We were all part of it. The laboratory. The experiments. And you... you weren't just part of it.",
@@ -134,6 +149,7 @@
 
     "track2_narrator_reveal": {
       "character": "NARRATOR",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "The world goes quiet. The folder. The signatures. The memories that were never yours.",
         "They were always yours."
@@ -142,6 +158,7 @@
 
     "final_track_narrator": {
       "character": "NARRATOR",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "The road to the laboratory is long. And every boss standing in your way... was once a person. A colleague. Someone who trusted you.",
         "You are walking through your own past. And your past is fighting back."
@@ -150,6 +167,7 @@
 
     "final_track_ruins": {
       "character": "NARRATOR",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "This is it. Where it all happened. The walls are still scorched. The machines still broken. And in the center of it all — something moves.",
         "Not a boss. Not a monster. A piece of you. The piece that was left behind. The piece that caused all of this.",
@@ -159,6 +177,7 @@
 
     "johnmkati_lab_reveal": {
       "character": "JohnMKati",
+      "sprite": "JoniCharacterDialougeSprite-Talk.png",
       "lines": [
         "I see you found my life's work. Isn't it beautiful? No red. No blue. No yellow. Just... clarity.",
         "I was going to use it on the whole dungeon eventually. Then the world. For everyone's benefit, of course. I'm a nice guy.",
@@ -168,6 +187,7 @@
 
     "johnmkati_before_fight": {
       "character": "JohnMKati",
+      "sprite": "JoniCharacterDialougeSprite-Talk.png",
       "lines": [
         "Yes I redecorated. Colors are... chaotic. Unnecessary.",
         "Black and white is pure. Honest. Clean. Not like those disgusting blues and reds people love so much.",
@@ -177,6 +197,7 @@
 
     "johnmkati_fight_phase1": {
       "character": "JohnMKati",
+      "sprite": "JoniCharacterDialougeSprite-Talk.png",
       "lines": [
         "I gave you every chance to leave! Every single one!",
         "I am a nice guy. I am THE nice guy. Ask anyone!",
@@ -187,6 +208,7 @@
 
     "johnmkati_fight_phase2": {
       "character": "JohnMKati",
+      "sprite": "JoniCharacterDialougeSprite-Talk.png",
       "lines": [
         "Why won't you just... You know what your problem is?",
         "You love COLOR. I can tell. You probably have a favorite color don't you. DISGUSTING.",
@@ -196,6 +218,7 @@
 
     "johnmkati_defeat": {
       "character": "JohnMKati",
+      "sprite": "JoniCharacterDialougeSprite-Talk.png",
       "lines": [
         "I... I don't understand. I was so nice. I was so...",
         "Was it the colors? Did you win because of the colors?",
@@ -206,6 +229,7 @@
 
     "final_choice_narrator": {
       "character": "NARRATOR",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "Two paths stand before you. Not doors. Not corridors.",
         "A choice. Perhaps the only real one you have ever made."
@@ -214,6 +238,7 @@
 
     "ending_true": {
       "character": "NARRATOR",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "They stand still for a long moment. Not because they are afraid. Because they want to remember this — even if no one else will.",
         "Then they step forward.",
