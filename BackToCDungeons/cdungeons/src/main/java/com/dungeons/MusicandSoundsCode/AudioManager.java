@@ -1,4 +1,4 @@
-package com.dungeons.MusicandSoundsCode;
+/* package com.dungeons.MusicandSoundsCode;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -161,3 +161,4 @@ public class AudioManager {
         }
     }
 }
+*/

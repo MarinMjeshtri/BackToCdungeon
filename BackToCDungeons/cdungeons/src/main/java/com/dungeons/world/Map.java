@@ -1,10 +1,10 @@
 package com.dungeons.world;
 
 import com.google.gson.*;
-import java.io.FileReader;
 import java.util.*;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 public class Map {
 
     public int width, height;
@@ -18,39 +18,18 @@ public class Map {
 
     public int spawnX = 0, spawnY = 0;
 
-    String path = "C:\\Users\\User\\BackToCdungeon\\BackToCDungeons\\cdungeons\\src\\main\\resources\\maps\\";
-
-    // Maps each object layer name to what target map it transitions to
-    private static final HashMap<String, String> TRANSITION_TARGETS = new HashMap<>();
-
-    static {
-        TRANSITION_TARGETS.put("transition_mobroom1", "MobRoom1");
-        TRANSITION_TARGETS.put("transition_mobroom2", "MobRoom2");
-        TRANSITION_TARGETS.put("transition_k3jvibossroom", "k3jviBossroom");
-        TRANSITION_TARGETS.put("transition_mobroom3", "MobRoom3");
-        TRANSITION_TARGETS.put("transition_mobroom4", "MobRoom4");
-        TRANSITION_TARGETS.put("transition_roomkledi", "RoomKledi");
-        TRANSITION_TARGETS.put("transition_mobroom5", "MobRoom5");
-        TRANSITION_TARGETS.put("transition_bossroomjoni", "BossRoomJoni");
-        TRANSITION_TARGETS.put("transitionshop", "ShopRoom");
-        TRANSITION_TARGETS.put("transitionchest", "ChestRoom");
-        TRANSITION_TARGETS.put("transition", null); // resolved per map at runtime
-    }
-
-    // Which map each map's "Transition" layer leads to
     private static final HashMap<String, String> MAP_TRANSITION_CHAIN = new HashMap<>();
-
     static {
-        MAP_TRANSITION_CHAIN.put("MobRoom1", "MobRoom2");
-        MAP_TRANSITION_CHAIN.put("MobRoom2", "k3jviBossroom");
+        MAP_TRANSITION_CHAIN.put("MobRoom1",      "MobRoom2");
+        MAP_TRANSITION_CHAIN.put("MobRoom2",      "k3jviBossroom");
         MAP_TRANSITION_CHAIN.put("k3jviBossroom", "MobRoom3");
-        MAP_TRANSITION_CHAIN.put("MobRoom3", "MobRoom4");
-        MAP_TRANSITION_CHAIN.put("MobRoom4", "RoomKledi");
-        MAP_TRANSITION_CHAIN.put("RoomKledi", "MobRoom5");
-        MAP_TRANSITION_CHAIN.put("MobRoom5", "BossRoomJoni");
-        MAP_TRANSITION_CHAIN.put("ShopRoom", "RoomKledi");
-        MAP_TRANSITION_CHAIN.put("ChestRoom", "RoomKledi");
-        MAP_TRANSITION_CHAIN.put("BossRoomJoni", null); // end of game
+        MAP_TRANSITION_CHAIN.put("MobRoom3",      "MobRoom4");
+        MAP_TRANSITION_CHAIN.put("MobRoom4",      "RoomKledi");
+        MAP_TRANSITION_CHAIN.put("RoomKledi",     "MobRoom5");
+        MAP_TRANSITION_CHAIN.put("MobRoom5",      "BossRoomJoni");
+        MAP_TRANSITION_CHAIN.put("ShopRoom",      "RoomKledi");
+        MAP_TRANSITION_CHAIN.put("ChestRoom",     "RoomKledi");
+        MAP_TRANSITION_CHAIN.put("BossRoomJoni",  null);
     }
 
     private String currentMapName;
@@ -59,7 +38,6 @@ public class Map {
         this.currentMapName = mapName;
 
         try {
-            // load from classpath — no hardcoded path needed
             InputStream is = Map.class.getResourceAsStream("/maps/" + mapName + ".json");
 
             if (is == null) {
@@ -71,10 +49,9 @@ public class Map {
                     new InputStreamReader(is)
             ).getAsJsonObject();
 
-            width = json.get("width").getAsInt();
+            width  = json.get("width").getAsInt();
             height = json.get("height").getAsInt();
 
-            // Load tilesets
             JsonArray tilesets = json.getAsJsonArray("tilesets");
             for (JsonElement el : tilesets) {
                 JsonObject ts = el.getAsJsonObject();
@@ -83,7 +60,6 @@ public class Map {
                 tilesetRanges.put(firstgid, resolveTilesetKey(source));
             }
 
-            // Load layers
             JsonArray jsonLayers = json.getAsJsonArray("layers");
             for (JsonElement el : jsonLayers) {
                 JsonObject layer = el.getAsJsonObject();
@@ -173,6 +149,17 @@ public class Map {
                         interactZones.add(new InteractZone(tx, ty, "chest"));
                     }
                 }
+
+            } else if (nameLower.equals("cassie_encounter")
+                    || nameLower.equals("freki_encounter")
+                    || nameLower.equals("merchant_enter")
+                    || nameLower.equals("johnmkati_lab_reveal")) {
+                for (int ty = tileY; ty < tileY + rectH; ty++) {
+                    for (int tx = tileX; tx < tileX + rectW; tx++) {
+                        // Use original name not lowercased to match dialogue JSON keys
+                        interactZones.add(new InteractZone(tx, ty, "dialogue:" + name));
+                    }
+                }
             }
         }
     }
@@ -188,28 +175,24 @@ public class Map {
         String tilesetKey = tilesetRanges.get(firstgid);
         int localId = gid - firstgid;
 
-        return new Object[]{tilesetKey, localId};
+        return new Object[]{ tilesetKey, localId };
     }
 
     private String resolveTilesetKey(String source) {
         source = source.toLowerCase();
-        if (source.contains("floor")) return "floor";
-        if (source.contains("wall")) return "walls";
-        if (source.contains("stuff")) return "stuff";
-        if (source.contains("liquid")) return "liquids";
-        if (source.contains("drcassieyarn"))  return "cassie";
-        if (source.contains("drfrekirelah"))  return "freki";
+        if (source.contains("floor"))        return "floor";
+        if (source.contains("wall"))         return "walls";
+        if (source.contains("stuff"))        return "stuff";
+        if (source.contains("liquid"))       return "liquids";
+        if (source.contains("drcassieyarn")) return "cassie";
+        if (source.contains("drfrekirelah")) return "freki";
         return "floor";
     }
 
     public boolean isSolid(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) return true;
         for (int[] layer : collisionLayers) {
-            int val = layer[y * width + x];
-            if (val != 0) {
-                System.out.println("Solid at tile " + x + "," + y + " value=" + val);
-                return true;
-            }
+            if (layer[y * width + x] != 0) return true;
         }
         return false;
     }

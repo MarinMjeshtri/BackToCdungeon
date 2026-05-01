@@ -194,16 +194,16 @@
          "name":"Spawnpoint",
          "objects":[
                 {
-                 "height":15.7894736842105,
+                 "height":16,
                  "id":1,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16.9590643274854,
-                 "x":224.561403508772,
-                 "y":285.964912280702
+                 "width":16,
+                 "x":224,
+                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -217,16 +217,39 @@
          "name":"Fight",
          "objects":[
                 {
-                 "height":32.7485380116959,
+                 "height":32,
                  "id":2,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":285.964912280702,
-                 "x":97.0760233918129,
-                 "y":111.695906432749
+                 "width":288,
+                 "x":96,
+                 "y":112
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"johnmkati_lab_reveal",
+         "objects":[
+                {
+                 "height":32,
+                 "id":5,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":288,
+                 "x":96,
+                 "y":112
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -257,8 +280,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":5,
+ "nextlayerid":11,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
