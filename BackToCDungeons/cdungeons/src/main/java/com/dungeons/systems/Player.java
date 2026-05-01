@@ -14,7 +14,7 @@ public class Player {
     private static final double SPEED = 2.0;
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 2;
-    private static final int SIZE = 14; // unscaled hitbox size
+    private static final int SIZE = 14;
 
     public Player(double startX, double startY) {
         this.x = startX;
@@ -46,6 +46,13 @@ public class Player {
         if (key == KeyCode.D || key == KeyCode.RIGHT) right = false;
     }
 
+    public void clearInput() {
+        up    = false;
+        down  = false;
+        left  = false;
+        right = false;
+    }
+
     // ---------------- UPDATE ----------------
 
     public void update() {
@@ -66,13 +73,11 @@ public class Player {
     }
 
     // ---------------- COLLISION ----------------
-    // Player x/y are in SCALED pixels (e.g. tile 3 = pixel 3*16*3 = 144)
-    // So divide by (TILE_SIZE * SCALE) to get tile coords
 
     private boolean collides(double px, double py) {
         if (map == null) return false;
 
-        int scaledTile = TILE_SIZE * SCALE; // 48px per tile on screen
+        int scaledTile = TILE_SIZE * SCALE;
 
         int leftTile   = (int)(px / scaledTile);
         int rightTile  = (int)((px + SIZE * SCALE - 1) / scaledTile);
@@ -86,7 +91,6 @@ public class Player {
     }
 
     // ---------------- RENDER ----------------
-    // x/y are already in scaled pixels so draw directly
 
     public void render(GraphicsContext gc) {
         gc.fillRect(x, y, SIZE * SCALE, SIZE * SCALE);
@@ -97,7 +101,6 @@ public class Player {
     public double getX() { return x; }
     public double getY() { return y; }
 
-    // Tile position for interaction checks
     public int getTileX() { return (int)((x + (SIZE * SCALE) / 2.0) / (TILE_SIZE * SCALE)); }
     public int getTileY() { return (int)((y + (SIZE * SCALE) / 2.0) / (TILE_SIZE * SCALE)); }
 }

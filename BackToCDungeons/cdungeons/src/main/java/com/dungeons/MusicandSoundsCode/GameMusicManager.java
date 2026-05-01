@@ -1,4 +1,4 @@
-package com.dungeons.MusicandSoundsCode;
+/* package com.dungeons.MusicandSoundsCode;
 
 public class GameMusicManager {
 
@@ -128,3 +128,4 @@ public class GameMusicManager {
         System.out.println();
     }
 }
+*/
