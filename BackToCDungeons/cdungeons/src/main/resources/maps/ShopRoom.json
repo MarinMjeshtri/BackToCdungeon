@@ -259,6 +259,29 @@
         }, 
         {
          "draworder":"topdown",
+         "id":10,
+         "name":"merchant_enter",
+         "objects":[
+                {
+                 "height":156.72514619883,
+                 "id":6,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":176.608187134503,
+                 "x":158.479532163743,
+                 "y":79.5321637426901
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":6,
          "name":"Transition",
          "objects":[
