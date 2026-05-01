@@ -1,6 +1,8 @@
 package com.dungeons.screens;
 
 import com.dungeons.Controllers.CombatController;
+import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.dialogueManager.DialogueManager;
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
@@ -25,7 +27,6 @@ public class GameScreen {
     private static final int SCALE = 2;
 
     private pauseScreen pauseScreen;
-    private Pane gameRoot; // ← fixed name
     private Stage stage;
 
     private final Canvas canvas = new Canvas(800, 600);
@@ -36,14 +37,28 @@ public class GameScreen {
     private MapRenderer mapRenderer;
 
     private final Player player = new Player(0, 0);
+    private final DialogueManager dialogueManager = new DialogueManager();
 
     private double cameraX = 0;
     private double cameraY = 0;
 
-    private int fightTileX;
-    private int fightTileY;
-
     private AnimationTimer loop;
+
+    // Interaction lock — prevents multiple triggers while dialogue/combat is open
+    private boolean interactionLocked = false;
+
+    // Dialogue state
+    private DialogueBoxController activeDialogue = null;
+    private Parent activeDialogueNode = null;
+    private int lastDialogueTileX = -1;
+    private int lastDialogueTileY = -1;
+
+    // Combat state
+    private Parent activeCombatNode = null;
+    private int lastFightTileX = -1;
+    private int lastFightTileY = -1;
+
+    private Pane gameRoot;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -52,6 +67,7 @@ public class GameScreen {
     public Parent getRoot() throws IOException {
 
         tilesetManager.loadAll();
+        dialogueManager.load();
 
         mapManager = new MapManager(
                 tilesetManager,
@@ -66,31 +82,66 @@ public class GameScreen {
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
 
-                // SINDI SINDI SINDI JON JON JON JON JON JON JON JON JON JON JON this is where u place most of the dialogue :D ~yours truly
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
                     if (type.equals("fight")) {
-                        fightTileX = tileX;
-                        fightTileY = tileY;
+                        lastFightTileX = tileX;
+                        lastFightTileY = tileY;
+                        interactionLocked = true;
                         loop.stop();
+
                         Platform.runLater(() -> {
                             try {
-                                combatScreen combat = new combatScreen();
-                                CombatController control = combat.getLoader().getController();
-                                control.setGameScreen(this);
-                                control.setStage(stage);
-                                stage.getScene().setRoot(combat.getRoot());
+                                combatScreen cs = new combatScreen();
+                                CombatController cController = cs.getController();
+                                cController.setGameScreen(GameScreen.this);
+                                cController.setStage(stage);
+                                activeCombatNode = cs.getRoot();
+                                gameRoot.getChildren().add(activeCombatNode);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
                         });
                     }
+
                     if (type.equals("shop")) {
                         // TODO: shop team hooks here
                     }
+
                     if (type.equals("chest")) {
                         // TODO: chest team hooks here
+                    }
+
+                    if (type.startsWith("dialogue:")) {
+                        lastDialogueTileX = tileX;
+                        lastDialogueTileY = tileY;
+                        interactionLocked = true;
+                        loop.stop();
+
+                        String dialogueId = type.split(":")[1];
+                        Platform.runLater(() -> {
+                            try {
+                                DialoguesScreen dialogueScreen = new DialoguesScreen();
+                                DialogueBoxController dController = dialogueScreen.getLoader().getController();
+                                dController.setDialogueManager(dialogueManager);
+                                dController.setOnFinished(() -> {
+                                    gameRoot.getChildren().remove(activeDialogueNode);
+                                    mapManager.markDialogueDone(lastDialogueTileX, lastDialogueTileY);
+                                    activeDialogue = null;
+                                    activeDialogueNode = null;
+                                    interactionLocked = false;
+                                    canvas.requestFocus();
+                                    loop.start();
+                                });
+                                dController.startDialogue(dialogueId);
+                                activeDialogue = dController;
+                                activeDialogueNode = dialogueScreen.getRoot();
+                                gameRoot.getChildren().add(activeDialogueNode);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        });
                     }
                 }
         );
@@ -104,13 +155,13 @@ public class GameScreen {
                 currentMap.spawnY * TILE_SIZE * SCALE
         );
 
+        gameRoot = new Pane(canvas);
+        gameRoot.setPrefSize(800, 600);
+
         pauseScreen ps = new pauseScreen(this, stage);
-        Pane root = new Pane(canvas);
-        root.setPrefSize(800, 600);
-        root.getChildren().add(ps.getRoot());
+        gameRoot.getChildren().add(ps.getRoot());
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
-        this.gameRoot = root; // ← stores the root correctly now
 
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
@@ -121,50 +172,55 @@ public class GameScreen {
         });
         canvas.setOnKeyReleased(e -> player.keyReleased(e.getCode()));
 
-        return root;
+        return gameRoot;
     }
 
     public void returnFromCombat() {
-        mapManager.markFightDone(fightTileX, fightTileY);  // mark zone triggered
-        stage.getScene().setRoot(gameRoot);
-        canvas.requestFocus();
-        startLoop();
+        Platform.runLater(() -> {
+            if (activeCombatNode != null) {
+                gameRoot.getChildren().remove(activeCombatNode);
+                activeCombatNode = null;
+            }
+            mapManager.markFightDone(lastFightTileX, lastFightTileY);
+            interactionLocked = false;
+            canvas.requestFocus();
+            loop.start();
+        });
     }
 
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
         if (nowPaused) loop.stop();
-        else loop.start();
+        else           loop.start();
     }
 
     public void startLoop() {
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                try {
-                    update();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                update();
                 render();
             }
         };
         loop.start();
     }
 
-    private void update() throws Exception {
+    private void update() {
         player.update();
         updateCamera();
-        mapManager.checkInteractions(player.getTileX(), player.getTileY());
+        if (!interactionLocked) {
+            mapManager.checkInteractions(player.getTileX(), player.getTileY());
+        }
     }
 
     private void updateCamera() {
         Map map = mapManager.getCurrentMap();
-        cameraX = player.getX() - canvas.getWidth() / 2;
+
+        cameraX = player.getX() - canvas.getWidth()  / 2;
         cameraY = player.getY() - canvas.getHeight() / 2;
 
-        double mapW = map.width * TILE_SIZE * SCALE;
+        double mapW = map.width  * TILE_SIZE * SCALE;
         double mapH = map.height * TILE_SIZE * SCALE;
 
         cameraX = Math.max(0, Math.min(cameraX, mapW - canvas.getWidth()));
@@ -184,5 +240,4 @@ public class GameScreen {
 
         gc.restore();
     }
-
 }
