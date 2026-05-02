@@ -1,5 +1,7 @@
 package com.dungeons.world;
 
+import java.io.IOException;
+
 public class MapManager {
 
     private Map currentMap;
@@ -8,14 +10,12 @@ public class MapManager {
     private MapChangeListener mapChangeListener;
     private InteractListener interactListener;
 
-    private boolean transitionCooldown = false;
-
     public interface MapChangeListener {
         void onMapChanged(Map newMap, int spawnX, int spawnY);
     }
 
     public interface InteractListener {
-        void onInteract(String type, int tileX, int tileY);
+        void onInteract(String type, int tileX, int tileY) throws IOException;
     }
 
     public MapManager(TilesetManager tilesets,
@@ -36,7 +36,7 @@ public class MapManager {
         return currentMap;
     }
 
-    public void checkInteractions(int charTileX, int charTileY) {
+    public void checkInteractions(int charTileX, int charTileY) throws IOException {
         checkTransitions(charTileX, charTileY);
         checkInteractZones(charTileX, charTileY);
     }
@@ -47,41 +47,28 @@ public class MapManager {
                 Map newMap = new Map();
                 newMap.load(zone.targetMap);
                 currentMap = newMap;
-                transitionCooldown = true;
                 if (mapChangeListener != null) {
-                    int spawnX = zone.spawnX != -1 ? zone.spawnX : newMap.spawnX;
-                    int spawnY = zone.spawnY != -1 ? zone.spawnY : newMap.spawnY;
-                    mapChangeListener.onMapChanged(newMap, spawnX, spawnY);
+                    mapChangeListener.onMapChanged(newMap, newMap.spawnX, newMap.spawnY);
                 }
                 return;
             }
         }
     }
 
-    private void checkInteractZones(int charTileX, int charTileY) {
-        if (transitionCooldown) {
-            transitionCooldown = false;
-            return;
-        }
+    private void checkInteractZones(int charTileX, int charTileY) throws IOException {
         for (InteractZone zone : currentMap.interactZones) {
             if (zone.triggered) continue;
             if (zone.x == charTileX && zone.y == charTileY) {
-                if (zone.type.equals("fight")) {
-                    for (InteractZone other : currentMap.interactZones) {
-                        if (other.triggered) continue;
-                        if (other.x == charTileX && other.y == charTileY && other.type.startsWith("dialogue:")) {
-                            if (interactListener != null) {
-                                interactListener.onInteract(other.type, other.x, other.y);
-                            }
-                            other.triggered = true;
-                            return;
-                        }
+                String triggeredType = zone.type;
+                // Mark ALL zones of this type as triggered at once
+                for (InteractZone z : currentMap.interactZones) {
+                    if (z.type.equals(triggeredType)) {
+                        z.triggered = true;
                     }
                 }
                 if (interactListener != null) {
                     interactListener.onInteract(zone.type, zone.x, zone.y);
                 }
-                zone.triggered = true;
                 return;
             }
         }

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,6 +30,12 @@ public class OptionsNStartingController {
         GameScreen gameScreen = new GameScreen();
         gameScreen.setStage(stage);
         Scene scene = new Scene(gameScreen.getRoot());
+
+
+        Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/REANO.ttf"), 10);
+        scene.getStylesheets().add(
+                getClass().getResource("/sprites/style.css").toExternalForm()
+        );
 
         stage.setScene(scene);
         gameScreen.startLoop();
