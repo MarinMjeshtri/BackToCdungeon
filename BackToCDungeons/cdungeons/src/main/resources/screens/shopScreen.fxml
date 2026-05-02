@@ -35,7 +35,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="img3" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="img2" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
                   <Label fx:id="price2" layoutX="62.0" layoutY="171.0" text="PRICE">
                      <font>
                         <Font size="18.0" />

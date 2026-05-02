@@ -9,11 +9,12 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.ImageView;
+import javafx.scene.image.ImageView;
 import java.io.IOException;
 
 
@@ -43,5 +44,14 @@ public class shopController {
         price1.setText(itempicker.getItem("brokenGlasses").price);
         price2.setText(itempicker.getItem("clipper").price);
         price3.setText(itempicker.getItem("xSshirt").price);
+
+        Image img11 = new Image(getClass().getResourceAsStream(itempicker.getItem("brokenGlasses").image));
+        Image img21 = new Image(getClass().getResourceAsStream(itempicker.getItem("clipper").image));
+        Image img31 = new Image(getClass().getResourceAsStream(itempicker.getItem("xSshirt").image));
+
+        img1.setImage(img11);
+        img2.setImage(img21);
+        img3.setImage(img31);
+
     }
 }

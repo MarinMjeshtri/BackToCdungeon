@@ -20,13 +20,13 @@ public class itemPicker {
 
         InputStreamReader reader = new InputStreamReader(is);
         itemData registry = gson.fromJson(reader, itemData.class);
-        loadedItems = registry.Items;
+        loadedItems = registry.items;
 
         // Assign the image path using the item's key (ID)
         for (Map.Entry<String, Items> entry : loadedItems.entrySet()) {
             String itemId = entry.getKey();
             Items item = entry.getValue();
-            item.image = "/assets/items/" + itemId + ".png";
+            item.image = "/sprites/itemSprites/" + itemId + ".png";
         }
 
         // Debug
