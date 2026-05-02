@@ -8,6 +8,8 @@ public class MapManager {
     private MapChangeListener mapChangeListener;
     private InteractListener interactListener;
 
+    private boolean transitionCooldown = false;
+
     public interface MapChangeListener {
         void onMapChanged(Map newMap, int spawnX, int spawnY);
     }
@@ -45,8 +47,11 @@ public class MapManager {
                 Map newMap = new Map();
                 newMap.load(zone.targetMap);
                 currentMap = newMap;
+                transitionCooldown = true;
                 if (mapChangeListener != null) {
-                    mapChangeListener.onMapChanged(newMap, newMap.spawnX, newMap.spawnY);
+                    int spawnX = zone.spawnX != -1 ? zone.spawnX : newMap.spawnX;
+                    int spawnY = zone.spawnY != -1 ? zone.spawnY : newMap.spawnY;
+                    mapChangeListener.onMapChanged(newMap, spawnX, spawnY);
                 }
                 return;
             }
@@ -54,19 +59,29 @@ public class MapManager {
     }
 
     private void checkInteractZones(int charTileX, int charTileY) {
+        if (transitionCooldown) {
+            transitionCooldown = false;
+            return;
+        }
         for (InteractZone zone : currentMap.interactZones) {
             if (zone.triggered) continue;
             if (zone.x == charTileX && zone.y == charTileY) {
-                String triggeredType = zone.type;
-                // Mark ALL zones of this type as triggered at once
-                for (InteractZone z : currentMap.interactZones) {
-                    if (z.type.equals(triggeredType)) {
-                        z.triggered = true;
+                if (zone.type.equals("fight")) {
+                    for (InteractZone other : currentMap.interactZones) {
+                        if (other.triggered) continue;
+                        if (other.x == charTileX && other.y == charTileY && other.type.startsWith("dialogue:")) {
+                            if (interactListener != null) {
+                                interactListener.onInteract(other.type, other.x, other.y);
+                            }
+                            other.triggered = true;
+                            return;
+                        }
                     }
                 }
                 if (interactListener != null) {
                     interactListener.onInteract(zone.type, zone.x, zone.y);
                 }
+                zone.triggered = true;
                 return;
             }
         }
