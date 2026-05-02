@@ -4,6 +4,7 @@ module com.dungeons {
     requires javafx.graphics;
     requires java.xml;
     requires com.google.gson;
+    requires java.desktop;
 
     opens com.dungeons.Controllers to javafx.fxml;
     opens com.dungeons.screens to javafx.fxml;        // ← add this
