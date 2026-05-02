@@ -195,12 +195,14 @@ public class GameScreen {
 
     public void returnFromCombat() {
         mapManager.markFightDone(fightTileX, fightTileY);
+        mapManager.getCurrentMap().clearLayer("Mob");
         interactionLocked = false;
         stage.getScene().setRoot(gameRoot);
         player.clearInput();
         canvas.requestFocus();
         startLoop();
     }
+
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
