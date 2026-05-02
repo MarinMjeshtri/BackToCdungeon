@@ -1,5 +1,7 @@
 package com.dungeons.world;
 
+import java.io.IOException;
+
 public class MapManager {
 
     private Map currentMap;
@@ -13,7 +15,7 @@ public class MapManager {
     }
 
     public interface InteractListener {
-        void onInteract(String type, int tileX, int tileY);
+        void onInteract(String type, int tileX, int tileY) throws IOException;
     }
 
     public MapManager(TilesetManager tilesets,
@@ -34,7 +36,7 @@ public class MapManager {
         return currentMap;
     }
 
-    public void checkInteractions(int charTileX, int charTileY) {
+    public void checkInteractions(int charTileX, int charTileY) throws IOException {
         checkTransitions(charTileX, charTileY);
         checkInteractZones(charTileX, charTileY);
     }
@@ -53,7 +55,7 @@ public class MapManager {
         }
     }
 
-    private void checkInteractZones(int charTileX, int charTileY) {
+    private void checkInteractZones(int charTileX, int charTileY) throws IOException {
         for (InteractZone zone : currentMap.interactZones) {
             if (zone.triggered) continue;
             if (zone.x == charTileX && zone.y == charTileY) {

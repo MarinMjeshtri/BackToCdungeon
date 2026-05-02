@@ -7,38 +7,36 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-      xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.dungeons.Controllers.PauseController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="598.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.dungeons.Controllers.shopController">
    <children>
-      <AnchorPane layoutX="14.0" layoutY="117.0" prefHeight="142.0" prefWidth="578.0" style="-fx-background-color: lightgray;">
+      <AnchorPane layoutX="108.0" layoutY="169.0" prefHeight="142.0" prefWidth="578.0" style="-fx-background-color: lightgray;">
          <children>
-            <AnchorPane layoutX="14.0" prefHeight="199.0" prefWidth="170.0" style="-fx-background-color: gray;">
+            <AnchorPane  layoutX="14.0" prefHeight="199.0" prefWidth="170.0" style="-fx-background-color: gray;">
                <children>
-                  <Label layoutX="52.0" layoutY="14.0" text="ITEM1">
+                  <Label fx:id="item1" layoutX="52.0" layoutY="14.0" text="ITEM1">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label layoutX="61.0" layoutY="171.0" text="PRICE">
+                  <ImageView fx:id="img1" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="price1" layoutX="61.0" layoutY="171.0" text="PRICE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="204.0" prefHeight="199.0" prefWidth="170.0" style="-fx-background-color: gray;">
+            <AnchorPane  layoutX="204.0" prefHeight="199.0" prefWidth="170.0" style="-fx-background-color: gray;">
                <children>
-                  <Label layoutX="52.0" layoutY="14.0" text="ITEM1">
+                  <Label fx:id="item2"  layoutX="52.0" layoutY="14.0" text="ITEM2">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label layoutX="62.0" layoutY="171.0" text="PRICE">
+                  <ImageView fx:id="img3" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="price2" layoutX="62.0" layoutY="171.0" text="PRICE">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -47,13 +45,13 @@
             </AnchorPane>
             <AnchorPane layoutX="393.0" prefHeight="199.0" prefWidth="170.0" style="-fx-background-color: gray;">
                <children>
-                  <Label layoutX="52.0" layoutY="14.0" text="ITEM1">
+                  <Label fx:id="item3" layoutX="52.0" layoutY="14.0" text="ITEM3">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label layoutX="62.0" layoutY="171.0" text="PRICE">
+                  <ImageView fx:id="img3" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="price3" layoutX="62.0" layoutY="171.0" text="PRICE">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -62,7 +60,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="165.0" layoutY="330.0" prefHeight="64.0" prefWidth="277.0" style="-fx-background-color: lightgray;">
+      <AnchorPane layoutX="258.0" layoutY="381.0" prefHeight="64.0" prefWidth="277.0" style="-fx-background-color: lightgray;">
          <children>
             <Button layoutX="64.0" layoutY="7.0" mnemonicParsing="false" text="PURCHASE">
                <font>
@@ -71,14 +69,11 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="4.0" layoutY="15.0" prefHeight="100.0" prefWidth="600.0">
-         <children>
-            <Label layoutX="112.0" layoutY="15.0" text="RAT'S LEFTOVERS">
-               <font>
-                  <Font size="48.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
+      <AnchorPane layoutX="4.0" layoutY="15.0" prefHeight="100.0" prefWidth="600.0" />
+      <Label layoutX="209.0" layoutY="86.0" text="SHOPPING AREA">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

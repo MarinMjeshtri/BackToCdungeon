@@ -2,10 +2,12 @@
 -fx-font-family: 'Reano';
 }
 
+/* MAIN SCREEN */
+
 #startingScreenPane{
 -fx-background-image: url('../sprites/UiDecor/startingScreenDecor.png');
 -fx-background-size: cover;
--fx-background-position: center
+-fx-background-position: center;
 }
 #mainNAME{
 -fx-font-size: 48px;
@@ -26,5 +28,37 @@
 }
 
 #labelQuit{
+-fx-text-fill: white;
+}
+
+/* PAUSE SCREEN */
+
+#decorBackground{
+-fx-background-image: url('../sprites/UiDecor/allPurposeBackground.png');
+-fx-background-size: contain;
+-fx-background-position: center;
+
+-fx-background-radius: 10;
+-fx-border-radius: 10;
+}
+
+.outerButtonDecor{
+-fx-background-image: url('../sprites/UiDecor/outsideButtonArt2.png');
+-fx-background-size: contain;
+-fx-background-position: center;
+}
+
+.pauseButton{
+-fx-background-color: transparent;
+-fx-border-color: transparent;
+}
+
+#outsideLabel{
+-fx-background-image: url('../sprites/UiDecor/labelDecor2.png');
+-fx-background-size: cover;
+-fx-background-position: center;
+}
+
+#pausedLabel{
 -fx-text-fill: white;
 }

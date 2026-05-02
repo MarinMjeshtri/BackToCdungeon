@@ -1,13 +1,20 @@
 package com.dungeons.screens;
 
+//COMBAT
 import com.dungeons.Controllers.CombatController;
+
+// DIALOUGE
 import com.dungeons.Controllers.DialogueBoxController;
 import com.dungeons.dialogueManager.DialogueManager;
+
+//MAP
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
 import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
+
+//MUSIC
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -23,9 +30,12 @@ import java.io.IOException;
 
 public class GameScreen {
 
+
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 2;
 
+    private shopScreen shopScreen;
+    private itemPickupScreen itemPickupScreen;
     private pauseScreen pauseScreen;
     private Pane gameRoot;
     private Stage stage;
@@ -101,11 +111,24 @@ public class GameScreen {
                     }
 
                     if (type.equals("shop")) {
-                        // TODO: shop team hooks here
+
+                        shopScreen shop = new shopScreen(this, stage);
+                        Parent shopNode = shop.getRoot();
+
+                        gameRoot.getChildren().add(shopNode);
+
+                        this.shopScreen = shop;
+
                     }
 
                     if (type.equals("chest")) {
-                        // TODO: chest team hooks here
+
+                       itemPickupScreen chest = new itemPickupScreen(this,stage);
+                       Parent chestNode = chest.getRoot();
+                       gameRoot.getChildren().add(chestNode);
+
+                       this.itemPickupScreen = chest;
+
                     }
 
                     if (type.startsWith("dialogue:")) {
@@ -234,4 +257,5 @@ public class GameScreen {
 
         gc.restore();
     }
+
 }
