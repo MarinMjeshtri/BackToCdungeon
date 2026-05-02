@@ -1,6 +1,8 @@
 package com.dungeons.screens;
 
 import com.dungeons.Controllers.CombatController;
+import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.dialogueManager.DialogueManager;
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
@@ -25,7 +27,7 @@ public class GameScreen {
     private static final int SCALE = 2;
 
     private pauseScreen pauseScreen;
-    private Pane gameRoot; // ← fixed name
+    private Pane gameRoot;
     private Stage stage;
 
     private final Canvas canvas = new Canvas(800, 600);
@@ -36,11 +38,24 @@ public class GameScreen {
     private MapRenderer mapRenderer;
 
     private final Player player = new Player(0, 0);
+    private final DialogueManager dialogueManager = new DialogueManager();
 
     private double cameraX = 0;
     private double cameraY = 0;
 
+    private int fightTileX;
+    private int fightTileY;
+
     private AnimationTimer loop;
+
+    // Interaction lock
+    private boolean interactionLocked = false;
+
+    // Dialogue state
+    private DialogueBoxController activeDialogue = null;
+    private Parent activeDialogueNode = null;
+    private int lastDialogueTileX = -1;
+    private int lastDialogueTileY = -1;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -49,6 +64,7 @@ public class GameScreen {
     public Parent getRoot() throws IOException {
 
         tilesetManager.loadAll();
+        dialogueManager.load();
 
         mapManager = new MapManager(
                 tilesetManager,
@@ -63,11 +79,13 @@ public class GameScreen {
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
 
-                // SINDI SINDI SINDI JON JON JON JON JON JON JON JON JON JON JON this is where u place most of the dialogue :D ~yours truly
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
                     if (type.equals("fight")) {
+                        fightTileX = tileX;
+                        fightTileY = tileY;
+                        interactionLocked = true;
                         loop.stop();
                         Platform.runLater(() -> {
                             try {
@@ -81,11 +99,44 @@ public class GameScreen {
                             }
                         });
                     }
+
                     if (type.equals("shop")) {
                         // TODO: shop team hooks here
                     }
+
                     if (type.equals("chest")) {
                         // TODO: chest team hooks here
+                    }
+
+                    if (type.startsWith("dialogue:")) {
+                        lastDialogueTileX = tileX;
+                        lastDialogueTileY = tileY;
+                        interactionLocked = true;
+                        loop.stop();
+
+                        String dialogueId = type.split(":")[1];
+                        Platform.runLater(() -> {
+                            try {
+                                DialoguesScreen dialogueScreen = new DialoguesScreen();
+                                DialogueBoxController dController = dialogueScreen.getLoader().getController();
+                                dController.setDialogueManager(dialogueManager);
+                                dController.setOnFinished(() -> {
+                                    gameRoot.getChildren().remove(activeDialogueNode);
+                                    mapManager.markDialogueDone(lastDialogueTileX, lastDialogueTileY);
+                                    activeDialogue = null;
+                                    activeDialogueNode = null;
+                                    interactionLocked = false;
+                                    canvas.requestFocus();
+                                    loop.start();
+                                });
+                                dController.startDialogue(dialogueId);
+                                activeDialogue = dController;
+                                activeDialogueNode = dialogueScreen.getRoot();
+                                gameRoot.getChildren().add(activeDialogueNode);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        });
                     }
                 }
         );
@@ -105,7 +156,7 @@ public class GameScreen {
         root.getChildren().add(ps.getRoot());
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
-        this.gameRoot = root; // ← stores the root correctly now
+        this.gameRoot = root;
 
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
@@ -120,11 +171,13 @@ public class GameScreen {
     }
 
     public void returnFromCombat() {
+        mapManager.markFightDone(fightTileX, fightTileY);
+        interactionLocked = false;
         stage.getScene().setRoot(gameRoot);
+        player.clearInput();
         canvas.requestFocus();
         startLoop();
     }
-
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
@@ -133,6 +186,7 @@ public class GameScreen {
     }
 
     public void startLoop() {
+        if (loop != null) loop.stop();
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -150,7 +204,9 @@ public class GameScreen {
     private void update() throws Exception {
         player.update();
         updateCamera();
-        mapManager.checkInteractions(player.getTileX(), player.getTileY());
+        if (!interactionLocked) {
+            mapManager.checkInteractions(player.getTileX(), player.getTileY());
+        }
     }
 
     private void updateCamera() {
@@ -178,5 +234,4 @@ public class GameScreen {
 
         gc.restore();
     }
-
 }

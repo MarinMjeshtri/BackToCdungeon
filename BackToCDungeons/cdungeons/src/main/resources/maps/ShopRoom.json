@@ -194,16 +194,39 @@
          "name":"Spawnpoint",
          "objects":[
                 {
-                 "height":27.4853801169591,
+                 "height":16,
                  "id":4,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":78.3625730994152,
-                 "x":208.187134502924,
-                 "y":49.7076023391813
+                 "width":16,
+                 "x":240,
+                 "y":64
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"merchant_enter",
+         "objects":[
+                {
+                 "height":16,
+                 "id":6,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":144,
+                 "x":176,
+                 "y":80
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -217,8 +240,31 @@
          "name":"Shop",
          "objects":[
                 {
-                 "height":156.72514619883,
+                 "height":156.25730994152,
                  "id":2,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":144,
+                 "x":176,
+                 "y":80
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"merchant_enter",
+         "objects":[
+                {
+                 "height":156.72514619883,
+                 "id":6,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
@@ -257,8 +303,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":6,
+ "nextlayerid":11,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

@@ -194,16 +194,16 @@
          "name":"Spawnpoint",
          "objects":[
                 {
-                 "height":15,
+                 "height":16,
                  "id":1,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":15.5,
-                 "x":113,
-                 "y":144.5
+                 "width":16,
+                 "x":112,
+                 "y":144
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -217,16 +217,16 @@
          "name":"Fight",
          "objects":[
                 {
-                 "height":124.5,
+                 "height":128,
                  "id":2,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":31.5,
-                 "x":304.5,
-                 "y":97.5
+                 "width":32,
+                 "x":304,
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
