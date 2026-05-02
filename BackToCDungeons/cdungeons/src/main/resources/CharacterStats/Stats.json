@@ -3,170 +3,325 @@
 
     "Player": {
       "stats": {
-        "atk": 30,
-        "def": 10,
-        "hp": 350
+        "atk": 25,
+        "def": 8,
+        "hp": 420
+      },
+      "sprites": {
+        "neutral": "",
+        "angry": "",
+        "defeated": ""
       },
       "abilities": [
         {
-          "name": "Attack 1",
-          "desc": "A basic attack",
-          "effects": { "damage": 70 }
+          "name": "Quick Strike",
+          "desc": "A fast reliable hit. Deals 55 base damage. No special effects. Safe choice.",
+          "effects": { "damage": 55 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 0
         },
         {
-          "name": "Attack 2",
-          "desc": "A heavier strike",
-          "effects": { "damage": 85 }
+          "name": "Shock Jab",
+          "desc": "An electrified punch dealing 70 damage. 30% chance to apply DOT, burning the boss for 12 damage per turn for 2 turns.",
+          "effects": { "damage": 70 },
+          "statusEffect": "DOT",
+          "duration": 2,
+          "chance": 0.3,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 0
         },
         {
-          "name": "Attack 3",
-          "desc": "A precise hit to weak points",
-          "effects": { "damage": 95 }
+          "name": "Armor Break",
+          "desc": "Deals 60 damage and has a 40% chance to halve the boss damage output for 1 turn.",
+          "effects": { "damage": 60 },
+          "statusEffect": "halfDmg",
+          "duration": 1,
+          "chance": 0.4,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 0
         },
         {
-          "name": "Attack 4",
-          "desc": "A powerful finishing move",
-          "effects": { "damage": 115 }
+          "name": "Overload Burst",
+          "desc": "A massive hit dealing 130 damage. Cannot be used two turns in a row.",
+          "effects": { "damage": 130 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 1
         }
       ]
     },
 
     "CassieYarn": {
       "stats": {
-        "atk": 28,
-        "def": 8,
-        "hp": 480
+        "atk": 20,
+        "def": 6,
+        "hp": 520
+      },
+      "sprites": {
+        "neutral": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
+        "angry":   "/Sprties_CombatUI/Cassie/Outbrek4.png",
+        "thinking": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
+        "defeated": "",
+        "cloned": ""
       },
       "abilities": [
         {
           "name": "Turret Volley",
-          "desc": "Commands turrets to open fire",
-          "effects": { "damage": 65 }
+          "desc": "Fires 6 rapid turret shots. Each bullet hits separately for 8 damage.",
+          "effects": { "damage": 8, "hits": 6 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Turret1.png",
+          "hitStyle": "rapid",
+          "cooldown": 0
         },
         {
           "name": "Wall Slam",
-          "desc": "Sends the WALL crashing into you",
-          "effects": { "damage": 50 }
+          "desc": "Sends the armored WALL crashing in. All damage at once.",
+          "effects": { "damage": 65 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Wall2.png",
+          "hitStyle": "single",
+          "cooldown": 0
         },
         {
           "name": "Repair Surge",
-          "desc": "Repairs systems and recovers",
-          "effects": { "heal": 80 }
+          "desc": "Repairs her systems. Restores 80 HP.",
+          "effects": { "damage": 0, "heal": 80 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Healing3.png",
+          "hitStyle": "heal",
+          "cooldown": 0
         },
         {
           "name": "System Overload",
-          "desc": "Overloads all systems for a devastating attack",
-          "effects": { "damage": 95 }
+          "desc": "Overloads all lab systems. Heavy burst with 35% chance to apply DOT for 2 turns.",
+          "effects": { "damage": 85 },
+          "statusEffect": "DOT",
+          "duration": 2,
+          "chance": 0.35,
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Outbrek4.png",
+          "hitStyle": "single",
+          "cooldown": 0
+        }
+      ]
+    },
+
+    "FreakyRelah": {
+      "stats": {
+        "atk": 22,
+        "def": 10,
+        "hp": 580
+      },
+      "sprites": {
+        "neutral":  "/Sprties_CombatUI/FreakyRelah/Neutral.png",
+        "angry":    "/Sprties_CombatUI/FreakyRelah/RPG3.png",
+        "thinking": "/Sprties_CombatUI/FreakyRelah/Neutral.png",
+        "defeated": "",
+        "cloned":   ""
+      },
+      "abilities": [
+        {
+          "name": "Lightning Storm",
+          "desc": "Rapid lightning strikes hitting 5 times for 10 damage each. 45% chance to apply DOT for 2 turns.",
+          "effects": { "damage": 10, "hits": 5 },
+          "statusEffect": "DOT",
+          "duration": 2,
+          "chance": 0.45,
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Pistols1.png",
+          "hitStyle": "rapid",
+          "cooldown": 0
+        },
+        {
+          "name": "Tesla Cage",
+          "desc": "Traps you in an electric cage. Deals 50 damage with 40% chance to stun for 1 turn.",
+          "effects": { "damage": 50 },
+          "statusEffect": "skip",
+          "duration": 1,
+          "chance": 0.4,
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Caged2.png",
+          "hitStyle": "single",
+          "cooldown": 0
+        },
+        {
+          "name": "Capacitor Discharge",
+          "desc": "Charges up then unleashes a massive electric burst. All damage at once.",
+          "effects": { "damage": 100 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/RPG3.png",
+          "hitStyle": "single",
+          "cooldown": 0
+        },
+        {
+          "name": "Static Field",
+          "desc": "Surrounds himself with static. Deals 35 damage and 50% chance to halve your damage for 2 turns.",
+          "effects": { "damage": 35 },
+          "statusEffect": "halfDmg",
+          "duration": 2,
+          "chance": 0.5,
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Feild4.png",
+          "hitStyle": "single",
+          "cooldown": 0
         }
       ]
     },
 
     "JohnMKati": {
-      "stats": { "atk": 25, "def": 15, "hp": 200 },
+      "stats": { "atk": 28, "def": 12, "hp": 650 },
+      "sprites": {
+        "neutral":  "/Sprties_CombatUI/JonMkati/Neutral.jpeg",
+        "angry":    "/Sprties_CombatUI/JonMkati/Yaping2.png",
+        "thinking": "/Sprties_CombatUI/JonMkati/Neutral.jpeg",
+        "defeated": "",
+        "cloned":   "/Sprties_CombatUI/JonMkati/Twin1.png"
+      },
       "abilities": [
         {
-          "name": "Clone Strike",
-          "desc": "Attacks from multiple angles",
-          "effects": { "damage": 55 }
+          "name": "Twin Combo",
+          "desc": "Both clones attack in sequence. 3 hits of 28 damage each.",
+          "effects": { "damage": 28, "hits": 3 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Twin1.png",
+          "hitStyle": "rapid",
+          "cooldown": 0
         },
         {
           "name": "Feminist Literature",
-          "desc": "Bores you to death",
-          "effects": { "damage": 30, "status": "SLEEP" }
+          "desc": "Reads an unbearable text. 5 slow hits of 14 damage. 35% chance to stun for 1 turn.",
+          "effects": { "damage": 14, "hits": 5 },
+          "statusEffect": "skip",
+          "duration": 1,
+          "chance": 0.35,
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Yaping2.png",
+          "hitStyle": "rapid",
+          "cooldown": 0
         },
         {
-          "name": "Punch",
-          "desc": "A straightforward punch",
-          "effects": { "damage": 67 }
+          "name": "Iron Fist",
+          "desc": "One massive punch for 80 damage. 70% chance to stun you for 1 turn.",
+          "effects": { "damage": 80 },
+          "statusEffect": "skip",
+          "duration": 1,
+          "chance": 0.7,
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Fist3.png",
+          "hitStyle": "single",
+          "cooldown": 0
         },
         {
-          "name": "Clone Barrage",
-          "desc": "All clones attack at once",
-          "effects": { "damage": 85 }
-        }
-      ]
-    },
-
-    "SuperCoolSigma": {
-      "stats": { "atk": 80, "def": 40, "hp": 600 },
-      "abilities": [
-        {
-          "name": "Cock Glock",
-          "desc": "Shoots a fireball",
-          "effects": { "damage": 120 }
-        },
-        {
-          "name": "I'm Tweaking",
-          "desc": "Gives damage boost",
-          "effects": { "damage": 70, "ATKbuff": 25 }
-        },
-        {
-          "name": "Dih Sword",
-          "desc": "Slaps it in your face",
-          "effects": { "damage": 90 }
-        },
-        {
-          "name": "Sigma Aura",
-          "desc": "Unleashes full sigma energy",
-          "effects": { "damage": 150 }
+          "name": "Twining",
+          "desc": "Clones himself. Doubles current HP percentage.",
+          "effects": { "damage": 0 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Twining4.png",
+          "hitStyle": "clone",
+          "cooldown": 0
         }
       ]
     },
 
     "Turret": {
-      "stats": { "atk": 18, "def": 0, "hp": 80 },
+      "stats": { "atk": 15, "def": 0, "hp": 80 },
       "abilities": [
         {
           "name": "Shoot",
-          "desc": "Basic turret shot",
-          "effects": { "damage": 30 }
+          "desc": "Basic shot.",
+          "effects": { "damage": 22 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 0
         }
       ]
     },
 
     "WALL": {
-      "stats": { "atk": 5, "def": 35, "hp": 200 },
+      "stats": { "atk": 5, "def": 30, "hp": 200 },
       "abilities": [
         {
           "name": "Bash",
-          "desc": "Slams into the target",
-          "effects": { "damage": 20 }
+          "desc": "Slams into target.",
+          "effects": { "damage": 18 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 0
         }
       ]
     },
 
     "RandomMob1": {
-      "stats": { "atk": 12, "def": 5, "hp": 80 },
+      "stats": { "atk": 10, "def": 4, "hp": 90 },
       "abilities": [
         {
           "name": "Scratch",
-          "desc": "A weak scratch",
-          "effects": { "damage": 20 }
+          "desc": "A weak scratch.",
+          "effects": { "damage": 18 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 0
         }
       ]
     },
 
     "RandomMob2": {
-      "stats": { "atk": 10, "def": 8, "hp": 100 },
+      "stats": { "atk": 8, "def": 6, "hp": 110 },
       "abilities": [
         {
           "name": "Tackle",
-          "desc": "Runs into you",
-          "effects": { "damage": 18 }
+          "desc": "Runs into you.",
+          "effects": { "damage": 16 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 0
         }
       ]
     },
 
     "RandomMob3": {
-      "stats": { "atk": 8, "def": 3, "hp": 120 },
+      "stats": { "atk": 6, "def": 2, "hp": 130 },
       "abilities": [
         {
           "name": "Bite",
-          "desc": "Takes a bite",
-          "effects": { "damage": 15 }
+          "desc": "Takes a bite.",
+          "effects": { "damage": 14 },
+          "statusEffect": null,
+          "duration": 0,
+          "chance": 0.0,
+          "abilitySprite": "",
+          "hitStyle": "single",
+          "cooldown": 0
         }
       ]
     }
-
   }
 }

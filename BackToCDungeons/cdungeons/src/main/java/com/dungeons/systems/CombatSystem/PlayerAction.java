@@ -4,6 +4,8 @@ package com.dungeons.systems.CombatSystem;
 public enum PlayerAction {
     MOVE_1,
     MOVE_2,
+    MOVE_3,
+    MOVE_4,
     UTILITY,
     ITEM
 }

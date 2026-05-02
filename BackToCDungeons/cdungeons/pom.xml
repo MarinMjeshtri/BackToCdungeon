@@ -16,6 +16,11 @@
             <version>13</version>
         </dependency>
         <dependency>
+        <dependency>
+    <groupId>org.mapeditor</groupId>
+    <artifactId>libtiled</artifactId>
+    <version>1.4.3</version>
+    </dependency>
     <groupId>org.mapeditor</groupId>
     <artifactId>libtiled</artifactId>
     <version>1.4.3</version>

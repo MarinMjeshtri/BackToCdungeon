@@ -91,8 +91,6 @@ public class GameScreen {
                             try {
                                 combatScreen combat = new combatScreen();
                                 CombatController control = combat.getLoader().getController();
-                                control.setGameScreen(this);
-                                control.setStage(stage);
                                 stage.getScene().setRoot(combat.getRoot());
                             } catch (Exception ex) {
                                 ex.printStackTrace();

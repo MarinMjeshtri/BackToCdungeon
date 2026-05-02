@@ -1,7 +1,7 @@
 package com.dungeons.systems.CombatSystem;
 
-import com.dungeons.screens.combatScreen;
 import com.dungeons.Controllers.CombatController;
+import com.dungeons.screens.combatScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,9 +17,11 @@ public class CombatEngineTest extends Application {
         stage.setTitle("BackToCDungeons — Combat Test");
         stage.show();
 
-        
-      
-        System.out.println("Combat screen loaded, pls");
+        // change boss ID here to test different bosses:
+        // "CassieYarn", "FreakyRelah", "JohnMKati"
+        controller.startCombat("CassieYarn");
+
+        System.out.println("Combat ready. Waiting for player input...");
     }
 
     public static void main(String[] args) {
