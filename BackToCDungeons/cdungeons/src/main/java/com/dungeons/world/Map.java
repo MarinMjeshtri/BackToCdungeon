@@ -32,7 +32,12 @@ public class Map {
         MAP_TRANSITION_CHAIN.put("BossRoomJoni",  null);
     }
 
-    private String currentMapName;
+    private static final int SPAWN_AFTER_CHEST_X = 15;
+    private static final int SPAWN_AFTER_CHEST_Y = 6;
+    private static final int SPAWN_AFTER_SHOP_X  = 15;
+    private static final int SPAWN_AFTER_SHOP_Y  = 18;
+
+    public String currentMapName;
 
     public void load(String mapName) {
         this.currentMapName = mapName;
@@ -115,6 +120,26 @@ public class Map {
                     }
                 }
 
+            } else if (nameLower.equals("transitionbackfromchest")) {
+                String target = MAP_TRANSITION_CHAIN.get(currentMapName);
+                if (target != null) {
+                    for (int ty = tileY; ty < tileY + rectH; ty++) {
+                        for (int tx = tileX; tx < tileX + rectW; tx++) {
+                            transitions.add(new TransitionZone(tx, ty, target, SPAWN_AFTER_CHEST_X, SPAWN_AFTER_CHEST_Y));
+                        }
+                    }
+                }
+
+            } else if (nameLower.equals("transitionbackfromshop")) {
+                String target = MAP_TRANSITION_CHAIN.get(currentMapName);
+                if (target != null) {
+                    for (int ty = tileY; ty < tileY + rectH; ty++) {
+                        for (int tx = tileX; tx < tileX + rectW; tx++) {
+                            transitions.add(new TransitionZone(tx, ty, target, SPAWN_AFTER_SHOP_X, SPAWN_AFTER_SHOP_Y));
+                        }
+                    }
+                }
+
             } else if (nameLower.equals("transitionshoproom")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++) {
                     for (int tx = tileX; tx < tileX + rectW; tx++) {
@@ -156,7 +181,6 @@ public class Map {
                     || nameLower.equals("johnmkati_lab_reveal")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++) {
                     for (int tx = tileX; tx < tileX + rectW; tx++) {
-                        // Use original name not lowercased to match dialogue JSON keys
                         interactZones.add(new InteractZone(tx, ty, "dialogue:" + name));
                     }
                 }
@@ -186,7 +210,17 @@ public class Map {
         if (source.contains("liquid"))       return "liquids";
         if (source.contains("drcassieyarn")) return "cassie";
         if (source.contains("drfrekirelah")) return "freki";
+        if (source.contains("north"))     return "north";
+        if (source.contains("southwest")) return "south-west";
+        if (source.contains("west"))      return "west";
         return "floor";
+    }
+
+    public void clearLayer(String layerName) {
+        int[] layer = layers.get(layerName);
+        if (layer != null) {
+            java.util.Arrays.fill(layer, 0);
+        }
     }
 
     public boolean isSolid(int x, int y) {
@@ -197,3 +231,4 @@ public class Map {
         return false;
     }
 }
+

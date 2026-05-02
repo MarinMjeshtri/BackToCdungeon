@@ -206,7 +206,7 @@
         {
          "draworder":"topdown",
          "id":5,
-         "name":"Transition",
+         "name":"TransitionBackFromChest",
          "objects":[
                 {
                  "height":16,

@@ -283,7 +283,7 @@
         {
          "draworder":"topdown",
          "id":6,
-         "name":"Transition",
+         "name":"TransitionBackFromShop",
          "objects":[
                 {
                  "height":16,
