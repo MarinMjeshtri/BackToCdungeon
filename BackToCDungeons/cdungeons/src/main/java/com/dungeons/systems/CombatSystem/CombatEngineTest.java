@@ -19,7 +19,7 @@ public class CombatEngineTest extends Application {
 
         // change boss ID here to test different bosses:
         // "CassieYarn", "FreakyRelah", "JohnMKati"
-        controller.startCombat("CassieYarn");
+        controller.startCombat("FreakyRelah");
 
         System.out.println("Combat ready. Waiting for player input...");
     }

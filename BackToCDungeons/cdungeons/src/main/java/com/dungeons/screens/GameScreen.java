@@ -30,6 +30,10 @@ public class GameScreen {
     private Pane gameRoot;
     private Stage stage;
 
+    // singleton so CombatController can reach the running game instance
+    private static GameScreen instance;
+    public static GameScreen getInstance() { return instance; }
+
     private final Canvas canvas = new Canvas(800, 600);
     private final GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -62,6 +66,7 @@ public class GameScreen {
     }
 
     public Parent getRoot() throws IOException {
+        instance = this;
 
         tilesetManager.loadAll();
         dialogueManager.load();
@@ -176,6 +181,18 @@ public class GameScreen {
         canvas.requestFocus();
         startLoop();
     }
+
+    // called by CombatController after a boss is defeated so loads next map then returns to game maps
+    public void returnFromCombatWithMap(String nextMapName) {
+    mapManager.loadMap(nextMapName);
+    mapManager.markFightDone(fightTileX, fightTileY);
+    interactionLocked = false;
+    stage.getScene().setRoot(gameRoot);
+    player.clearInput();
+    canvas.requestFocus();
+    startLoop();
+}
+
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);

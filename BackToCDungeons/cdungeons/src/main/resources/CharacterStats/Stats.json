@@ -68,16 +68,15 @@
       },
       "sprites": {
         "neutral": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
-        "angry":   "/Sprties_CombatUI/Cassie/Outbrek4.png",
-        "thinking": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
-        "defeated": "",
-        "cloned": ""
+        "angry":   "/Sprties_CombatUI/Cassie/Angry.png",
+        "thinking": "",
+        "defeated": "/Sprties_CombatUI/Cassie/Defeated.png"
       },
       "abilities": [
         {
           "name": "Turret Volley",
           "desc": "Fires 6 rapid turret shots. Each bullet hits separately for 8 damage.",
-          "effects": { "damage": 8, "hits": 6 },
+          "effects": { "damage": 20, "hits": 6 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -88,7 +87,7 @@
         {
           "name": "Wall Slam",
           "desc": "Sends the armored WALL crashing in. All damage at once.",
-          "effects": { "damage": 65 },
+          "effects": { "damage": 70 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -110,7 +109,7 @@
         {
           "name": "System Overload",
           "desc": "Overloads all lab systems. Heavy burst with 35% chance to apply DOT for 2 turns.",
-          "effects": { "damage": 85 },
+          "effects": { "damage": 90 },
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.35,
@@ -129,16 +128,15 @@
       },
       "sprites": {
         "neutral":  "/Sprties_CombatUI/FreakyRelah/Neutral.png",
-        "angry":    "/Sprties_CombatUI/FreakyRelah/RPG3.png",
-        "thinking": "/Sprties_CombatUI/FreakyRelah/Neutral.png",
-        "defeated": "",
-        "cloned":   ""
+        "angry":    "/Sprties_CombatUI/FreakyRelah/Angry.png",
+        "thinking": "",
+        "defeated": "/Sprties_CombatUI/FreakyRelah/Defeated.png"
       },
       "abilities": [
         {
           "name": "Lightning Storm",
-          "desc": "Rapid lightning strikes hitting 5 times for 10 damage each. 45% chance to apply DOT for 2 turns.",
-          "effects": { "damage": 10, "hits": 5 },
+          "desc": "Rapid lightning strikes hitting 20 times for 1 damage each. 45% chance to apply DOT for 2 turns.",
+          "effects": { "damage": 1, "hits": 20 },
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.45,
@@ -149,7 +147,7 @@
         {
           "name": "Tesla Cage",
           "desc": "Traps you in an electric cage. Deals 50 damage with 40% chance to stun for 1 turn.",
-          "effects": { "damage": 50 },
+          "effects": { "damage": 50},
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.4,
@@ -160,7 +158,7 @@
         {
           "name": "Capacitor Discharge",
           "desc": "Charges up then unleashes a massive electric burst. All damage at once.",
-          "effects": { "damage": 100 },
+          "effects": { "damage": 60 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -170,8 +168,8 @@
         },
         {
           "name": "Static Field",
-          "desc": "Surrounds himself with static. Deals 35 damage and 50% chance to halve your damage for 2 turns.",
-          "effects": { "damage": 35 },
+          "desc": "Surrounds himself with static. Deals 50 damage and 50% chance to halve your damage for 2 turns.",
+          "effects": { "damage": 50 },
           "statusEffect": "halfDmg",
           "duration": 2,
           "chance": 0.5,
@@ -186,10 +184,9 @@
       "stats": { "atk": 28, "def": 12, "hp": 650 },
       "sprites": {
         "neutral":  "/Sprties_CombatUI/JonMkati/Neutral.jpeg",
-        "angry":    "/Sprties_CombatUI/JonMkati/Yaping2.png",
-        "thinking": "/Sprties_CombatUI/JonMkati/Neutral.jpeg",
-        "defeated": "",
-        "cloned":   "/Sprties_CombatUI/JonMkati/Twin1.png"
+        "angry":    "/Sprties_CombatUI/JonMkati/Angry.jpeg",
+        "thinking": "",
+        "defeated": "/Sprties_CombatUI/JonMkati/Defeated.jpeg"
       },
       "abilities": [
         {
@@ -205,8 +202,8 @@
         },
         {
           "name": "Feminist Literature",
-          "desc": "Reads an unbearable text. 5 slow hits of 14 damage. 35% chance to stun for 1 turn.",
-          "effects": { "damage": 14, "hits": 5 },
+          "desc": "Reads an unbearable text. 5 slow hits of 15 damage. 35% chance to stun for 1 turn.",
+          "effects": { "damage": 15, "hits": 5 },
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,

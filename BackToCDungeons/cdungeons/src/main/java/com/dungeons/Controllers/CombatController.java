@@ -1,6 +1,8 @@
 package com.dungeons.Controllers;
 
 import com.dungeons.systems.CombatSystem.*;
+import com.dungeons.screens.GameScreen;
+
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -58,8 +60,16 @@ public class CombatController {
 
     private boolean guardUsedThisTurn = false;
 
-    // single thinking revert timeline — cancelled before ability sprite loads
+    // stored so we can cancel it before ability sprite loads
     private PauseTransition thinkingRevertTimer = null;
+
+    // maps boss ID to the next map to load after they are defeated
+    private static final java.util.Map<String, String> BOSS_NEXT_MAP = new java.util.HashMap<>();
+    static {
+        BOSS_NEXT_MAP.put("CassieYarn",  "MobRoom3");
+        BOSS_NEXT_MAP.put("FreakyRelah", "MobRoom5");
+        // JohnMKati end — handled separately below
+    }
 
     @FXML
     public void initialize() {
@@ -95,36 +105,38 @@ public class CombatController {
     }
 
     private void injectStatusLabels() {
-        // clear any previously injected labels if startCombat called again
         AnchorPane bossHpPane   = (AnchorPane) bossHP.getParent();
         AnchorPane playerHpPane = (AnchorPane) playerHP.getParent();
         AnchorPane enemyPane    = (AnchorPane) enemycharacterSprite.getParent();
+        
 
-        bossHpPane.getChildren().removeIf(n -> n instanceof Label);
-        playerHpPane.getChildren().removeIf(n -> n instanceof Label && n != playername);
+        // clear old injected labels before adding new ones
+        if (bossStatusLabel != null) bossHpPane.getChildren().remove(bossStatusLabel);
+        if (playerStatusLabel != null) playerHpPane.getChildren().remove(playerStatusLabel);
+        if (playerHpLabel     != null) playerHpPane.getChildren().remove(playerHpLabel);        
         enemyPane.getChildren().removeIf(n -> n instanceof Label);
 
         bossStatusLabel = new Label("");
         bossStatusLabel.setLayoutX(14);
-        bossStatusLabel.setLayoutY(58);
-        bossStatusLabel.setStyle("-fx-text-fill: #cc3300; -fx-font-size: 11px;");
+        bossStatusLabel.setLayoutY(72);
+        bossStatusLabel.setStyle("-fx-text-fill: #cc3300; -fx-font-size: 10px;");
 
+        // status and HP on separate Y positions so they never overlap
         playerStatusLabel = new Label("");
         playerStatusLabel.setLayoutX(4);
         playerStatusLabel.setLayoutY(1);
         playerStatusLabel.setStyle("-fx-text-fill: #cc3300; -fx-font-size: 11px;");
+
+        playerHpLabel = new Label(playerMaxHp + " / " + playerMaxHp);
+        playerHpLabel.setLayoutX(4);
+        playerHpLabel.setLayoutY(16);
+        playerHpLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #111; -fx-font-weight: bold;");
 
         bossIntentLabel = new Label("");
         bossIntentLabel.setLayoutX(10);
         bossIntentLabel.setLayoutY(10);
         bossIntentLabel.setStyle("-fx-text-fill: #222; -fx-font-size: 11px; " +
                 "-fx-background-color: rgba(255,255,255,0.8); -fx-padding: 2 5 2 5;");
-
-        // player HP label — positioned so it doesn't overlap the status label
-        playerHpLabel = new Label(playerMaxHp + " / " + playerMaxHp);
-        playerHpLabel.setLayoutX(4);
-        playerHpLabel.setLayoutY(16);
-        playerHpLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #111; -fx-font-weight: bold;");
 
         bossHpPane.getChildren().add(bossStatusLabel);
         playerHpPane.getChildren().add(playerStatusLabel);
@@ -167,7 +179,7 @@ public class CombatController {
                     .filter(n -> n instanceof Button &&
                             ((Button) n).getText().equals("GO BACK"))
                     .map(n -> (Button) n)
-                    .forEach(btn -> { addHoverScale(btn); addTooltip(btn, "Go back to main menu."); });
+                    .forEach(btn -> { addHoverScale(btn); addTooltip(btn, "Go back."); });
         }
 
         List<Button> itemButtons = pressItem.getChildren().stream()
@@ -194,10 +206,10 @@ public class CombatController {
         if (defenseButtons.size() >= 1) {
             guardBtn = defenseButtons.get(0);
             addHoverScale(guardBtn);
-            addTooltip(guardBtn, "Guard: 55% chance to fully block the boss attack this turn. Once per turn. 3 turn cooldown.");
+            addTooltip(guardBtn, "Guard: 55% chance to block the boss attack. Once per turn. 3 turn cooldown.");
             guardBtn.setOnAction(e -> {
                 if (!engine.isGuardAvailable()) { log("Guard is on cooldown."); return; }
-                if (guardUsedThisTurn) { log("You already used guard this turn."); return; }
+                if (guardUsedThisTurn) { log("Already used guard this turn."); return; }
                 guardUsedThisTurn = true;
                 engine.activateGuard();
                 log("Guard ready. 55% chance to block the boss attack this turn.");
@@ -210,7 +222,7 @@ public class CombatController {
             addHoverScale(counterBtn);
             addTooltip(counterBtn, "Counter: 30% chance to negate the boss attack. No cooldown.");
             counterBtn.setOnAction(e -> {
-                if (guardUsedThisTurn) { log("You already used guard or counter this turn."); return; }
+                if (guardUsedThisTurn) { log("Already used guard or counter this turn."); return; }
                 guardUsedThisTurn = true;
                 engine.activateCounter();
                 log("Counter ready. 30% chance to negate the boss attack this turn.");
@@ -226,13 +238,13 @@ public class CombatController {
 
         if (talkButtons.size() >= 1) {
             addHoverScale(talkButtons.get(0));
-            addTooltip(talkButtons.get(0), "Talk: 50% chance boss calms — half damage. 50% they get annoyed — 20% more. Once per turn.");
+            addTooltip(talkButtons.get(0), "Talk: 50% half damage, 50% +20% damage. Once per turn.");
             talkButtons.get(0).setOnAction(e -> { log(engine.activateTalk()); goBack(); });
         }
 
         if (talkButtons.size() >= 2) {
             addHoverScale(talkButtons.get(1));
-            addTooltip(talkButtons.get(1), "Insult: 35% chance boss gets sad — 30% damage. 65% furious — double damage. Once per turn.");
+            addTooltip(talkButtons.get(1), "Insult: 35% only 30% damage, 65% double damage. Once per turn.");
             talkButtons.get(1).setOnAction(e -> { log(engine.activateInsult()); goBack(); });
         }
     }
@@ -242,17 +254,13 @@ public class CombatController {
     private void handlePlayerAttack(int moveIndex) {
         if (!engine.isOngoing()) return;
         lockAllActions(true);
-
-        // show thinking sprite — store the revert timer so we can cancel it
         showBossThinking();
 
         PauseTransition waitThink = new PauseTransition(Duration.millis(800));
         waitThink.setOnFinished(e -> {
             TurnLog turnLog = engine.processTurnByIndex(moveIndex, null);
-
             AnchorPane bossPane = (AnchorPane) enemycharacterSprite.getParent();
 
-            // show player hit on boss
             if (turnLog.getPlayerDamageDealt() > 0) {
                 flashHit(enemycharacterSprite);
                 spawnDamageLabel("-" + turnLog.getPlayerDamageDealt(),
@@ -264,12 +272,12 @@ public class CombatController {
                 tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
                 bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
 
-                // only revert to mood sprite here — executeBossTurn will override
-                updateBossSprite();
+                // revert to mood sprite — safe here, executeBossTurn will override
+                updateBossSpriteMood();
 
-                PauseTransition waitBossTurn = new PauseTransition(Duration.millis(600));
-                waitBossTurn.setOnFinished(evv -> executeBossTurn(turnLog));
-                waitBossTurn.play();
+                PauseTransition waitBoss = new PauseTransition(Duration.millis(600));
+                waitBoss.setOnFinished(evv -> executeBossTurn(turnLog));
+                waitBoss.play();
             });
             afterPlayerHit.play();
         });
@@ -279,29 +287,28 @@ public class CombatController {
     // ── BOSS TURN EXECUTION ───────────────────────────────────────────
 
     private void executeBossTurn(TurnLog turnLog) {
-        // cancel thinking revert timer — we are now in full control of the sprite
+        // cancel thinking revert — we own the sprite from here
         if (thinkingRevertTimer != null) {
             thinkingRevertTimer.stop();
             thinkingRevertTimer = null;
         }
 
-        List<Integer> hits  = engine.getLastBossHitList();
-        String hitStyle     = engine.getLastBossMoveHitStyle();
-        String abilityPath  = boss.getCurrentAbilitySprite();
+        List<Integer> hits = engine.getLastBossHitList();
+        String hitStyle    = engine.getLastBossMoveHitStyle();
+        String abilityPath = boss.getCurrentAbilitySprite();
 
         AnchorPane playerPane = (AnchorPane) playercharacterSprite.getParent();
         AnchorPane bossPane   = (AnchorPane) enemycharacterSprite.getParent();
 
-        // switch boss sprite to ability image for duration of attack
+        // show ability sprite only if path is set — never fall back to mood sprite here
         if (abilityPath != null && !abilityPath.isEmpty()) {
             loadSpriteOnto(enemycharacterSprite, abilityPath);
-        } else {
-            updateBossSprite();
         }
 
+        // boss defeated before acting
         if (turnLog.getBossMoveName() == null) {
-            // boss was defeated before acting
-            revertBossSprite();
+            boss.clearAbilitySprite();
+            updateBossSpriteMood();
             finishTurnUpdate(turnLog);
             return;
         }
@@ -309,20 +316,24 @@ public class CombatController {
         if ("STUNNED".equals(turnLog.getBossMoveName())) {
             spawnDamageLabel("STUNNED", bossPane, Color.GOLD, 50, 80, 18);
             PauseTransition done = new PauseTransition(Duration.millis(800));
-            done.setOnFinished(e -> { revertBossSprite(); finishTurnUpdate(turnLog); });
+            done.setOnFinished(e -> {
+                boss.clearAbilitySprite();
+                updateBossSpriteMood();
+                finishTurnUpdate(turnLog);
+            });
             done.play();
 
         } else if ("clone".equals(hitStyle)) {
             showCloneEffect(bossPane, turnLog);
 
         } else if ("heal".equals(hitStyle)) {
-            // boss heals — tween HP bar UP
             spawnDamageLabel("+80 HP", bossPane, Color.LIMEGREEN, 55, 80, 20);
             PauseTransition healPause = new PauseTransition(Duration.millis(700));
             healPause.setOnFinished(e -> {
                 tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
                 bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
-                revertBossSprite();
+                boss.clearAbilitySprite();
+                updateBossSpriteMood();
                 finishTurnUpdate(turnLog);
             });
             healPause.play();
@@ -334,20 +345,19 @@ public class CombatController {
                 animateSingleHit(hits, playerPane, turnLog);
             }
         } else {
-            revertBossSprite();
+            boss.clearAbilitySprite();
+            updateBossSpriteMood();
             finishTurnUpdate(turnLog);
         }
     }
 
-    // rapid hits — HP drops after each bullet
     private void animateRapidHits(List<Integer> hits, AnchorPane playerPane, TurnLog turnLog) {
-        // track HP visually — start from current displayed HP before hits
         int startHp = turnLog.getPlayerHpAfter() +
                 hits.stream().mapToInt(Integer::intValue).sum();
         int[] displayHp = {Math.min(startHp, playerMaxHp)};
 
         int delayPerHit = 120;
-        Timeline rapid = new Timeline();
+        Timeline rapid  = new Timeline();
 
         for (int i = 0; i < hits.size(); i++) {
             final int hitVal = hits.get(i);
@@ -369,17 +379,17 @@ public class CombatController {
 
         long totalMs = (long) hits.size() * delayPerHit + 500;
         rapid.getKeyFrames().add(new KeyFrame(Duration.millis(totalMs), ev -> {
-            // snap to exact final value after animation
+            // snap to exact final value
             tweenHpBar(playerHP, turnLog.getPlayerHpAfter(), playerMaxHp, PLAYER_BAR_MAX);
             if (playerHpLabel != null)
                 playerHpLabel.setText(turnLog.getPlayerHpAfter() + " / " + playerMaxHp);
-            revertBossSprite();
+            boss.clearAbilitySprite();
+            updateBossSpriteMood();
             finishTurnUpdate(turnLog);
         }));
         rapid.play();
     }
 
-    // single hit — pause for suspense, big flash, damage shows, HP drops
     private void animateSingleHit(List<Integer> hits, AnchorPane playerPane, TurnLog turnLog) {
         int totalDmg = hits.stream().mapToInt(Integer::intValue).sum();
 
@@ -393,7 +403,8 @@ public class CombatController {
                 tweenHpBar(playerHP, turnLog.getPlayerHpAfter(), playerMaxHp, PLAYER_BAR_MAX);
                 if (playerHpLabel != null)
                     playerHpLabel.setText(turnLog.getPlayerHpAfter() + " / " + playerMaxHp);
-                revertBossSprite();
+                boss.clearAbilitySprite();
+                updateBossSpriteMood();
                 finishTurnUpdate(turnLog);
             });
             post.play();
@@ -401,17 +412,17 @@ public class CombatController {
         pre.play();
     }
 
-    // clone — 3 labels at different positions simultaneously
     private void showCloneEffect(AnchorPane bossPane, TurnLog turnLog) {
-        spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 25,  65, 16);
-        spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 95,  80, 16);
-        spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 60,  50, 16);
+        spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 25, 65, 16);
+        spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 95, 80, 16);
+        spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 60, 50, 16);
 
         PauseTransition done = new PauseTransition(Duration.millis(1000));
         done.setOnFinished(e -> {
             tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
             bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
-            revertBossSprite();
+            boss.clearAbilitySprite();
+            updateBossSpriteMood();
             finishTurnUpdate(turnLog);
         });
         done.play();
@@ -424,15 +435,18 @@ public class CombatController {
         if (thinkPath != null && !thinkPath.isEmpty()) {
             loadSpriteOnto(enemycharacterSprite, thinkPath);
         }
-        // store timer so executeBossTurn can cancel it
         thinkingRevertTimer = new PauseTransition(Duration.millis(600));
         thinkingRevertTimer.setOnFinished(e -> {
             thinkingRevertTimer = null;
-            updateBossSprite();
+            // only revert if no ability sprite is active
+            if (boss.getCurrentAbilitySprite().isEmpty()) {
+                updateBossSpriteMood();
+            }
         });
         thinkingRevertTimer.play();
     }
 
+    // loads any sprite path onto the ImageView, fills the parent pane
     private void loadSpriteOnto(ImageView view, String path) {
         if (path == null || path.isEmpty()) return;
         InputStream is = getClass().getResourceAsStream(path);
@@ -448,16 +462,12 @@ public class CombatController {
         AnchorPane.setBottomAnchor(view, 0.0);
     }
 
-    // reverts to current mood sprite (neutral or angry based on HP)
-    private void revertBossSprite() {
-        updateBossSprite();
-    }
-
-    private void updateBossSprite() {
+    // always uses mood sprite — never uses ability sprite path
+    private void updateBossSpriteMood() {
         loadSpriteOnto(enemycharacterSprite, boss.getCurrentSprite());
     }
 
-    // ── FLOATING DAMAGE LABEL ─────────────────────────────────────────
+    // ── FLOATING DAMAGE LABEL ───────────────────────────────────
 
     private void spawnDamageLabel(String text, AnchorPane parent,
                                    Color color, double x, double y, double size) {
@@ -477,7 +487,6 @@ public class CombatController {
         fade.setToValue(0.0);
 
         ParallelTransition pt = new ParallelTransition(rise, fade);
-        // remove from pane after animation — no leftover labels
         pt.setOnFinished(e -> parent.getChildren().remove(lbl));
         pt.play();
     }
@@ -490,7 +499,6 @@ public class CombatController {
         updateStatusLabels();
         updateCooldownUI();
 
-        // snap HP label to final value
         if (playerHpLabel != null)
             playerHpLabel.setText(turnLog.getPlayerHpAfter() + " / " + playerMaxHp);
 
@@ -533,16 +541,17 @@ public class CombatController {
 
         log(sb.toString());
 
-        // check combat over BEFORE unlocking buttons
-        boolean over = turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN ||
-                       turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE;
+        boolean combatOver =
+                turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN ||
+                turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE;
 
-        if (!over) {
-            lockAllActions(false);
-        }
+        // only unlock buttons if combat is still going
+        if (!combatOver) lockAllActions(false);
 
-        if (turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN)  onCombatEnd(true);
-        else if (turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE) onCombatEnd(false);
+        if (turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN)
+            onCombatEnd(true);
+        else if (turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE)
+            onCombatEnd(false);
     }
 
     private void updateCooldownUI() {
@@ -578,7 +587,6 @@ public class CombatController {
     private void updateStatusLabels() {
         StatusEffect pe = player.getActiveEffect();
         StatusEffect be = boss.getActiveEffect();
-        // only update text — no new label creation, no overlap
         if (playerStatusLabel != null)
             playerStatusLabel.setText(pe != null ? pe.getLabel() : "");
         if (bossStatusLabel != null)
@@ -622,31 +630,68 @@ public class CombatController {
         Tooltip.install(node, tip);
     }
 
-    // TRANSFER POINT - replace System.out with your scene switch
+    // ── COMBAT END + SCENE TRANSITION ────────────────────────────────
+
     public void onCombatEnd(boolean playerWon) {
-        // cancel any pending timers
+        // stop any pending timers
         if (thinkingRevertTimer != null) {
             thinkingRevertTimer.stop();
             thinkingRevertTimer = null;
         }
 
         lockAllActions(true);
+        boss.clearAbilitySprite();
 
         if (player.getActiveEffect() != null) player.applyEffect(null);
         if (boss.getActiveEffect()   != null) boss.applyEffect(null);
-
         if (playerStatusLabel != null) playerStatusLabel.setText("");
         if (bossStatusLabel   != null) bossStatusLabel.setText("");
         if (bossIntentLabel   != null) bossIntentLabel.setText("");
 
-        log(playerWon
-                ? "Victory. " + boss.getName() + " has been defeated. Continuing..."
-                : "Defeated. " + player.getName() + " has fallen. Game over.");
+        if (playerWon) {
+            log("Victory. " + boss.getName() + " defeated. Loading next area...");
+        } else {
+            log("Defeated. " + player.getName() + " has fallen. Game over.");
+        }
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
-        delay.setOnFinished(e -> System.out.println("COMBAT END - playerWon: " + playerWon));
+        delay.setOnFinished(e -> {
+            if (playerWon) {
+                loadNextArea();
+            } else {
+                // player lost — handle game over here if needed
+                System.out.println("GAME OVER");
+            }
+        });
         delay.play();
     }
+
+    // loads the next map based on which boss was just defeated
+    private void loadNextArea() {
+    String bossId  = boss.getId();
+    String nextMap = BOSS_NEXT_MAP.get(bossId);
+
+    if ("JohnMKati".equals(bossId)) {
+        // Here you can set what happens after JohnMKati is defeated (load room etc)
+        System.out.println("JohnMKati defeated — end of boss chain.");
+        // for now just return to game without map change
+        GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
+        if (gs != null) gs.returnFromCombat();
+        return;
+    }
+
+    if (nextMap == null) {
+        System.out.println("No next map defined for boss: " + bossId);
+        return;
+    }
+
+    com.dungeons.screens.GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
+    if (gs != null) {
+        gs.returnFromCombatWithMap(nextMap);
+    } else {
+        System.out.println("GameScreen instance not found.");
+    }
+}
 
     private void log(String text) { turnInformation.appendText(text + "\n"); }
 
@@ -654,7 +699,7 @@ public class CombatController {
         playername.setText(playerNamee);
         bossName.setText(bossNamee);
         bossHPnumber.setText(bossMaxHp + " / " + bossMaxHp);
-        updateBossSprite();
+        updateBossSpriteMood();
     }
 
     public void updateBossHP(int currentHp, int maxHp) {
