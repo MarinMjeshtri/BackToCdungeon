@@ -105,7 +105,7 @@ public class GameScreen {
                                 control.setStage(stage);
                                 stage.getScene().setRoot(combat.getRoot());
                             } catch (Exception ex) {
-                                ex.printStackTrace();
+                                ex.gprintStackTrace();
                             }
                         });
                     }

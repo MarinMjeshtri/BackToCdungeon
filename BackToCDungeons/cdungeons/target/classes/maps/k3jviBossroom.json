@@ -211,7 +211,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":20,
          "id":8,
-         "name":"DrCassieYarnRoomKejvi",
+         "name":"DrCassieYarnCollisionRoomKejvi",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
