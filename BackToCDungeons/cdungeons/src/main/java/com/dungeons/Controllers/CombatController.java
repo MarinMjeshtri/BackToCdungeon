@@ -63,13 +63,13 @@ public class CombatController {
     // stored so we can cancel it before ability sprite loads
     private PauseTransition thinkingRevertTimer = null;
 
-    // maps boss ID to the next map to load after they are defeated
-    private static final java.util.Map<String, String> BOSS_NEXT_MAP = new java.util.HashMap<>();
-    static {
-        BOSS_NEXT_MAP.put("CassieYarn",  "MobRoom3");
-        BOSS_NEXT_MAP.put("FreakyRelah", "MobRoom5");
-        // JohnMKati end — handled separately below
-    }
+//    // maps boss ID to the next map to load after they are defeated
+//    private static final java.util.Map<String, String> BOSS_NEXT_MAP = new java.util.HashMap<>();
+//    static {
+//        BOSS_NEXT_MAP.put("CassieYarn",  "MobRoom3");
+//        BOSS_NEXT_MAP.put("FreakyRelah", "MobRoom5");
+//        // JohnMKati end — handled separately below
+//    }
 
     @FXML
     public void initialize() {
@@ -667,31 +667,39 @@ public class CombatController {
     }
 
     // loads the next map based on which boss was just defeated
+//    private void loadNextArea() {
+//    String bossId  = boss.getId();
+//    String nextMap = BOSS_NEXT_MAP.get(bossId);
+//
+//    if ("JohnMKati".equals(bossId)) {
+//        // Here you can set what happens after JohnMKati is defeated (load room etc)
+//        System.out.println("JohnMKati defeated — end of boss chain.");
+//        // for now just return to game without map change
+//        GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
+//        if (gs != null) gs.returnFromCombat();
+//        return;
+//    }
+//
+//    if (nextMap == null) {
+//        System.out.println("No next map defined for boss: " + bossId);
+//        return;
+//    }
+//
+//    com.dungeons.screens.GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
+//    if (gs != null) {
+//        gs.returnFromCombatWithMap(nextMap);
+//    } else {
+//        System.out.println("GameScreen instance not found.");
+//    }
+//}
     private void loadNextArea() {
-    String bossId  = boss.getId();
-    String nextMap = BOSS_NEXT_MAP.get(bossId);
-
-    if ("JohnMKati".equals(bossId)) {
-        // Here you can set what happens after JohnMKati is defeated (load room etc)
-        System.out.println("JohnMKati defeated — end of boss chain.");
-        // for now just return to game without map change
-        GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
-        if (gs != null) gs.returnFromCombat();
-        return;
+        GameScreen gs = GameScreen.getInstance();
+        if (gs != null) {
+            gs.returnFromCombat(); // ← this already calls markFightDone internally
+        } else {
+            System.out.println("GameScreen instance not found.");
+        }
     }
-
-    if (nextMap == null) {
-        System.out.println("No next map defined for boss: " + bossId);
-        return;
-    }
-
-    com.dungeons.screens.GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
-    if (gs != null) {
-        gs.returnFromCombatWithMap(nextMap);
-    } else {
-        System.out.println("GameScreen instance not found.");
-    }
-}
 
     private void log(String text) { turnInformation.appendText(text + "\n"); }
 

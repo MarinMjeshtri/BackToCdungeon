@@ -39,6 +39,7 @@ public class GameScreen {
     private pauseScreen pauseScreen;
     private Pane gameRoot;
     private Stage stage;
+    private static GameScreen instance;
 
     private final Canvas canvas = new Canvas(800, 600);
     private final GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -71,6 +72,14 @@ public class GameScreen {
         this.stage = stage;
     }
 
+    public GameScreen() {
+        instance = this;
+    }
+
+    public static GameScreen getInstance() {
+        return instance;
+    }
+
     public Parent getRoot() throws IOException {
 
         tilesetManager.loadAll();
@@ -101,11 +110,9 @@ public class GameScreen {
                             try {
                                 combatScreen combat = new combatScreen();
                                 CombatController control = combat.getLoader().getController();
-                                control.setGameScreen(this);
-                                control.setStage(stage);
+                                stage.getScene().setRoot(combat.getRoot());
                                 stage.getScene().setRoot(combat.getRoot());
                             } catch (Exception ex) {
-                                ex.gprintStackTrace();
                             }
                         });
                     }
@@ -195,7 +202,17 @@ public class GameScreen {
 
     public void returnFromCombat() {
         mapManager.markFightDone(fightTileX, fightTileY);
-        mapManager.getCurrentMap().clearLayer("Mob");
+        interactionLocked = false;
+        stage.getScene().setRoot(gameRoot);
+        player.clearInput();
+        canvas.requestFocus();
+        startLoop();
+    }
+
+    // called by CombatController after a boss is defeated so loads next map then returns to game maps
+    public void returnFromCombatWithMap(String nextMapName) {
+        mapManager.loadMap(nextMapName);
+        mapManager.markFightDone(fightTileX, fightTileY);
         interactionLocked = false;
         stage.getScene().setRoot(gameRoot);
         player.clearInput();
