@@ -1,4 +1,7 @@
-package com.dungeons.MusicandSoundsCode;
+/* package com.dungeons.MusicandSoundsCode;
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -59,7 +62,11 @@ public class AudioManager {
             currentMusic.play();
             currentMusicName = trackName;
         } catch (Exception e) {
+<<<<<<< HEAD
             System.err.println("[AudioManager] Error playing music '" + trackName + "': " + e.getMessage());
+=======
+            System.err.println("[AudioManager] Error playing music: " + e.getMessage());
+>>>>>>> f54df1d9bdfa796e85fc41e8b68eb869eef43227
         }
     }
 
@@ -81,7 +88,11 @@ public class AudioManager {
             currentMusic.play();
             currentMusicName = trackName;
         } catch (Exception e) {
+<<<<<<< HEAD
             System.err.println("[AudioManager] Error playing music once '" + trackName + "': " + e.getMessage());
+=======
+            System.err.println("[AudioManager] Error playing music once: " + e.getMessage());
+>>>>>>> f54df1d9bdfa796e85fc41e8b68eb869eef43227
         }
     }
 
@@ -161,3 +172,7 @@ public class AudioManager {
         }
     }
 }
+<<<<<<< HEAD
+=======
+*/
+>>>>>>> f54df1d9bdfa796e85fc41e8b68eb869eef43227

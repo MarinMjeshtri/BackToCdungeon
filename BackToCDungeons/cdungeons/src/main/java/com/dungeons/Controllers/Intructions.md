@@ -1,4 +1,4 @@
-Hello pretty people and cutie patooties
+Hello pretty people and cutie patooties --(You forgot to add and Kejvi, :D) - Kejvi --
 
 Here are the controllers for the FXML files.
 Basically if you want to change the function of any of the interfaces you have to check the code here and change it
