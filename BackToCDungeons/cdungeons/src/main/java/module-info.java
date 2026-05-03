@@ -5,6 +5,7 @@ module com.dungeons {
     requires java.xml;
     requires com.google.gson;
     requires java.desktop;
+    requires javafx.media;
 
     opens com.dungeons.Controllers to javafx.fxml;
     opens com.dungeons.screens to javafx.fxml;
@@ -13,9 +14,8 @@ module com.dungeons {
     opens com.dungeons.characters to com.google.gson;
     opens com.dungeons.systems.items to com.google.gson;
 
-
     exports com.dungeons to javafx.graphics;
     exports com.dungeons.screens to javafx.graphics, javafx.fxml;
-    exports com.dungeons.systems.CombatSystem to javafx.graphics; // ← add this
+    exports com.dungeons.systems.CombatSystem to javafx.graphics;
     exports com.dungeons.dialogueManager to com.google.gson;
 }
