@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 package com.dungeons.MusicandSoundsCode;
-=======
-/* package com.dungeons.MusicandSoundsCode;
->>>>>>> f54df1d9bdfa796e85fc41e8b68eb869eef43227
 
 public class GameMusicManager {
 
@@ -10,13 +6,8 @@ public class GameMusicManager {
 
     public enum MusicState { NONE, OPENING, GAMEPLAY, COMBAT, FINAL_BOSS, ENDING }
 
-<<<<<<< HEAD
     private static MusicState currentState = MusicState.NONE;
     private static int        walkTimer    = 0;
-=======
-    private static MusicState currentState   = MusicState.NONE;
-    private static int        walkTimer      = 0;
->>>>>>> f54df1d9bdfa796e85fc41e8b68eb869eef43227
 
     private GameMusicManager() {}
 
@@ -41,8 +32,6 @@ public class GameMusicManager {
         currentState = MusicState.ENDING;
         AudioManager.stopMusic();
         AudioManager.playMusicOnce(AudioManager.MUSIC_LABORATORY);
-        System.out.println("[GameMusicManager] → ENDING");
-        printEndingMessage();
     }
 
     public static void pauseMusic() {
@@ -77,56 +66,21 @@ public class GameMusicManager {
         AudioManager.playSound(AudioManager.SFX_HIT);
     }
 
-<<<<<<< HEAD
-
     public static void playMoveSound(String moveName) {
         if (moveName == null) return;
         String lower = moveName.toLowerCase();
-
-        if      (lower.contains("clone"))  AudioManager.playSound(AudioManager.SFX_CLONE);
-        else if (lower.contains("wall"))   AudioManager.playSound(AudioManager.SFX_SPAWN_WALL);
-        else if (lower.contains("turret")) AudioManager.playSound(AudioManager.SFX_SPAWN_TURRET);
-        else if (lower.contains("lightning")) AudioManager.playSound(AudioManager.SFX_LIGHTNING);
+        if      (lower.contains("clone"))                                        AudioManager.playSound(AudioManager.SFX_CLONE);
+        else if (lower.contains("wall"))                                         AudioManager.playSound(AudioManager.SFX_SPAWN_WALL);
+        else if (lower.contains("turret"))                                       AudioManager.playSound(AudioManager.SFX_SPAWN_TURRET);
+        else if (lower.contains("lightning"))                                    AudioManager.playSound(AudioManager.SFX_LIGHTNING);
         else if (lower.contains("spell") || lower.contains("magic")
-              || lower.contains("literature") || lower.contains("lore")) AudioManager.playSound(AudioManager.SFX_MAGIC_SPELL);
-        else  AudioManager.playSound(AudioManager.SFX_SWORD);
-=======
-    public static void playSwordSound() {
-        AudioManager.playSound(AudioManager.SFX_SWORD);
+              || lower.contains("literature") || lower.contains("lore"))         AudioManager.playSound(AudioManager.SFX_MAGIC_SPELL);
+        else                                                                     AudioManager.playSound(AudioManager.SFX_SWORD);
     }
 
-    public static void playCloneSound() {
-        AudioManager.playSound(AudioManager.SFX_CLONE);
-    }
-
-    public static void playSpawnWallSound() {
-        AudioManager.playSound(AudioManager.SFX_SPAWN_WALL);
-    }
-
-    public static void playSpawnTurretSound() {
-        AudioManager.playSound(AudioManager.SFX_SPAWN_TURRET);
->>>>>>> f54df1d9bdfa796e85fc41e8b68eb869eef43227
-    }
-
-    public static void playMoveSound(String moveName) {
-        if (moveName == null) return;
-        String lower = moveName.toLowerCase();
-
-        if (lower.contains("clone"))                            playCloneSound();
-        else if (lower.contains("wall"))                        playSpawnWallSound();
-        else if (lower.contains("turret"))                      playSpawnTurretSound();
-        else if (lower.contains("lightning"))                   AudioManager.playSound(AudioManager.SFX_LIGHTNING);
-        else if (lower.contains("spell") || lower.contains("magic") || lower.contains("literature"))
-                                                                AudioManager.playSound(AudioManager.SFX_MAGIC_SPELL);
-        else                                                    playSwordSound(); // default: physical attack
-    }
-
-<<<<<<< HEAD
-=======
     public static void playPickupSound() {
         AudioManager.playSound(AudioManager.SFX_PICKUP);
     }
->>>>>>> f54df1d9bdfa796e85fc41e8b68eb869eef43227
 
     public static void playGameOverSound() {
         AudioManager.playSound(AudioManager.SFX_GAME_OVER);
@@ -138,8 +92,8 @@ public class GameMusicManager {
         if (currentState == newState) return;
         currentState = newState;
         AudioManager.playMusic(track);
-        System.out.println("[GameMusicManager] → " + newState + " (" + track + ")");
+        System.out.println("[GameMusicManager] -> " + newState + " (" + track + ")");
     }
 
+
 }
-*/
