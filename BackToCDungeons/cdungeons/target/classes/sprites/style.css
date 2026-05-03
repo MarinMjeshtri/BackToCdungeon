@@ -1,5 +1,5 @@
 *{
--fx-font-family: 'Reano';
+-fx-font-family: 'REANO';
 }
 
 /* MAIN SCREEN */
@@ -137,3 +137,104 @@
 .button:pressed {
     -fx-background-color: #0a0a2e;
 }
+
+
+/* ============================================
+   LAB DUNGEONS — UI Stylesheet
+   Gritty dark lab + light periwinkle panels
+   ============================================ */
+
+/* === ROOT / SCENE === */
+.root {
+    -fx-background-color: #1a1a2e;
+    -fx-font-family: "Courier New", monospace;
+}
+
+/* === PANELS (AnchorPane / Pane) === */
+.panel {
+    -fx-background-color: #c8cfe8;
+    -fx-border-color: #7b8cc7;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+
+/* === LABELS === */
+.label {
+    -fx-text-fill: #1e2352;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 13px;
+}
+
+.label-title {
+    -fx-text-fill: #3a4580;
+    -fx-font-size: 11px;
+    -fx-font-family: "Courier New", monospace;
+}
+
+.label-muted {
+    -fx-text-fill: #5a6aaa;
+    -fx-font-size: 10px;
+    -fx-font-family: "Courier New", monospace;
+}
+
+/* === BUTTONS === */
+.button {
+    -fx-background-color: #1e2352;
+    -fx-text-fill: #a0b4f0;
+    -fx-border-color: #4a5ab0;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #2a3270;
+    -fx-border-color: #7b8cc7;
+}
+
+.button:pressed {
+    -fx-background-color: #141a3a;
+    -fx-border-color: #a0b4f0;
+}
+
+/* === HP BARS === */
+/* Red background bar */
+.hp-bar-bg {
+    -fx-fill: #8b1a1a;
+    -fx-stroke: #3a0a0a;
+    -fx-stroke-width: 1px;
+    -fx-arc-width: 4px;
+    -fx-arc-height: 4px;
+}
+
+/* Green fill bar */
+.hp-bar-fill {
+    -fx-fill: #2d7a2d;
+    -fx-stroke: #4aaa4a;
+    -fx-stroke-width: 1px;
+}
+
+/* === TURN LOG (TextArea / ScrollPane) === */
+.text-area {
+    -fx-background-color: #0f1128;
+    -fx-border-color: #4a5ab0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 2px;
+    -fx-background-radius: 2px;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: #8899dd;
+}
+
+.text-area .content {
+    -fx-background-color: #0f1128;
+}
+
+.text-area:focused {
+    -fx-border-color: #7b8cc7;
+}
+

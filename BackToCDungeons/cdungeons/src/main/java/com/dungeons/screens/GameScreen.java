@@ -171,7 +171,7 @@ public class GameScreen {
                 }
         );
 
-        mapManager.loadMap("MobRoom1");
+        mapManager.loadMap("k3jviBossroom");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);

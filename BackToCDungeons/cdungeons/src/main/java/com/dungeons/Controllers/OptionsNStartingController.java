@@ -1,13 +1,11 @@
 package com.dungeons.Controllers;
 
 import com.dungeons.screens.GameScreen;
-import com.dungeons.Main;
 import com.dungeons.screens.creditsScreen;
 import com.dungeons.screens.areYouSureScreen;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -32,7 +30,7 @@ public class OptionsNStartingController {
         Scene scene = new Scene(gameScreen.getRoot());
 
 
-        Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/REANO.ttf"), 10);
+        Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/MarinVonGayNjega.ttf"), 10);
         scene.getStylesheets().add(
                 getClass().getResource("/sprites/style.css").toExternalForm()
         );
