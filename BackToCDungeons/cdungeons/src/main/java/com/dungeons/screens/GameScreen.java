@@ -126,6 +126,15 @@ public class GameScreen {
 
                         this.shopScreen = shop;
 
+                        gameRoot.setOnKeyPressed(e -> {
+                            if (e.getCode() == KeyCode.E) {
+                                if(shopNode.isVisible()){
+                                    shopNode.setVisible(false);
+                                    shopNode.setDisable(true);
+                                }
+                            }
+                        });
+
                     }
 
                     if (type.equals("chest")) {
@@ -135,6 +144,15 @@ public class GameScreen {
                        gameRoot.getChildren().add(chestNode);
 
                        this.itemPickupScreen = chest;
+
+                        gameRoot.setOnKeyPressed(e -> {
+                            if (e.getCode() == KeyCode.E) {
+                                if(chestNode.isVisible()){
+                                    chestNode.setVisible(false);
+                                    chestNode.setDisable(true);
+                                }
+                            }
+                        });
 
                     }
 
@@ -171,7 +189,7 @@ public class GameScreen {
                 }
         );
 
-        mapManager.loadMap("k3jviBossroom");
+        mapManager.loadMap("ShopRoom");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);

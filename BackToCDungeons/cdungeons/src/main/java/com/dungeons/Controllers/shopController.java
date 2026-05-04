@@ -52,6 +52,5 @@ public class shopController {
         img1.setImage(img11);
         img2.setImage(img21);
         img3.setImage(img31);
-
     }
 }
