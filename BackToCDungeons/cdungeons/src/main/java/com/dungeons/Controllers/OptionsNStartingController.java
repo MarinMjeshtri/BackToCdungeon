@@ -3,6 +3,7 @@ package com.dungeons.Controllers;
 import com.dungeons.screens.GameScreen;
 import com.dungeons.screens.creditsScreen;
 import com.dungeons.screens.areYouSureScreen;
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -37,6 +38,7 @@ public class OptionsNStartingController {
 
         stage.setScene(scene);
         gameScreen.startLoop();
+        GameMusicManager.playOpening();
 
     }
 

@@ -2,10 +2,12 @@ package com.dungeons;
 
 import com.dungeons.screens.startingScreen;
 import com.dungeons.Controllers.OptionsNStartingController;
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 
 public class marinMainTesting extends Application {
 
@@ -28,6 +30,8 @@ public class marinMainTesting extends Application {
         stage.setScene(scene);
         stage.setTitle("LabDungeons 0.0.1");
         stage.show();
+
+        GameMusicManager.playEnding();
     }
 
     public static void main(String[] args) {
