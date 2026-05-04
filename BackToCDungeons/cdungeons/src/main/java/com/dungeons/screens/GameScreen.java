@@ -1,13 +1,20 @@
 package com.dungeons.screens;
 
+//COMBAT
 import com.dungeons.Controllers.CombatController;
+
+// DIALOUGE
 import com.dungeons.Controllers.DialogueBoxController;
 import com.dungeons.dialogueManager.DialogueManager;
+
+//MAP
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
 import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
+
+//MUSIC
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -22,6 +29,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GameScreen {
+
 
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 2;
@@ -51,12 +59,18 @@ public class GameScreen {
 
     private AnimationTimer loop;
 
+    // Interaction lock
     private boolean interactionLocked = false;
 
+    // Dialogue state
     private DialogueBoxController activeDialogue = null;
     private Parent activeDialogueNode = null;
     private int lastDialogueTileX = -1;
     private int lastDialogueTileY = -1;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public GameScreen() {
         instance = this;
@@ -64,10 +78,6 @@ public class GameScreen {
 
     public static GameScreen getInstance() {
         return instance;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 
     public Parent getRoot() throws IOException {
@@ -101,41 +111,47 @@ public class GameScreen {
                                 combatScreen combat = new combatScreen();
                                 stage.getScene().setRoot(combat.getRoot());
                             } catch (Exception ex) {
-                                ex.printStackTrace();
                             }
                         });
                     }
 
                     if (type.equals("shop")) {
+
                         shopScreen shop = new shopScreen(this, stage);
                         Parent shopNode = shop.getRoot();
+
                         gameRoot.getChildren().add(shopNode);
+
                         this.shopScreen = shop;
 
                         gameRoot.setOnKeyPressed(e -> {
                             if (e.getCode() == KeyCode.E) {
-                                if (shopNode.isVisible()) {
+                                if(shopNode.isVisible()){
                                     shopNode.setVisible(false);
                                     shopNode.setDisable(true);
                                 }
                             }
                         });
+
                     }
 
                     if (type.equals("chest")) {
-                        itemPickupScreen chest = new itemPickupScreen(this, stage);
-                        Parent chestNode = chest.getRoot();
-                        gameRoot.getChildren().add(chestNode);
-                        this.itemPickupScreen = chest;
+
+                       itemPickupScreen chest = new itemPickupScreen(this,stage);
+                       Parent chestNode = chest.getRoot();
+                       gameRoot.getChildren().add(chestNode);
+
+                       this.itemPickupScreen = chest;
 
                         gameRoot.setOnKeyPressed(e -> {
                             if (e.getCode() == KeyCode.E) {
-                                if (chestNode.isVisible()) {
+                                if(chestNode.isVisible()){
                                     chestNode.setVisible(false);
                                     chestNode.setDisable(true);
                                 }
                             }
                         });
+
                     }
 
                     if (type.startsWith("dialogue:")) {
@@ -202,7 +218,6 @@ public class GameScreen {
 
     public void returnFromCombat() {
         mapManager.markFightDone(fightTileX, fightTileY);
-        mapManager.getCurrentMap().clearLayer("Mob");
         interactionLocked = false;
         stage.getScene().setRoot(gameRoot);
         player.clearInput();
@@ -210,6 +225,7 @@ public class GameScreen {
         startLoop();
     }
 
+    // called by CombatController after a boss is defeated so loads next map then returns to game maps
     public void returnFromCombatWithMap(String nextMapName) {
         mapManager.loadMap(nextMapName);
         mapManager.markFightDone(fightTileX, fightTileY);
