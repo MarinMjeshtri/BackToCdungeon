@@ -1,4 +1,4 @@
-/* package com.dungeons.MusicandSoundsCode;
+package com.dungeons.MusicandSoundsCode;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -42,9 +42,7 @@ public class AudioManager {
         if (!musicEnabled) return;
         if (trackName.equals(currentMusicName) && currentMusic != null
                 && currentMusic.getStatus() == MediaPlayer.Status.PLAYING) return;
-
         stopMusic();
-
         String path = findResource(MUSIC_PATH, trackName, "mp3", "wav");
         if (path == null) {
             System.err.println("[AudioManager] Music not found: " + trackName);
@@ -66,7 +64,6 @@ public class AudioManager {
     public static void playMusicOnce(String trackName) {
         if (!musicEnabled) return;
         stopMusic();
-
         String path = findResource(MUSIC_PATH, trackName, "mp3", "wav");
         if (path == null) {
             System.err.println("[AudioManager] Music not found: " + trackName);
@@ -116,7 +113,6 @@ public class AudioManager {
 
     public static void playSound(String soundName) {
         if (!sfxEnabled) return;
-
         String path = findResource(SOUNDS_PATH, soundName, "wav", "ogg");
         if (path == null) {
             System.err.println("[AudioManager] Sound not found: " + soundName);
@@ -161,4 +157,3 @@ public class AudioManager {
         }
     }
 }
-*/
