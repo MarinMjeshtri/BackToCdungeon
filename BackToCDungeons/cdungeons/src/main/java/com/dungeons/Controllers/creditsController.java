@@ -1,5 +1,8 @@
 package com.dungeons.Controllers;
 
+//Importing main area
+import com.dungeons.marinMainTesting;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -28,8 +31,6 @@ public class creditsController {
     @FXML
     private void handleExit() {
         Stage stage = (Stage) creditScroll.getScene().getWindow();
-        stage.getScene().setRoot(
-                new com.dungeons.screens.startingScreen().getRoot()
-        );
+        marinMainTesting.loadStartingScreen(stage);
     }
 }

@@ -45,7 +45,7 @@ public class OptionsNStartingController {
     //OPEN THE CREDITS
     @FXML
     private void handleButton2() throws IOException {
-        creditsScreen credits = new creditsScreen();
+        creditsScreen credits = new creditsScreen(null, stage);
         Scene scene = new Scene(credits.getRoot());
 
         stage.setScene(scene);

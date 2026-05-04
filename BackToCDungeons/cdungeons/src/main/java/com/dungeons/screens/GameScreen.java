@@ -5,6 +5,7 @@ import com.dungeons.Controllers.CombatController;
 
 // DIALOUGE
 import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.dialogueManager.DialogueManager;
 
 //MAP
@@ -35,6 +36,7 @@ public class GameScreen {
     private static final int SCALE = 2;
 
     private shopScreen shopScreen;
+    private creditsScreen creditsScreen;
     private itemPickupScreen itemPickupScreen;
     private pauseScreen pauseScreen;
     private Pane gameRoot;
@@ -113,6 +115,12 @@ public class GameScreen {
                                 String bossId = resolveBossFromCurrentMap();
                                 stage.getScene().setRoot(combat.getRoot());
                                 control.startCombat(bossId);
+
+                                if (mapManager.isCurrentMap("BossRoomJoni")) {
+                                    GameMusicManager.playFinalBoss();
+                                } else {
+                                    GameMusicManager.playCombat();
+                                }
                             } catch (Exception ex) {
                             }
                         });
@@ -157,6 +165,18 @@ public class GameScreen {
 
                     }
 
+                    if (type.equals("credits")) {
+
+                        creditsScreen creditsscreen = new creditsScreen(this,stage);
+                        Parent credits = creditsscreen.getRoot();
+                        gameRoot.getChildren().add(credits);
+
+                        this.creditsScreen = creditsscreen;
+                        GameMusicManager.playEnding();
+
+
+                    }
+
                     if (type.startsWith("dialogue:")) {
                         lastDialogueTileX = tileX;
                         lastDialogueTileY = tileY;
@@ -190,7 +210,7 @@ public class GameScreen {
                 }
         );
 
-        mapManager.loadMap("RoomKledi");
+        mapManager.loadMap("BossRoomJoni");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);

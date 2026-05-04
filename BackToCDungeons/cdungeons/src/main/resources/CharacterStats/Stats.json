@@ -181,7 +181,7 @@
     },
 
     "JohnMKati": {
-      "stats": { "atk": 28, "def": 12, "hp": 650 },
+      "stats": { "atk": 28, "def": 12, "hp": 450 },
       "sprites": {
         "neutral":  "/Sprties_CombatUI/JonMkati/Neutral.jpeg",
         "angry":    "/Sprties_CombatUI/JonMkati/Angry.jpeg",

@@ -13,25 +13,35 @@ public class marinMainTesting extends Application {
 
     @Override
     public void start(Stage stage) {
-        // load font once — not twice
         Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/REANO.ttf"), 10);
-
-        startingScreen screen = new startingScreen();
-
-        OptionsNStartingController controller = screen.getLoader().getController();
-        controller.setStage(stage);
-
-        Scene scene = new Scene(screen.getRoot(), 800, 600);
-
-        scene.getStylesheets().add(
-                getClass().getResource("/sprites/style.css").toExternalForm()
-        );
-
-        stage.setScene(scene);
         stage.setTitle("LabDungeons 0.0.1");
+        loadStartingScreen(stage);
         stage.show();
+    }
 
-        GameMusicManager.playEnding();
+    public static void loadStartingScreen(Stage stage) {
+        try {
+
+            startingScreen screen = new startingScreen();
+
+            OptionsNStartingController controller = screen.getLoader().getController();
+            controller.setStage(stage);
+
+            Scene scene = new Scene(screen.getRoot(), 800, 600);
+
+            scene.getStylesheets().add(
+                    marinMainTesting.class
+                            .getResource("/sprites/style.css")
+                            .toExternalForm()
+            );
+
+            stage.setScene(scene);
+
+            GameMusicManager.playOpening();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
