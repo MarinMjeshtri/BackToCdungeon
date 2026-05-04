@@ -13,6 +13,7 @@ import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
 import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
 
 //MUSIC
 
@@ -112,9 +113,11 @@ public class GameScreen {
                                 CombatController control = combat.getLoader().getController();
                                 stage.getScene().setRoot(combat.getRoot());
                                 stage.getScene().setRoot(combat.getRoot());
+                                GameMusicManager.playCombat();
                             } catch (Exception ex) {
                             }
                         });
+
                     }
 
                     if (type.equals("shop")) {
@@ -225,6 +228,7 @@ public class GameScreen {
         player.clearInput();
         canvas.requestFocus();
         startLoop();
+        GameMusicManager.playGameplay();
     }
 
     // called by CombatController after a boss is defeated so loads next map then returns to game maps

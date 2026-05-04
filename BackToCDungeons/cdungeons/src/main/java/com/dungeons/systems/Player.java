@@ -16,9 +16,15 @@ public class Player {
     private static final int SCALE = 2;
     private static final int SIZE = 14;
 
+    private SpriteSheet sprite;
     public Player(double startX, double startY) {
         this.x = startX;
         this.y = startY;
+
+        this.sprite = new SpriteSheet(
+                "/sprites/characters/Joni/rotations/east.png",
+                16
+        );
     }
 
     public void setMap(Map map) {
@@ -93,7 +99,13 @@ public class Player {
     // ---------------- RENDER ----------------
 
     public void render(GraphicsContext gc) {
-        gc.fillRect(x, y, SIZE * SCALE, SIZE * SCALE);
+        gc.drawImage(
+                sprite.getImage(),
+                x,
+                y,
+                SIZE * SCALE*2,
+                SIZE * SCALE*2
+        );
     }
 
     // ---------------- GETTERS ----------------
