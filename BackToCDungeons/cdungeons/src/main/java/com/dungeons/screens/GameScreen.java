@@ -189,7 +189,7 @@ public class GameScreen {
                 }
         );
 
-        mapManager.loadMap("ShopRoom");
+        mapManager.loadMap("MobRoom1");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
