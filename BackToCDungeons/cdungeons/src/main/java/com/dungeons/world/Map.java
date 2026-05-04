@@ -189,7 +189,7 @@ public class Map {
     }
 
     public Object[] resolveTile(int rawGid) {
-        final int FLIP_MASK = 0x1FFFFFFF;
+        final int FLIP_MASK = 0x0FFFFFFF;
         int gid = rawGid & FLIP_MASK;
         if (gid <= 0) return null;
 
