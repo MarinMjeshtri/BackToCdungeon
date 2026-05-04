@@ -34,6 +34,11 @@ public class BossLoader extends Combatant {
             case "CassieYarn":  return cassieAI();
             case "FreakyRelah": return freakyRelahAI();
             case "JohnMKati":   return johnAI();
+            case "Mob1":        return randomDamagingMove();
+            case "Mob2":        return randomDamagingMove();
+            case "Mob3":        return randomDamagingMove();
+            case "Mob4":        return randomDamagingMove();
+            case "Mob5":        return randomDamagingMove();
             default:            return randomDamagingMove();
         }
     }
@@ -42,6 +47,7 @@ public class BossLoader extends Combatant {
         return randomDamagingMove();
     }
 
+    
    private Move freakyRelahAI() {
     // below 40% player hp — go for max burst, no more DOT stalling
     if (lastKnownPlayerHpPercent < 0.4) {

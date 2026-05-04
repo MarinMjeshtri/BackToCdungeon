@@ -99,7 +99,10 @@ public class GameScreen {
                         Platform.runLater(() -> {
                             try {
                                 combatScreen combat = new combatScreen();
+                                CombatController control = combat.getLoader().getController();
+                                String bossId = resolveBossFromCurrentMap();
                                 stage.getScene().setRoot(combat.getRoot());
+                                control.startCombat(bossId);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
@@ -171,7 +174,7 @@ public class GameScreen {
                 }
         );
 
-        mapManager.loadMap("MobRoom2");
+        mapManager.loadMap("MobRoom1");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
@@ -276,4 +279,21 @@ public class GameScreen {
 
         gc.restore();
     }
+    //Ui loader
+    private String resolveBossFromCurrentMap() {
+     String name = mapManager.getCurrentMap().getMapName();
+        if (name == null) return "CassieYarn";
+        switch (name) {
+        case "k3jviBossroom": return "CassieYarn";
+        case "RoomKledi":     return "FreakyRelah";
+        case "BossRoomJoni":  return "JohnMKati";
+        case "MobRoom1":      return "Mob1";
+        case "MobRoom2":      return "Mob2";    
+        case "MobRoom3":      return "Mob3";
+        case "MobRoom4":      return "Mob4";
+        case "MobRoom5":      return "Mob5";
+        default:              return "CassieYarn";
+    }
+}    
 }
+

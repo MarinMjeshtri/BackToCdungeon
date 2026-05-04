@@ -36,11 +36,14 @@ public class Map {
     private static final int SPAWN_AFTER_CHEST_Y = 6;
     private static final int SPAWN_AFTER_SHOP_X  = 15;
     private static final int SPAWN_AFTER_SHOP_Y  = 18;
+    private String mapName;
 
     public String currentMapName;
+    public String getMapName() { return mapName; }
 
     public void load(String mapName) {
         this.currentMapName = mapName;
+        this.mapName = mapName;
 
         try {
             InputStream is = Map.class.getResourceAsStream("/maps/" + mapName + ".json");
