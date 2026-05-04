@@ -28,7 +28,7 @@ public class quitController {
     @FXML
     public void initialize() {
         String url = getClass().getResource(
-                "/sprites/DialougeSprites/MrBalls/willy.jpg"
+                "/sprites/DialougeSprites/MrBalls/willy2.jpg"
         ).toExternalForm();
 
         anchorDecor.setStyle(
