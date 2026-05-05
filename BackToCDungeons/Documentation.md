@@ -338,3 +338,145 @@ update() - Therrit checkInteractions cdo frame kur nuk eshte locked
 
 updateCamera() - Kufizon kameran brenda hartes dhe e mban te qendruar te lojtari
 
+
+
+**Jon Toska**
+
+
+
+====================
+
+
+dialogue.json
+
+Nje objekt JSON me nje key te vetëm dialogues, i cili permban ID-ne e dialogut (p.sh. "merchant_enter", "cassie_defeat").
+Me pas ndahet ne 3 keys te tjera:
+
+character - string me emrin e karakterit
+sprite - string me emrin e skedarit te sprites
+lines - array stringjesh, ku çdo element është nje rresht dialogu ne rend
+
+
+characters.json
+
+Nje objekt JSON me nje key te vetëm characters, i cili permban emrat e karaktereve (p.sh. "Player").
+Me pas ndahet ne:
+
+stats - objekt me fushat atk, def, hp si numra te plotë
+sprites - objekt me fushat neutral, angry, defeated si strings te skedarëve
+abilities - array objektesh me emrat, efektet dhe damage.
+(Jane bere ndryshime te tjera me vone per te lehtesuar punen e Combat)
+
+
+Dialogue.java
+
+Nje klase e thjesht qe pefaqeson te dhenat qe do ruhen nga cdo dialog te cilat jane:
+
+
+character - Emri i karakterit folës
+sprite - Emri i skedarit te sprites
+lines - Array i rreshtave te dialogut ne rend
+
+
+
+DialogueData.java
+
+(Nevojitet per te perdorur Gson)
+
+Vendi ku ruhen te dhenat qe behen parse nga JSON ne Java Objects nepermjet Gson.
+Gson lexon JSON dhe mbush DialogueData e cila sherben si nje wrapper class.
+
+DialogueManager e merr data.dialogues dhe e ruan tek dialogues 
+
+
+
+DialogueManager.java
+
+
+Ngarkon dhe menaxhon te gjitha te dhenat e dialogut nga skedari JSON. Mban gjendjen e dialogut aktual gjate nje bisede aktive.
+
+Perdor Hashmaps (p.sh Map<String, Dialogue> dialogues) per te ruajtur dialogjet.
+Ajo i vendos te dhenat ne cifte key-value ku String esht ID-ja e dialogut dhe Dialogue eshte i gjith dialogu i asaj ID.
+Perdoret per arsye optimizimi pasi kompleksiteti i kohes per te kerkuar te dhenat ne nje Map eshte O(1).
+
+
+currentLines - Array i rreshtave per dialogun aktual ne ekzekutim
+currentIndex - Treguesi i rreshtit aktual; rritet me cdo thirrje getNextLine()
+currentDialogue - Objekti Dialogue aktualisht aktiv
+
+
+load() - Ngarkon (/Dialogues/dialogue.json) si InputStream dhe e ben parse ne DialogueData me librarin Gson
+
+startDialogue(id) - Merr dialogun nga harta me ID-ne e dhene, vendos currentLines dhe rinis currentIndex ne 0
+
+getCurrentCharacter() - Kthen character te currentDialogue
+
+getSprite() - Kthen sprite te currentDialogue
+
+getNextLine() - Kthen rreshtin ne currentIndex dhe e rrit ate me 1
+
+isFinished() - Kthen true kur currentIndex ka arritur fundin e currentLines
+
+
+
+
+DialogueBoxController.java
+
+
+Controller FXML per UI-n e kutis se dialogut. Lidh Dialogue Manager me elementet vizual.
+
+dialogueText - Label FXML qe shfaq rreshtin aktual te dialogut
+characterName - Label FXML qe shfaq emrin e karakterit
+character1 - ImageView FXML qe shfaq sprites te karakterit
+dialogueManager - Instanca e DialogueManager per marrjen e te dhenave te dialogut
+onFinished - Callback Runnable qe thirret kur dialogu mbaron
+
+
+initialize() - Vendos listeners per tastieren (Enter, Space) dhe mausin (klik i majte) per te thirrur nextLine()
+
+setDialogueManager(dm) - Vendos DialogueManager
+
+setOnFinished(callback) - Vendos funksionin qe thirret kur dialogu mbaron
+
+startDialogue(id) - Fillon dialogun me ID-ne e dhene; vendos emrin e karakterit, rreshtin e pare dhe sprites
+
+nextLine() - Kalon ne rreshtin tjeter; nese dialogu ka mbaruar thirr onFinished
+
+setSprite(view, spriteName) - Ngarkon imazhin e sprites nga /sprites/DialougeSprites/ dhe e vendos ne ImageView
+
+
+
+
+
+
+GameScreen.java - Pjeset e lidhura me dialogun.
+
+
+
+activeDialogue - Mban controller-in e dialogut aktual aktiv; null nese nuk ka dialogue ne ekzekutim
+activeDialogueNode - Mban node vizuale te dialogut qe shtohen ne gameRoot
+interactionLocked - Flamur qe bllokon te gjitha interaksionet gjate dialogut (dhe combat-it); parandalon retriggering
+
+
+Kur MapManager zbulon nje zone me tip "dialogue:", InteractListener thirret me tipin dhe koordinatat e tiles. 
+GameScreen kontrollon nese tipi fillon me "dialogue:" dhe:
+
+- Ruan koordinatat e tiles ne lastDialogueTileX/Y
+- Vendos interactionLocked = true dhe ndalon loop-in — ky eshte flamuri qe parandalon retriggering
+- Nxjerr ID-ne e dialogut nga tipi (p.sh. "dialogue:cassie_encounter" → "cassie_encounter")
+- Krijon DialoguesScreen dhe merr DialogueBoxController nga loader-i
+- I jep controller-it DialogueManager dhe callbackun onFinished
+- Thërret startDialogue(dialogueId) dhe shton node ne gameRoot
+
+
+
+
+DialogueBox.fxml
+
+Percakton paraqitjen vizuale te kutise se dialogut. Shtrihet mbi te gjithe ekranin (800x600) me sfond transparent per te mos bllokuar lojën prapa.
+Perbehet nga dy AnchorPane te pozicionuara ne fund te ekranit:
+Paneli i djathte — shfaq sprites e karakterit si ImageView (fx:id="character1") me sfond te zbardhur.
+Paneli i majte — permban dy pjese:
+
+Nje shirit te errët ne krye me Label-in characterName qe shfaq emrin e karakterit
+Label-in dialogueText me tekst te mbështjellë qe shfaq rreshtat e dialogut
