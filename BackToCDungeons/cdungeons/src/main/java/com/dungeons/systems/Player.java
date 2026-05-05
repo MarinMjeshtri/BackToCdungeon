@@ -2,6 +2,7 @@ package com.dungeons.systems;
 
 import com.dungeons.world.Map;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 public class Player {
@@ -60,6 +61,14 @@ public class Player {
     }
 
     // ---------------- UPDATE ----------------
+    public enum Direction {
+        IDLE,
+        UP, DOWN, LEFT, RIGHT,
+        UP_LEFT, UP_RIGHT,
+        DOWN_LEFT, DOWN_RIGHT
+    }
+
+    private Direction currentDirection = Direction.IDLE;
 
     public void update() {
         double dx = 0;
@@ -70,7 +79,21 @@ public class Player {
         if (left)  dx -= SPEED;
         if (right) dx += SPEED;
 
+        if      (up && left)   currentDirection = Direction.UP_LEFT;
+        else if (up && right)  currentDirection = Direction.UP_RIGHT;
+        else if (down && left) currentDirection = Direction.DOWN_LEFT;
+        else if (down && right)currentDirection = Direction.DOWN_RIGHT;
+        else if (up)           currentDirection = Direction.UP;
+        else if (down)         currentDirection = Direction.DOWN;
+        else if (left)         currentDirection = Direction.LEFT;
+        else if (right)        currentDirection = Direction.RIGHT;
+        else                   currentDirection = Direction.IDLE;
+
         move(dx, dy);
+    }
+
+    public Direction getCurrentDirection() {
+        return currentDirection;
     }
 
     private void move(double dx, double dy) {
@@ -99,13 +122,31 @@ public class Player {
     // ---------------- RENDER ----------------
 
     public void render(GraphicsContext gc) {
-        gc.drawImage(
-                sprite.getImage(),
-                x,
-                y,
-                SIZE * SCALE*2,
-                SIZE * SCALE*2
-        );
+        String spritePath;
+
+        if (currentDirection == Direction.UP) {
+            spritePath = "/sprites/characters/Joni2/rotations/south.png";
+        } else if (currentDirection == Direction.DOWN) {
+            spritePath = "/sprites/characters/Joni2/rotations/north.png";
+        } else if (currentDirection == Direction.LEFT) {
+            spritePath = "/sprites/characters/Joni2/rotations/west.png";
+        } else if (currentDirection == Direction.RIGHT) {
+            spritePath = "/sprites/characters/Joni2/rotations/east.png";
+        } else if (currentDirection == Direction.UP_LEFT) {
+            spritePath = "/sprites/characters/Joni2/rotations/north-west.png";
+        } else if (currentDirection == Direction.UP_RIGHT) {
+            spritePath = "/sprites/characters/Joni2/rotations/north-east.png";
+        } else if (currentDirection == Direction.DOWN_LEFT) {
+            spritePath = "/sprites/characters/Joni2/rotations/south-west.png";
+        } else if (currentDirection == Direction.DOWN_RIGHT) {
+            spritePath = "/sprites/characters/Joni2/rotations/south-east.png";
+        } else { // IDLE or fallback
+            spritePath = "/sprites/characters/Joni2/rotations/south.png";
+        }
+
+        Image img = new Image(getClass().getResourceAsStream(spritePath));
+        gc.setImageSmoothing(false);
+        gc.drawImage(img, x, y, 96, 96);
     }
 
     // ---------------- GETTERS ----------------

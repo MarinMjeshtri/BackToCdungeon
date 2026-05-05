@@ -11,7 +11,7 @@ public class CharactersManager {
     public void load(){
         Gson gson = new Gson();
 
-        InputStream is = getClass().getResourceAsStream("/CharacterStats/Stats.json");
+        InputStream is = getClass().getResourceAsStream("/JSONfolders/CharacterStats/Stats.json");
 
         System.out.println("Character found!");
 
