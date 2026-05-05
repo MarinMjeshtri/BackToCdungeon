@@ -3,7 +3,7 @@ package com.dungeons.screens;
 //COMBAT
 import com.dungeons.Controllers.CombatController;
 
-// DIALOUGE
+// DIALOGUE
 import com.dungeons.Controllers.DialogueBoxController;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.dialogueManager.DialogueManager;
@@ -15,8 +15,6 @@ import com.dungeons.world.MapManager;
 import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
 
-//MUSIC
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -24,6 +22,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -31,48 +30,56 @@ import java.io.IOException;
 
 public class GameScreen {
 
-
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 2;
 
+    // ── PANES ──────────────────────────────────────────────
+    private Pane gamePane;       // canvas lives here — the actual game
+    private Pane uiPane;         // dialogue, credits, combat overlays
+    private Pane secondUIPane;   // shop and chest overlays
+    private Pane escapePane;     // pause screen only
+    private StackPane gameRoot;  // master root — stacks all four panes
+
+    // ── SCREENS ────────────────────────────────────────────
     private shopScreen shopScreen;
     private creditsScreen creditsScreen;
     private itemPickupScreen itemPickupScreen;
     private pauseScreen pauseScreen;
-    private Pane gameRoot;
     private Stage stage;
     private static GameScreen instance;
 
+
+    private Parent shopNode;
+    private Parent chestNode;
+
+    // ── CANVAS ─────────────────────────────────────────────
     private final Canvas canvas = new Canvas(800, 600);
     private final GraphicsContext gc = canvas.getGraphicsContext2D();
 
+    // ── MAP ────────────────────────────────────────────────
     private final TilesetManager tilesetManager = new TilesetManager();
     private MapManager mapManager;
     private MapRenderer mapRenderer;
 
+    // ── PLAYER ─────────────────────────────────────────────
     private final Player player = new Player(0, 0);
     private final DialogueManager dialogueManager = new DialogueManager();
 
+    // ── CAMERA ─────────────────────────────────────────────
     private double cameraX = 0;
     private double cameraY = 0;
 
+    // ── STATE ──────────────────────────────────────────────
     private int fightTileX;
     private int fightTileY;
-
     private AnimationTimer loop;
-
-    // Interaction lock
     private boolean interactionLocked = false;
 
-    // Dialogue state
+    // ── DIALOGUE ───────────────────────────────────────────
     private DialogueBoxController activeDialogue = null;
     private Parent activeDialogueNode = null;
     private int lastDialogueTileX = -1;
     private int lastDialogueTileY = -1;
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
 
     public GameScreen() {
         instance = this;
@@ -82,14 +89,42 @@ public class GameScreen {
         return instance;
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     public Parent getRoot() throws IOException {
 
         tilesetManager.loadAll();
         dialogueManager.load();
 
+        // ── BUILD PANES ────────────────────────────────────
+        gamePane     = new Pane(canvas);           // bottom — game canvas
+        uiPane       = new Pane();                 // dialogue, credits overlays
+        secondUIPane = new Pane();                 // shop and chest overlays
+        escapePane   = new Pane();                 // pause screen only
+
+        for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, escapePane}) {
+            p.setPrefSize(800, 600);
+            p.setPickOnBounds(false); // transparent panes don't block mouse
+        }
+
+        // ── PAUSE SCREEN → escapePane ──────────────────────
+        pauseScreen ps = new pauseScreen(this, stage);
+        escapePane.getChildren().add(ps.getRoot());
+        ps.getRoot().setVisible(false);
+        this.pauseScreen = ps;
+
+        // ── STACK ALL PANES ────────────────────────────────
+        // order = bottom to top: game → ui → secondUI → escape
+        gameRoot = new StackPane(gamePane, uiPane, secondUIPane, escapePane);
+        gameRoot.setPrefSize(800, 600);
+
+        // ── MAP MANAGER ────────────────────────────────────
         mapManager = new MapManager(
                 tilesetManager,
 
+                // map changed
                 (newMap, spawnX, spawnY) -> {
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
@@ -100,9 +135,11 @@ public class GameScreen {
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
 
+                // interact trigger
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
+                    // ── FIGHT → switches scene to combat ──
                     if (type.equals("fight")) {
                         fightTileX = tileX;
                         fightTileY = tileY;
@@ -122,61 +159,68 @@ public class GameScreen {
                                     GameMusicManager.playCombat();
                                 }
                             } catch (Exception ex) {
+                                ex.printStackTrace();
                             }
                         });
                     }
 
+                    // ── SHOP → secondUIPane ───────────────
                     if (type.equals("shop")) {
-
                         shopScreen shop = new shopScreen(this, stage);
-                        Parent shopNode = shop.getRoot();
-
-                        gameRoot.getChildren().add(shopNode);
-
+                        shopNode = shop.getRoot();
+                        secondUIPane.getChildren().add(shopNode);
+                        secondUIPane.setVisible(true);
                         this.shopScreen = shop;
 
-                        gameRoot.setOnKeyPressed(e -> {
-                            if (e.getCode() == KeyCode.E) {
-                                if(shopNode.isVisible()){
-                                    shopNode.setVisible(false);
-                                    shopNode.setDisable(true);
-                                }
-                            }
-                        });
-
                     }
+
+                    // ── CHEST → secondUIPane ──────────────
 
                     if (type.equals("chest")) {
-
-                       itemPickupScreen chest = new itemPickupScreen(this,stage);
-                       Parent chestNode = chest.getRoot();
-                       gameRoot.getChildren().add(chestNode);
-
-                       this.itemPickupScreen = chest;
-
-                        gameRoot.setOnKeyPressed(e -> {
-                            if (e.getCode() == KeyCode.E) {
-                                if(chestNode.isVisible()){
-                                    chestNode.setVisible(false);
-                                    chestNode.setDisable(true);
-                                }
-                            }
-                        });
-
+                        itemPickupScreen chest = new itemPickupScreen(this, stage);
+                        chestNode = chest.getRoot();
+                        secondUIPane.getChildren().add(chestNode);
+                        secondUIPane.setVisible(true);
+                        this.itemPickupScreen = chest;
                     }
 
+
+                    //Put the callers for chest and shop outside to stop repeating code dattebayo
+                    // in getRoot() — set ONCE, outside the interact listener
+                    canvas.setOnKeyPressed(e -> {
+                        if (e.getCode() == KeyCode.ESCAPE) {
+                            togglePause();
+                        } else if (e.getCode() == KeyCode.E) {
+                            if(shopNode != null && !shopNode.isVisible() && mapManager.isCurrentMap("ShopRoom")){
+                                shopNode.setVisible(true);
+                                secondUIPane.setVisible(true);
+                            }
+                            else if(chestNode != null && !chestNode.isVisible() && mapManager.isCurrentMap("ChestRoom")){
+                                chestNode.setVisible(true);
+                                secondUIPane.setVisible(true);
+                            }
+                            else if (shopNode != null && shopNode.isVisible()) {
+                                shopNode.setVisible(false);
+                                secondUIPane.setVisible(false);
+                            } else if (chestNode != null && chestNode.isVisible()) {
+                                chestNode.setVisible(false);
+                                secondUIPane.setVisible(false);
+                            }
+                        } else {
+                            player.keyPressed(e.getCode());
+                        }
+                    });
+
+                    // ── CREDITS → uiPane ──────────────────
                     if (type.equals("credits")) {
-
-                        creditsScreen creditsscreen = new creditsScreen(this,stage);
+                        creditsScreen creditsscreen = new creditsScreen(this, stage);
                         Parent credits = creditsscreen.getRoot();
-                        gameRoot.getChildren().add(credits);
-
+                        uiPane.getChildren().add(credits);
                         this.creditsScreen = creditsscreen;
                         GameMusicManager.playEnding();
-
-
                     }
 
+                    // ── DIALOGUE → uiPane ─────────────────
                     if (type.startsWith("dialogue:")) {
                         lastDialogueTileX = tileX;
                         lastDialogueTileY = tileY;
@@ -190,7 +234,7 @@ public class GameScreen {
                                 DialogueBoxController dController = dialogueScreen.getLoader().getController();
                                 dController.setDialogueManager(dialogueManager);
                                 dController.setOnFinished(() -> {
-                                    gameRoot.getChildren().remove(activeDialogueNode);
+                                    uiPane.getChildren().remove(activeDialogueNode);
                                     mapManager.markDialogueDone(lastDialogueTileX, lastDialogueTileY);
                                     activeDialogue = null;
                                     activeDialogueNode = null;
@@ -201,7 +245,7 @@ public class GameScreen {
                                 dController.startDialogue(dialogueId);
                                 activeDialogue = dController;
                                 activeDialogueNode = dialogueScreen.getRoot();
-                                gameRoot.getChildren().add(activeDialogueNode);
+                                uiPane.getChildren().add(activeDialogueNode);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
@@ -210,7 +254,8 @@ public class GameScreen {
                 }
         );
 
-        mapManager.loadMap("BossRoomJoni");
+        // ── LOAD STARTING MAP ──────────────────────────────
+        mapManager.loadMap("ShopRoom");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
@@ -219,14 +264,7 @@ public class GameScreen {
                 currentMap.spawnY * TILE_SIZE * SCALE
         );
 
-        pauseScreen ps = new pauseScreen(this, stage);
-        Pane root = new Pane(canvas);
-        root.setPrefSize(800, 600);
-        root.getChildren().add(ps.getRoot());
-        ps.getRoot().setVisible(false);
-        this.pauseScreen = ps;
-        this.gameRoot = root;
-
+        // ── INPUT ──────────────────────────────────────────
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
 
@@ -236,8 +274,10 @@ public class GameScreen {
         });
         canvas.setOnKeyReleased(e -> player.keyReleased(e.getCode()));
 
-        return root;
+        return gameRoot;
     }
+
+    // ── COMBAT RETURN ──────────────────────────────────────
 
     public void returnFromCombat() {
         mapManager.markFightDone(fightTileX, fightTileY);
@@ -248,7 +288,6 @@ public class GameScreen {
         startLoop();
     }
 
-    // called by CombatController after a boss is defeated so loads next map then returns to game maps
     public void returnFromCombatWithMap(String nextMapName) {
         mapManager.loadMap(nextMapName);
         mapManager.markFightDone(fightTileX, fightTileY);
@@ -259,12 +298,23 @@ public class GameScreen {
         startLoop();
     }
 
+    // ── PAUSE ──────────────────────────────────────────────
+
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
+
+        // escapePane absorbs input when paused
+        escapePane.setPickOnBounds(nowPaused);
+
         if (nowPaused) loop.stop();
-        else loop.start();
+        else {
+            loop.start();
+            canvas.requestFocus();
+        }
     }
+
+    // ── GAME LOOP ──────────────────────────────────────────
 
     public void startLoop() {
         if (loop != null) loop.stop();
@@ -315,21 +365,22 @@ public class GameScreen {
 
         gc.restore();
     }
-    //Ui loader
+
+    // ── BOSS RESOLVER ──────────────────────────────────────
+
     private String resolveBossFromCurrentMap() {
-     String name = mapManager.getCurrentMap().getMapName();
+        String name = mapManager.getCurrentMap().getMapName();
         if (name == null) return "CassieYarn";
         switch (name) {
-        case "k3jviBossroom": return "CassieYarn";
-        case "RoomKledi":     return "FreakyRelah";
-        case "BossRoomJoni":  return "JohnMKati";
-        case "MobRoom1":      return "Mob1";
-        case "MobRoom2":      return "Mob2";    
-        case "MobRoom3":      return "Mob3";
-        case "MobRoom4":      return "Mob4";
-        case "MobRoom5":      return "Mob5";
-        default:              return "CassieYarn";
+            case "k3jviBossroom": return "CassieYarn";
+            case "RoomKledi":     return "FreakyRelah";
+            case "BossRoomJoni":  return "JohnMKati";
+            case "MobRoom1":      return "Mob1";
+            case "MobRoom2":      return "Mob2";
+            case "MobRoom3":      return "Mob3";
+            case "MobRoom4":      return "Mob4";
+            case "MobRoom5":      return "Mob5";
+            default:              return "CassieYarn";
+        }
     }
-}    
 }
-
