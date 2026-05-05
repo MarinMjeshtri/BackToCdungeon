@@ -8,7 +8,7 @@
         "hp": 420
       },
       "sprites": {
-        "neutral": "",
+        "neutral": "/Sprties_CombatUI/MainC.png",
         "angry": "",
         "defeated": ""
       },
