@@ -23,7 +23,7 @@ public class Player {
         this.y = startY;
 
         this.sprite = new SpriteSheet(
-                "/sprites/characters/Joni/rotations/east.png",
+                "/sprites/characters/Joni2/rotations/east.png",
                 16
         );
     }
