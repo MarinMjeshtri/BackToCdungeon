@@ -14,7 +14,7 @@ public class Player {
 
     private static final double SPEED = 2.0;
     private static final int TILE_SIZE = 16;
-    private static final int SCALE = 2;
+    private static final int SCALE = 3;
     private static final int SIZE = 14;
 
     private SpriteSheet sprite;
@@ -147,7 +147,7 @@ public class Player {
         Image img = new Image(getClass().getResourceAsStream(spritePath));
         gc.setImageSmoothing(false);
         double squish = 1 + 0.05 * Math.sin(System.currentTimeMillis() * 0.005);
-        gc.drawImage(img, x, y, 64 * squish, 64 / squish);
+        gc.drawImage(img, x, y, 128 * squish, 128 / squish);
 
     }
 

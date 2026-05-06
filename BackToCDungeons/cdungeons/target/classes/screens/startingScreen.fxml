@@ -53,14 +53,14 @@
                                 styleClass="nonGameSelector"
                                 text="PLAY" />
 
-                        <!-- Tutorial Button -->
+                        <!-- Tutorial Button  add onAction for functions or ask me-->
                         <Button
                                 layoutY="35.0"
                                 prefWidth="160.0"
                                 styleClass="nonGameSelector"
                                 text="TUTORIAL" />
 
-                        <!-- Options Button -->
+                        <!-- Options Button  add onAction for functions or ask me -->
                         <Button
                                 layoutY="70.0"
                                 prefWidth="160.0"

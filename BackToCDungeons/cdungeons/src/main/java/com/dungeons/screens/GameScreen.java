@@ -31,7 +31,7 @@ import java.io.IOException;
 public class GameScreen {
 
     private static final int TILE_SIZE = 16;
-    private static final int SCALE = 2;
+    private static final int SCALE = 3;
 
     // ── PANES ──────────────────────────────────────────────
     private Pane gamePane;       // canvas lives here — the actual game
@@ -54,7 +54,7 @@ public class GameScreen {
     private Parent chestNode;
 
     // ── CANVAS ─────────────────────────────────────────────
-    private final Canvas canvas = new Canvas(800, 600);
+    private final Canvas canvas = new Canvas(1280, 720);
     private final GraphicsContext gc = canvas.getGraphicsContext2D();
 
     // ── MAP ────────────────────────────────────────────────
@@ -108,7 +108,7 @@ public class GameScreen {
         escapePane   = new Pane();                 // PAUSE
 
         for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
-            p.setPrefSize(800, 600);
+            p.setPrefSize(1280, 720);
             p.setPickOnBounds(false); // transparent panes don't block mouse
         }
 
@@ -121,7 +121,7 @@ public class GameScreen {
         // ── STACK ALL PANES ────────────────────────────────
         // order = bottom to top: game → ui → secondUI → escape
         gameRoot = new StackPane(gamePane, uiPane, secondUIPane, escapePane);
-        gameRoot.setPrefSize(800, 600);
+        gameRoot.setPrefSize(1280, 720);
 
         // ── MAP MANAGER ────────────────────────────────────
         mapManager = new MapManager(
