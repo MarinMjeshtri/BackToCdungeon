@@ -15,10 +15,8 @@ public class marinMainTesting extends Application {
     public void start(Stage stage) {
         Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/REANO.ttf"), 10);
         stage.setTitle("LabDungeons 0.0.1");
-        stage.setFullScreen(true);
         loadStartingScreen(stage);
         stage.show();
-        stage.centerOnScreen();
     }
 
     public static void loadStartingScreen(Stage stage) {
@@ -29,7 +27,7 @@ public class marinMainTesting extends Application {
             OptionsNStartingController controller = screen.getLoader().getController();
             controller.setStage(stage);
 
-            Scene scene = new Scene(screen.getRoot(), 800, 600);
+            Scene scene = new Scene(screen.getRoot(), 1280, 720);
 
             scene.getStylesheets().add(
                     marinMainTesting.class

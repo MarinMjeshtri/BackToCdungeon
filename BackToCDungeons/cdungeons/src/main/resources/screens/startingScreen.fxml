@@ -3,35 +3,92 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="startingScreenPane" fx:id="startingScreenPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.OptionsNStartingController">
+<StackPane
+        xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.dungeons.Controllers.OptionsNStartingController">
 
     <children>
 
-        <Label id="mainNAME" layoutX="110.0" layoutY="122.0" text="WELCOME TO LABDUNG">
-        </Label>
-
-        <Label id="gameVersion" layoutX="612.0" layoutY="580.0" text="SCHOOL PROJECT DEMO 0.1">
-            <font>
-                <Font size="9.0" />
-            </font>
-        </Label>
-
-        <AnchorPane layoutX="270.0" layoutY="255.0" prefHeight="227.0" prefWidth="261.0">
+        <AnchorPane
+                fx:id="startingScreenPane"
+                maxHeight="720.0" maxWidth="1280.0"
+                prefHeight="720.0" prefWidth="1280.0">
 
             <children>
-                <Button layoutX="35.0" layoutY="14.0" onAction="#handleButton1" prefHeight="27.0" prefWidth="160.0" styleClass="nonGameSelector" text="PLAY" />
 
-                <Button layoutX="35.0" layoutY="121.0" onAction="#handleButton2" prefHeight="27.0" prefWidth="160.0" styleClass="nonGameSelector" text="CREIDTS" />
+                <!-- GAME NAME -->
+                <Label
+                        id="mainNAME"
+                        alignment="CENTER"
+                        layoutX="271.0" layoutY="87.0"
+                        prefHeight="209.0" prefWidth="737.0"
+                        text="WELCOME TO LABDUNG" />
 
-                <Button layoutX="35.0" layoutY="156.0" onAction="#handleButton3" prefHeight="27.0" prefWidth="160.0" styleClass="nonGameSelector" text="EXIT" />
-            <Button layoutX="35.0" layoutY="86.0" onAction="#handleButton1" prefHeight="27.0" prefWidth="160.0" styleClass="nonGameSelector" text="OPTIONS" />
-            <Button layoutX="35.0" layoutY="49.0" onAction="#handleButton1" prefHeight="27.0" prefWidth="160.0" styleClass="nonGameSelector" text="TUTORIAL" />
+                <!-- VERSION -->
+                <Label
+                        id="gameVersion"
+                        layoutX="1016.0" layoutY="667.0"
+                        prefHeight="47.0" prefWidth="249.0"
+                        text="SCHOOL PROJECT DEMO 0.1">
+
+                    <font>
+                        <Font size="9.0" />
+                    </font>
+                </Label>
+
+                <!-- MENU -->
+                <AnchorPane
+                        layoutX="560.0" layoutY="404.0"
+                        prefHeight="200.0" prefWidth="160.0">
+
+                    <children>
+                        <!-- Play Button -->
+                        <Button
+                                layoutY="0.0"
+                                onAction="#handleButton1"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector"
+                                text="PLAY" />
+
+                        <!-- Tutorial Button  add onAction for functions or ask me-->
+                        <Button
+                                layoutY="35.0"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector"
+                                text="TUTORIAL" />
+
+                        <!-- Options Button  add onAction for functions or ask me -->
+                        <Button
+                                layoutY="70.0"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector"
+                                text="OPTIONS" />
+
+                        <!-- Credits Button -->
+                        <Button
+                                layoutY="105.0"
+                                onAction="#handleButton2"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector"
+                                text="CREDITS" />
+
+                        <!-- Exit Button -->
+                        <Button
+                                layoutY="140.0"
+                                onAction="#handleButton3"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector" text="EXIT" />
+
+                    </children>
+
+                </AnchorPane>
+
             </children>
 
         </AnchorPane>
 
     </children>
-</Pane>
+</StackPane>
