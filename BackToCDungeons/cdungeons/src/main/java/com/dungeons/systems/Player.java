@@ -125,9 +125,9 @@ public class Player {
         String spritePath;
 
         if (currentDirection == Direction.UP) {
-            spritePath = "/sprites/characters/Joni2/rotations/south.png";
-        } else if (currentDirection == Direction.DOWN) {
             spritePath = "/sprites/characters/Joni2/rotations/north.png";
+        } else if (currentDirection == Direction.DOWN) {
+            spritePath = "/sprites/characters/Joni2/rotations/south.png";
         } else if (currentDirection == Direction.LEFT) {
             spritePath = "/sprites/characters/Joni2/rotations/west.png";
         } else if (currentDirection == Direction.RIGHT) {
@@ -141,12 +141,14 @@ public class Player {
         } else if (currentDirection == Direction.DOWN_RIGHT) {
             spritePath = "/sprites/characters/Joni2/rotations/south-east.png";
         } else { // IDLE or fallback
-            spritePath = "/sprites/characters/Joni2/rotations/south.png";
+            spritePath = "/sprites/characters/Joni2/rotations/north.png";
         }
 
         Image img = new Image(getClass().getResourceAsStream(spritePath));
         gc.setImageSmoothing(false);
-        gc.drawImage(img, x, y, 96, 96);
+        double squish = 1 + 0.05 * Math.sin(System.currentTimeMillis() * 0.005);
+        gc.drawImage(img, x, y, 64 * squish, 64 / squish);
+
     }
 
     // ---------------- GETTERS ----------------

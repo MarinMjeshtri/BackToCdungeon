@@ -54,8 +54,6 @@ public class quitController {
     @FXML
     public void closeEntirely(){
         System.exit(0);
-
-
     }
 
     @FXML

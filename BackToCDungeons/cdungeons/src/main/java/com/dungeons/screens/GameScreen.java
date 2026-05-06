@@ -37,6 +37,7 @@ public class GameScreen {
     private Pane gamePane;       // canvas lives here — the actual game
     private Pane uiPane;         // dialogue, credits, combat overlays
     private Pane secondUIPane;   // shop and chest overlays
+    private Pane combatPane;
     private Pane escapePane;     // pause screen only
     private StackPane gameRoot;  // master root — stacks all four panes
 
@@ -99,12 +100,14 @@ public class GameScreen {
         dialogueManager.load();
 
         // ── BUILD PANES ────────────────────────────────────
-        gamePane     = new Pane(canvas);           // bottom — game canvas
-        uiPane       = new Pane();                 // dialogue, credits overlays
-        secondUIPane = new Pane();                 // shop and chest overlays
-        escapePane   = new Pane();                 // pause screen only
+        // I plan on adding an inventory pane too!
+        gamePane     = new Pane(canvas);           // GAME
+        uiPane       = new Pane();                 // DIALOUGE CREDITS AND OVERALL UI
+        secondUIPane = new Pane();                 // SHOP AND CHEST
+        combatPane   = new Pane();                 // FOR LOADING COMBAT
+        escapePane   = new Pane();                 // PAUSE
 
-        for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, escapePane}) {
+        for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
             p.setPrefSize(800, 600);
             p.setPickOnBounds(false); // transparent panes don't block mouse
         }
@@ -255,7 +258,7 @@ public class GameScreen {
         );
 
         // ── LOAD STARTING MAP ──────────────────────────────
-        mapManager.loadMap("ShopRoom");
+        mapManager.loadMap("BossRoomJoni");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
