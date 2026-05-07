@@ -1,11 +1,13 @@
 *{
--fx-font-family: 'Reano';
+-fx-font-family: 'REANO';
 }
+
+/* MAIN SCREEN */
 
 #startingScreenPane{
 -fx-background-image: url('../sprites/UiDecor/startingScreenDecor.png');
 -fx-background-size: cover;
--fx-background-position: center
+-fx-background-position: center;
 }
 #mainNAME{
 -fx-font-size: 48px;
@@ -28,3 +30,211 @@
 #labelQuit{
 -fx-text-fill: white;
 }
+
+/* PAUSE SCREEN */
+
+#decorBackground{
+-fx-background-image: url('../sprites/UiDecor/allPurposeBackground.png');
+-fx-background-size: contain;
+-fx-background-position: center;
+
+-fx-background-radius: 10;
+-fx-border-radius: 10;
+}
+
+.outerButtonDecor{
+-fx-background-image: url('../sprites/UiDecor/outsideButtonArt2.png');
+-fx-background-size: contain;
+-fx-background-position: center;
+}
+
+.pauseButton{
+-fx-background-color: transparent;
+-fx-border-color: transparent;
+}
+
+#outsideLabel{
+-fx-background-image: url('../sprites/UiDecor/labelDecor2.png');
+-fx-background-size: cover;
+-fx-background-position: center;
+}
+
+#pausedLabel{
+-fx-text-fill: white;
+}
+
+/* ============================================
+   LABDUNG — PIXEL ART DARK THEME
+   ============================================ */
+
+* {
+    -fx-font-family: 'Reano';
+}
+
+
+.root {
+    -fx-background-color: rgba(0, 0, 0, 0.75);
+}
+
+.dark-panel {
+    -fx-background-color: #1a1a2e;
+    -fx-border-color: #4444aa;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.inner-panel {
+    -fx-background-color: #16213e;
+    -fx-border-color: #2244aa;
+    -fx-border-width: 1;
+}
+
+.label {
+    -fx-text-fill: #c8c8ff;
+}
+
+.item-name {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+}
+
+.price-label {
+    -fx-text-fill: #44ffaa;
+    -fx-font-size: 13px;
+}
+
+.desc-label {
+    -fx-text-fill: #aaaacc;
+    -fx-font-size: 9px;
+}
+
+.title-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 48px;
+    -fx-effect: dropshadow(gaussian, #6666ff, 15, 0.7, 0, 0);
+}
+
+.hint-label {
+    -fx-text-fill: #666688;
+    -fx-font-size: 11px;
+}
+
+.button {
+    -fx-background-color: #1a1a3e;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #4444cc;
+    -fx-border-width: 2;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #2a2a5e;
+    -fx-border-color: #6666ff;
+    -fx-effect: dropshadow(gaussian, #4444ff, 10, 0.5, 0, 0);
+}
+
+.button:pressed {
+    -fx-background-color: #0a0a2e;
+}
+
+
+/* ============================================
+   LAB DUNGEONS — UI Stylesheet
+   Gritty dark lab + light periwinkle panels
+   ============================================ */
+
+/* === ROOT / SCENE === */
+.root {
+    -fx-background-color: #1a1a2e;
+    -fx-font-family: "Courier New", monospace;
+}
+
+/* === PANELS (AnchorPane / Pane) === */
+.panel {
+    -fx-background-color: #c8cfe8;
+    -fx-border-color: #7b8cc7;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+
+/* === LABELS === */
+.label {
+    -fx-text-fill: #1e2352;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 13px;
+}
+
+.label-title {
+    -fx-text-fill: #3a4580;
+    -fx-font-size: 11px;
+    -fx-font-family: "Courier New", monospace;
+}
+
+.label-muted {
+    -fx-text-fill: #5a6aaa;
+    -fx-font-size: 10px;
+    -fx-font-family: "Courier New", monospace;
+}
+
+/* === BUTTONS === */
+.button {
+    -fx-background-color: #1e2352;
+    -fx-text-fill: #a0b4f0;
+    -fx-border-color: #4a5ab0;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #2a3270;
+    -fx-border-color: #7b8cc7;
+}
+
+.button:pressed {
+    -fx-background-color: #141a3a;
+    -fx-border-color: #a0b4f0;
+}
+
+/* === HP BARS === */
+/* Red background bar */
+.hp-bar-bg {
+    -fx-fill: #8b1a1a;
+    -fx-stroke: #3a0a0a;
+    -fx-stroke-width: 1px;
+    -fx-arc-width: 4px;
+    -fx-arc-height: 4px;
+}
+
+/* Green fill bar */
+.hp-bar-fill {
+    -fx-fill: #2d7a2d;
+    -fx-stroke: #4aaa4a;
+    -fx-stroke-width: 1px;
+}
+
+/* === TURN LOG (TextArea / ScrollPane) === */
+.text-area {
+    -fx-background-color: #0f1128;
+    -fx-border-color: #4a5ab0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 2px;
+    -fx-background-radius: 2px;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: #8899dd;
+}
+
+.text-area .content {
+    -fx-background-color: #0f1128;
+}
+
+.text-area:focused {
+    -fx-border-color: #7b8cc7;
+}
+

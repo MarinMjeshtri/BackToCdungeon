@@ -1,3 +1,38 @@
 {
+      "items":{
 
+        "brokenGlasses": {
+            "name": "Broken Glasses",
+            "desc": "These glasses belonged to a very influential professor in this laboratory!",
+            "price": 0,
+          "stats": {
+            "atk": 0,
+            "def": 0,
+            "hp": 0
+          }
+          },
+
+        "clipper": {
+          "name": "Hair Clipper",
+          "desc": "Rumors say clippers are better than rubber at nullifying electricity!",
+          "price": 0,
+          "stats": {
+            "atk": 0,
+            "def": 0,
+            "hp": 0
+          }
+        },
+
+        "xSshirt": {
+          "name": "XS shirt",
+          "desc": "The prized possesion of one of the brighest minds in this laboratory, rumors say he could never wear it though!",
+          "price": 0,
+          "stats": {
+            "atk": 0,
+            "def": 0,
+            "hp": 0
+          }
+        }
+
+        }
 }

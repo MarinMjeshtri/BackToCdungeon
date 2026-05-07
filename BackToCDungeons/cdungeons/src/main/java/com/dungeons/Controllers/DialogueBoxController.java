@@ -8,9 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
-import java.io.InputStream;
-
-
 public class DialogueBoxController {
     @FXML
     private Label dialogueText;
@@ -21,12 +18,7 @@ public class DialogueBoxController {
     private ImageView character1;
 
     private DialogueManager dialogueManager;
-
-    private boolean finished = false;
-
-    public boolean isDialogueFinished() {
-        return finished;
-    }
+    private Runnable onFinished;
 
     @FXML
     public void initialize() {
@@ -58,6 +50,10 @@ public class DialogueBoxController {
         });
     }
 
+    public void setOnFinished(Runnable onFinished) {
+        this.onFinished = onFinished;
+    }
+
     public void setDialogueManager(DialogueManager dialogueManager) {
         this.dialogueManager = dialogueManager;
     }
@@ -66,9 +62,9 @@ public class DialogueBoxController {
         dialogueManager.startDialogue(id);
         characterName.setText(dialogueManager.getCurrentCharacter());
         dialogueText.setText(dialogueManager.getNextLine());
-
         setSprite(character1, dialogueManager.getSprite());
     }
+
     private void setSprite(ImageView view, String spriteName) {
         if (spriteName != null) {
             String path = "/sprites/DialougeSprites/" + spriteName;
@@ -92,8 +88,7 @@ public class DialogueBoxController {
         if (!dialogueManager.isFinished()) {
             dialogueText.setText(dialogueManager.getNextLine());
         } else {
-            finished = true;
-            dialogueText.getScene().getRoot().setVisible(false);
+            if (onFinished != null) onFinished.run();
         }
     }
 }

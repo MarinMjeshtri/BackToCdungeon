@@ -1,13 +1,21 @@
 package com.dungeons.screens;
 
+//COMBAT
 import com.dungeons.Controllers.CombatController;
+
+// DIALOUGE
 import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.dialogueManager.DialogueManager;
+
+//MAP
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
 import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
+
+//MUSIC
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -21,20 +29,19 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
-
 public class GameScreen {
+
 
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 2;
 
-    private DialogueManager dialogueManager;
-    private DialogueBoxController activeDialogue = null;
-    private Parent activeDialogueNode = null;
-
+    private shopScreen shopScreen;
+    private creditsScreen creditsScreen;
+    private itemPickupScreen itemPickupScreen;
     private pauseScreen pauseScreen;
-    private Pane gameRoot; // ← fixed name
+    private Pane gameRoot;
     private Stage stage;
+    private static GameScreen instance;
 
     private final Canvas canvas = new Canvas(800, 600);
     private final GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -44,19 +51,41 @@ public class GameScreen {
     private MapRenderer mapRenderer;
 
     private final Player player = new Player(0, 0);
+    private final DialogueManager dialogueManager = new DialogueManager();
 
     private double cameraX = 0;
     private double cameraY = 0;
 
+    private int fightTileX;
+    private int fightTileY;
+
     private AnimationTimer loop;
+
+    // Interaction lock
+    private boolean interactionLocked = false;
+
+    // Dialogue state
+    private DialogueBoxController activeDialogue = null;
+    private Parent activeDialogueNode = null;
+    private int lastDialogueTileX = -1;
+    private int lastDialogueTileY = -1;
 
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    public GameScreen() {
+        instance = this;
+    }
+
+    public static GameScreen getInstance() {
+        return instance;
+    }
+
     public Parent getRoot() throws IOException {
 
         tilesetManager.loadAll();
+        dialogueManager.load();
 
         mapManager = new MapManager(
                 tilesetManager,
@@ -71,32 +100,104 @@ public class GameScreen {
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
 
-                // SINDI SINDI SINDI JON JON JON JON JON JON JON JON JON JON JON this is where u place most of the dialogue :D ~yours truly
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
                     if (type.equals("fight")) {
+                        fightTileX = tileX;
+                        fightTileY = tileY;
+                        interactionLocked = true;
                         loop.stop();
                         Platform.runLater(() -> {
                             try {
                                 combatScreen combat = new combatScreen();
                                 CombatController control = combat.getLoader().getController();
-                                control.setGameScreen(this);
-                                control.setStage(stage);
+                                String bossId = resolveBossFromCurrentMap();
                                 stage.getScene().setRoot(combat.getRoot());
+                                control.startCombat(bossId);
+
+                                if (mapManager.isCurrentMap("BossRoomJoni")) {
+                                    GameMusicManager.playFinalBoss();
+                                } else {
+                                    GameMusicManager.playCombat();
+                                }
                             } catch (Exception ex) {
-                                ex.printStackTrace();
                             }
                         });
                     }
+
+                    if (type.equals("shop")) {
+
+                        shopScreen shop = new shopScreen(this, stage);
+                        Parent shopNode = shop.getRoot();
+
+                        gameRoot.getChildren().add(shopNode);
+
+                        this.shopScreen = shop;
+
+                        gameRoot.setOnKeyPressed(e -> {
+                            if (e.getCode() == KeyCode.E) {
+                                if(shopNode.isVisible()){
+                                    shopNode.setVisible(false);
+                                    shopNode.setDisable(true);
+                                }
+                            }
+                        });
+
+                    }
+
+                    if (type.equals("chest")) {
+
+                       itemPickupScreen chest = new itemPickupScreen(this,stage);
+                       Parent chestNode = chest.getRoot();
+                       gameRoot.getChildren().add(chestNode);
+
+                       this.itemPickupScreen = chest;
+
+                        gameRoot.setOnKeyPressed(e -> {
+                            if (e.getCode() == KeyCode.E) {
+                                if(chestNode.isVisible()){
+                                    chestNode.setVisible(false);
+                                    chestNode.setDisable(true);
+                                }
+                            }
+                        });
+
+                    }
+
+                    if (type.equals("credits")) {
+
+                        creditsScreen creditsscreen = new creditsScreen(this,stage);
+                        Parent credits = creditsscreen.getRoot();
+                        gameRoot.getChildren().add(credits);
+
+                        this.creditsScreen = creditsscreen;
+                        GameMusicManager.playEnding();
+
+
+                    }
+
                     if (type.startsWith("dialogue:")) {
-                        String dialogueId = type.split(":")[1];
+                        lastDialogueTileX = tileX;
+                        lastDialogueTileY = tileY;
+                        interactionLocked = true;
                         loop.stop();
+
+                        String dialogueId = type.split(":")[1];
                         Platform.runLater(() -> {
                             try {
                                 DialoguesScreen dialogueScreen = new DialoguesScreen();
                                 DialogueBoxController dController = dialogueScreen.getLoader().getController();
                                 dController.setDialogueManager(dialogueManager);
+                                dController.setOnFinished(() -> {
+                                    gameRoot.getChildren().remove(activeDialogueNode);
+                                    mapManager.markDialogueDone(lastDialogueTileX, lastDialogueTileY);
+                                    activeDialogue = null;
+                                    activeDialogueNode = null;
+                                    interactionLocked = false;
+                                    canvas.requestFocus();
+                                    loop.start();
+                                });
                                 dController.startDialogue(dialogueId);
                                 activeDialogue = dController;
                                 activeDialogueNode = dialogueScreen.getRoot();
@@ -106,16 +207,10 @@ public class GameScreen {
                             }
                         });
                     }
-                    if (type.equals("shop")) {
-                        // TODO: shop team hooks here
-                    }
-                    if (type.equals("chest")) {
-                        // TODO: chest team hooks here
-                    }
                 }
         );
 
-        mapManager.loadMap("MobRoom1");
+        mapManager.loadMap("BossRoomJoni");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
@@ -130,7 +225,7 @@ public class GameScreen {
         root.getChildren().add(ps.getRoot());
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
-        this.gameRoot = root; // ← stores the root correctly now
+        this.gameRoot = root;
 
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
@@ -145,7 +240,21 @@ public class GameScreen {
     }
 
     public void returnFromCombat() {
+        mapManager.markFightDone(fightTileX, fightTileY);
+        interactionLocked = false;
         stage.getScene().setRoot(gameRoot);
+        player.clearInput();
+        canvas.requestFocus();
+        startLoop();
+    }
+
+    // called by CombatController after a boss is defeated so loads next map then returns to game maps
+    public void returnFromCombatWithMap(String nextMapName) {
+        mapManager.loadMap(nextMapName);
+        mapManager.markFightDone(fightTileX, fightTileY);
+        interactionLocked = false;
+        stage.getScene().setRoot(gameRoot);
+        player.clearInput();
         canvas.requestFocus();
         startLoop();
     }
@@ -158,6 +267,7 @@ public class GameScreen {
     }
 
     public void startLoop() {
+        if (loop != null) loop.stop();
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -175,13 +285,8 @@ public class GameScreen {
     private void update() throws Exception {
         player.update();
         updateCamera();
-        mapManager.checkInteractions(player.getTileX(), player.getTileY());
-
-        if (activeDialogue != null && activeDialogue.isDialogueFinished()) {
-            gameRoot.getChildren().remove(activeDialogueNode);
-            activeDialogue = null;
-            activeDialogueNode = null;
-            loop.start();
+        if (!interactionLocked) {
+            mapManager.checkInteractions(player.getTileX(), player.getTileY());
         }
     }
 
@@ -210,5 +315,21 @@ public class GameScreen {
 
         gc.restore();
     }
-
+    //Ui loader
+    private String resolveBossFromCurrentMap() {
+     String name = mapManager.getCurrentMap().getMapName();
+        if (name == null) return "CassieYarn";
+        switch (name) {
+        case "k3jviBossroom": return "CassieYarn";
+        case "RoomKledi":     return "FreakyRelah";
+        case "BossRoomJoni":  return "JohnMKati";
+        case "MobRoom1":      return "Mob1";
+        case "MobRoom2":      return "Mob2";    
+        case "MobRoom3":      return "Mob3";
+        case "MobRoom4":      return "Mob4";
+        case "MobRoom5":      return "Mob5";
+        default:              return "CassieYarn";
+    }
+}    
 }
+

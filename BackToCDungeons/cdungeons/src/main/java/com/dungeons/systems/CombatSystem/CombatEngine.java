@@ -1,171 +1,263 @@
-// Logjika e combatit. 
-//* Bej balancim dhe rregullime ketu. Nuk funksionon per iden qe kemi, this is just a base */
 package com.dungeons.systems.CombatSystem;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
 
 public class CombatEngine {
 
     private final Player player;
-    private final BossLoader bossLoader;
+    private final BossLoader boss;
+    private final Random rng = new Random();
 
     private int roundNumber = 0;
     private CombatResult result = CombatResult.ONGOING;
-
     private final List<TurnLog> history = new ArrayList<>();
 
-   
-    public CombatEngine(Player player, BossLoader bossLoader) {
+    private boolean guardActive       = false;
+    private boolean counterActive     = false;
+    private double  talkModifier      = 1.0;
+    private boolean talkUsedThisTurn  = false;
+    private boolean guardUsedThisTurn = false;
+
+    private int guardCooldownLeft = 0;
+    private int move4CooldownLeft = 0;
+
+    private List<Integer> lastBossHitList = new ArrayList<>();
+    private String lastBossMoveHitStyle   = "single";
+
+    public CombatEngine(Player player, BossLoader boss) {
         this.player = player;
-        this.bossLoader = bossLoader;
+        this.boss   = boss;
     }
 
-    /**
-     * Processes one full round: player acts, then boss acts (if still alive).
-     *
-     * @param action  the action the player chose this turn
-     * @param itemId  
-     * @return a TurnLog describing everything that happened this round
-     * @throws IllegalStateException if called after combat has already ended
-     */
-    public TurnLog processTurn(PlayerAction action, String itemId) {
-        if (result != CombatResult.ONGOING) {
-            throw new IllegalStateException("Combat is already over: " + result);
-        }
+    public TurnLog processTurnByIndex(int moveIndex, String itemId) {
+        if (result != CombatResult.ONGOING)
+            throw new IllegalStateException("Combat is over: " + result);
 
         roundNumber++;
+        lastBossHitList.clear();
+        talkUsedThisTurn  = false;
+        guardUsedThisTurn = false;
 
-        
-        String  playerMoveName    = null;
-        int     playerDamageDealt = 0;
-        String  itemUsedName      = null;
-        int     playerHpRestored  = 0;
+        String playerMoveName    = null;
+        int    playerDamageDealt = 0;
+        String itemUsedName      = null;
+        int    playerHpRestored  = 0;
+        String bossMoveName      = null;
+        int    bossDamageDealt   = 0;
+        int    playerDotDamage   = 0;
+        int    bossDotDamage     = 0;
 
-        String  bossMoveName      = null;
-        int     bossDamageDealt   = 0;
-
-
-        switch (action) {
-
-            case MOVE_1: {
-                Move move = getMoveByIndex(0);
-                playerMoveName    = move.getName();
-                playerDamageDealt = executeAttack(player, bossLoader, move);
-                break;
-            }
-
-            case MOVE_2: {
-                Move move = getMoveByIndex(1);
-                playerMoveName    = move.getName();
-                playerDamageDealt = executeAttack(player, bossLoader, move);
-                break;
-            }
-
-            case UTILITY: {
-                //WIP
-                playerMoveName = "Utility (no effect)";
-                break;
-            }
-
-            case ITEM: {
-                if (itemId == null) {
-                    throw new IllegalArgumentException("itemId must be provided when action is ITEM.");
-                }
-                Item item = findItem(itemId);
-                if (item == null || !item.isAvailable()) {
-                    // Treat as a wasted turn — item not found or exhausted
-                    itemUsedName     = itemId + " (unavailable)";
-                    playerHpRestored = 0;
-                } else {
-                    itemUsedName     = item.getName();
-                    playerHpRestored = player.useItem(itemId);
-                }
-                break;
-            }
+        // DOT tick on player
+        if (player.getActiveEffect() != null &&
+            player.getActiveEffect().getType() == StatusEffect.Type.DOT) {
+            playerDotDamage = player.getActiveEffect().getDotDamage();
+            player.takeDamage(playerDotDamage);
+            player.tickEffect();
         }
 
-       //Win conditions
-        if (bossLoader.isDefeated()) {
+        if (guardCooldownLeft > 0) guardCooldownLeft--;
+        if (move4CooldownLeft > 0) move4CooldownLeft--;
+
+        // player turn
+        boolean playerStunned = player.isStunned();
+        if (playerStunned) {
+            playerMoveName = "STUNNED";
+            player.tickEffect();
+        } else if (moveIndex == -1 && itemId != null) {
+            Item item = findItem(itemId);
+            if (item == null || !item.isAvailable()) {
+                itemUsedName = itemId + " (unavailable)";
+            } else {
+                itemUsedName     = item.getName();
+                playerHpRestored = player.useItem(itemId);
+            }
+        } else {
+            Move move = getMoveByIndex(moveIndex);
+            playerMoveName = move.getName();
+
+            if (moveIndex == 3) move4CooldownLeft = move.getCooldown() + 1;
+
+            int raw = move.getDamage() + player.getAttack();
+            if (player.isHalfDmg()) { raw /= 2; player.tickEffect(); }
+
+            int perHit = raw / move.getHits();
+            for (int h = 0; h < move.getHits(); h++) {
+                playerDamageDealt += boss.takeDamage(perHit);
+            }
+            tryApplyEffect(move, boss);
+        }
+
+        talkModifier = 1.0;
+
+        if (boss.isDefeated()) {
             result = CombatResult.PLAYER_WIN;
-            TurnLog log = buildLog(roundNumber, action, playerMoveName, playerDamageDealt,
-                    itemUsedName, playerHpRestored,
-                    null, 0,
-                    player.getCurrentHp(), bossLoader.getCurrentHp(), result);
-            history.add(log);
-            return log;
+            return finalizeTurn(playerMoveName, playerDamageDealt, itemUsedName,
+                    playerHpRestored, null, 0, playerDotDamage, 0);
         }
 
-       //Bos turn
-        Move bossMove     = bossLoader.chooseMove();
-        bossMoveName      = bossMove.getName();
-        bossDamageDealt   = executeAttack(bossLoader, player, bossMove);
-
-        //Win conditions
-        if (player.isDefeated()) {
-            result = CombatResult.PLAYER_LOSE;
+        // DOT tick on boss
+        if (boss.getActiveEffect() != null &&
+            boss.getActiveEffect().getType() == StatusEffect.Type.DOT) {
+            bossDotDamage = boss.getActiveEffect().getDotDamage();
+            boss.takeDamage(bossDotDamage);
+            boss.tickEffect();
         }
 
-        //Logohet roundi
-        TurnLog log = buildLog(roundNumber, action, playerMoveName, playerDamageDealt,
-                itemUsedName, playerHpRestored,
-                bossMoveName, bossDamageDealt,
-                player.getCurrentHp(), bossLoader.getCurrentHp(), result);
-        history.add(log);
-        return log;
+        boss.setLastKnownPlayerHpPercent(player.getHpPercent());
+
+        if (boss.isStunned()) {
+            bossMoveName = "STUNNED";
+            boss.tickEffect();
+        } else {
+            Move bossMove    = boss.chooseMove();
+            bossMoveName     = bossMove.getName();
+            lastBossMoveHitStyle = bossMove.getHitStyle();
+            boss.setCurrentAbilitySprite(bossMove.getAbilitySprite());
+
+            if ("clone".equals(bossMove.getHitStyle())) {
+                boss.applyClone();
+            } else if ("heal".equals(bossMove.getHitStyle())) {
+                int healAmt = 80;
+                boss.applyHeal(healAmt);
+            } else {
+                int raw = (bossMove.getDamage() + boss.getAttack());
+                if (boss.isHalfDmg()) { raw /= 2; boss.tickEffect(); }
+
+                double mod = talkModifier;
+                raw = (int)(raw * mod);
+
+                if (guardActive) {
+                    if (rng.nextDouble() < 0.55) {
+                        bossDamageDealt = 0;
+                    } else {
+                        bossDamageDealt = dealBossDamage(bossMove, raw);
+                    }
+                    guardActive = false;
+                    guardCooldownLeft = 3;
+                } else if (counterActive) {
+                    if (rng.nextDouble() < 0.30) {
+                        bossDamageDealt = 0;
+                    } else {
+                        bossDamageDealt = dealBossDamage(bossMove, raw);
+                    }
+                    counterActive = false;
+                } else {
+                    bossDamageDealt = dealBossDamage(bossMove, raw);
+                }
+
+                tryApplyEffect(bossMove, player);
+            }
+        }
+
+        guardActive   = false;
+        counterActive = false;
+
+        if (player.isDefeated()) result = CombatResult.PLAYER_LOSE;
+
+        return finalizeTurn(playerMoveName, playerDamageDealt, itemUsedName,
+                playerHpRestored, bossMoveName, bossDamageDealt,
+                playerDotDamage, bossDotDamage);
     }
 
-    // The damage taken 
-
-    /**
-     * @return actual HP removed from defender
-     */
-    private int executeAttack(Combatant attacker, Combatant defender, Move move) {
-        return defender.takeDamage(move.getDamage());
+    private int dealBossDamage(Move bossMove, int totalRaw) {
+        int total  = 0;
+        int perHit = Math.max(1, totalRaw / bossMove.getHits());
+        for (int h = 0; h < bossMove.getHits(); h++) {
+            int hit = player.takeDamage(perHit);
+            lastBossHitList.add(hit);
+            total += hit;
+        }
+        return total;
     }
 
- 
-    /**
-     * Retrieves the player's move by list index (0 = move1, 1 = move2).
-     */
+    public void activateGuard() {
+        if (guardUsedThisTurn || guardCooldownLeft > 0) return;
+        guardUsedThisTurn = true;
+        guardActive = true;
+    }
+
+    public void activateCounter() {
+        if (guardUsedThisTurn) return;
+        guardUsedThisTurn = true;
+        counterActive = true;
+    }
+
+    public String activateTalk() {
+        if (talkUsedThisTurn) return "You already tried talking this turn.";
+        talkUsedThisTurn = true;
+        if (rng.nextDouble() < 0.5) {
+            talkModifier = 0.5;
+            return "You talked to " + boss.getName() + " and calmed them. Half damage this turn.";
+        } else {
+            talkModifier = 1.2;
+            return "Talking failed. " + boss.getName() + " got annoyed. Damage +20% incoming.";
+        }
+    }
+
+    public String activateInsult() {
+        if (talkUsedThisTurn) return "You already used talk this turn.";
+        talkUsedThisTurn = true;
+        if (rng.nextDouble() < 0.35) {
+            talkModifier = 0.3;
+            return "You insulted " + boss.getName() + " and they got sad. Only 30% damage incoming.";
+        } else {
+            talkModifier = 2.0;
+            return "Bad idea. " + boss.getName() + " is furious. Damage doubled.";
+        }
+    }
+
+    private void tryApplyEffect(Move move, Object target) {
+        if (move.getStatusEffect() == null) return;
+        if (rng.nextDouble() > move.getChance()) return;
+        StatusEffect.Type type;
+        switch (move.getStatusEffect()) {
+            case "DOT":     type = StatusEffect.Type.DOT;      break;
+            case "skip":    type = StatusEffect.Type.SKIP;     break;
+            case "halfDmg": type = StatusEffect.Type.HALF_DMG; break;
+            default: return;
+        }
+        StatusEffect effect = new StatusEffect(type, move.getDuration());
+        if (target instanceof Player)     ((Player) target).applyEffect(effect);
+        if (target instanceof BossLoader) ((BossLoader) target).applyEffect(effect);
+    }
+
     private Move getMoveByIndex(int index) {
         List<Move> moves = player.getMoves();
-        if (moves == null || moves.size() <= index) {
-            throw new IllegalStateException(
-                "Player does not have a move at index " + index + ". Check stats.json.");
-        }
+        if (moves == null || moves.size() <= index)
+            throw new IllegalStateException("No move at index " + index);
         return moves.get(index);
     }
 
-    /**
-     * Finds an item in the player's inventory by id.
-     * Returns null if not found.
-     */
     private Item findItem(String itemId) {
         if (player.getItems() == null) return null;
         return player.getItems().stream()
                 .filter(i -> i.getId().equals(itemId))
-                .findFirst()
-                .orElse(null);
+                .findFirst().orElse(null);
     }
 
-    private TurnLog buildLog(int round, PlayerAction action,
-                              String playerMoveName, int playerDamageDealt,
-                              String itemUsed, int playerHpRestored,
-                              String bossMoveName, int bossDamageDealt,
-                              int playerHpAfter, int bossHpAfter,
-                              CombatResult result) {
-        return new TurnLog(round, action, playerMoveName, playerDamageDealt,
+    private TurnLog finalizeTurn(String playerMoveName, int playerDamageDealt,
+                                  String itemUsed, int playerHpRestored,
+                                  String bossMoveName, int bossDamageDealt,
+                                  int playerDotDamage, int bossDotDamage) {
+        TurnLog log = new TurnLog(roundNumber, PlayerAction.MOVE_1,
+                playerMoveName, playerDamageDealt,
                 itemUsed, playerHpRestored,
                 bossMoveName, bossDamageDealt,
-                playerHpAfter, bossHpAfter, result);
+                player.getCurrentHp(), boss.getCurrentHp(), result);
+        history.add(log);
+        return log;
     }
 
-    public CombatResult getResult()   { return result; }
-    public int getRoundNumber()        { return roundNumber; }
-    public Player getPlayer()          { return player; }
-    public BossLoader getBoss()              { return bossLoader; }
-    public List<TurnLog> getHistory()  { return history; }
-    public boolean isOngoing()         { return result == CombatResult.ONGOING; }
+    public boolean isGuardAvailable()       { return guardCooldownLeft <= 0; }
+    public boolean isMove4Available()        { return move4CooldownLeft <= 0; }
+    public List<Integer> getLastBossHitList(){ return lastBossHitList; }
+    public String getLastBossMoveHitStyle()  { return lastBossMoveHitStyle; }
+    public CombatResult getResult()          { return result; }
+    public int getRoundNumber()              { return roundNumber; }
+    public Player getPlayer()               { return player; }
+    public BossLoader getBoss()             { return boss; }
+    public List<TurnLog> getHistory()       { return history; }
+    public boolean isOngoing()              { return result == CombatResult.ONGOING; }
 }

@@ -1,5 +1,7 @@
 package com.dungeons.world;
 
+import java.io.IOException;
+
 public class MapManager {
 
     private Map currentMap;
@@ -8,14 +10,14 @@ public class MapManager {
     private MapChangeListener mapChangeListener;
     private InteractListener interactListener;
 
+    private boolean transitionCooldown = false;
+
     public interface MapChangeListener {
         void onMapChanged(Map newMap, int spawnX, int spawnY);
     }
 
     public interface InteractListener {
-        // Called when player steps on a fight/shop/chest tile
-        // type = "fight", "shop", "chest"
-        void onInteract(String type, int tileX, int tileY) throws Exception;
+        void onInteract(String type, int tileX, int tileY) throws IOException;
     }
 
     public MapManager(TilesetManager tilesets,
@@ -36,8 +38,7 @@ public class MapManager {
         return currentMap;
     }
 
-    // Call this every frame with character's tile position
-    public void checkInteractions(int charTileX, int charTileY) throws Exception {
+    public void checkInteractions(int charTileX, int charTileY) throws IOException {
         checkTransitions(charTileX, charTileY);
         checkInteractZones(charTileX, charTileY);
     }
@@ -48,40 +49,63 @@ public class MapManager {
                 Map newMap = new Map();
                 newMap.load(zone.targetMap);
                 currentMap = newMap;
-
+                transitionCooldown = true;
                 if (mapChangeListener != null) {
-                    // Use the spawnpoint defined in the target map
-                    mapChangeListener.onMapChanged(newMap, newMap.spawnX, newMap.spawnY);
+                    int spawnX = zone.spawnX != -1 ? zone.spawnX : newMap.spawnX;
+                    int spawnY = zone.spawnY != -1 ? zone.spawnY : newMap.spawnY;
+                    mapChangeListener.onMapChanged(newMap, spawnX, spawnY);
                 }
                 return;
             }
         }
     }
 
-    private void checkInteractZones(int charTileX, int charTileY) throws Exception {
+    private void checkInteractZones(int charTileX, int charTileY) throws IOException {
+        if (transitionCooldown) {
+            transitionCooldown = false;
+            return;
+        }
         for (InteractZone zone : currentMap.interactZones) {
             if (zone.triggered) continue;
             if (zone.x == charTileX && zone.y == charTileY) {
+                if (zone.type.equals("fight")) {
+                    for (InteractZone other : currentMap.interactZones) {
+                        if (other.triggered) continue;
+                        if (other.x == charTileX && other.y == charTileY && other.type.startsWith("dialogue:")) {
+                            if (interactListener != null) {
+                                interactListener.onInteract(other.type, other.x, other.y);
+                            }
+                            other.triggered = true;
+                            return;
+                        }
+                    }
+                }
                 if (interactListener != null) {
                     interactListener.onInteract(zone.type, zone.x, zone.y);
                 }
-                // For shop and chest, mark immediately as triggered
-                // For fight, character team calls markFightDone() when battle ends
-                if (!zone.type.equals("fight")) {
-                    zone.triggered = true;
-                }
-                return;
-            }
-        }
-    }
-
-    // Character team calls this when a fight is over at a given tile
-    public void markFightDone(int tileX, int tileY) {
-        for (InteractZone zone : currentMap.interactZones) {
-            if (zone.type.equals("fight") && zone.x == tileX && zone.y == tileY) {
                 zone.triggered = true;
                 return;
             }
         }
+    }
+
+    public void markFightDone(int tileX, int tileY) {
+        for (InteractZone zone : currentMap.interactZones) {
+            if (zone.type.equals("fight")) {
+                zone.triggered = true;
+            }
+        }
+    }
+
+    public void markDialogueDone(int tileX, int tileY) {
+        for (InteractZone zone : currentMap.interactZones) {
+            if (zone.type.startsWith("dialogue:")) {
+                zone.triggered = true;
+            }
+        }
+    }
+
+    public boolean isCurrentMap(String mapName) {
+        return currentMap != null && mapName.equals(currentMap.getMapName());
     }
 }

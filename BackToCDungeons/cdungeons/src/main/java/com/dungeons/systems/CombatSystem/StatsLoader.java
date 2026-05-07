@@ -1,4 +1,4 @@
-package com.dungeons.systems.CombatSystem; 
+package com.dungeons.systems.CombatSystem;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -19,10 +19,8 @@ public class StatsLoader {
         }
     }
 
-    
     public Player loadPlayer(String characterName) {
         String block = extractCharacterBlock(characterName);
-
         String statsBlock = extractBlock(block, "\"stats\"");
         Player player = new Player();
         player.setName(characterName);
@@ -37,50 +35,67 @@ public class StatsLoader {
 
     public BossLoader loadBoss(String characterName) {
         String block = extractCharacterBlock(characterName);
-
         String statsBlock = extractBlock(block, "\"stats\"");
-        BossLoader bossLoader = new BossLoader();
-        bossLoader.setId(characterName);
-        bossLoader.setName(characterName);
-        bossLoader.setTitle("");
-        bossLoader.setMaxHp(extractInt(statsBlock, "hp"));
-        bossLoader.setCurrentHp(extractInt(statsBlock, "hp"));
-        bossLoader.setAttack(extractInt(statsBlock, "atk"));
-        bossLoader.setDefense(extractInt(statsBlock, "def"));
-        bossLoader.setMoves(parseAbilities(block));
-        return bossLoader;
-    }
+        BossLoader boss = new BossLoader();
+        boss.setId(characterName);
+        boss.setName(characterName);
+        boss.setTitle("");
+        boss.setMaxHp(extractInt(statsBlock, "hp"));
+        boss.setCurrentHp(extractInt(statsBlock, "hp"));
+        boss.setAttack(extractInt(statsBlock, "atk"));
+        boss.setDefense(extractInt(statsBlock, "def"));
+        boss.setMoves(parseAbilities(block));
 
-    // ---------------------------------------------------------------
-    // Parsers
-    // ---------------------------------------------------------------
+        String spritesBlock = extractBlock(block, "\"sprites\"");
+        if (!spritesBlock.equals("{}")) {
+            boss.setSpriteNeutral(extractString(spritesBlock, "neutral"));
+            boss.setSpriteAngry(extractString(spritesBlock, "angry"));
+            boss.setSpriteThinking(extractString(spritesBlock, "thinking"));
+            boss.setSpriteDefeated(extractString(spritesBlock, "defeated"));
+            boss.setSpriteCloned(extractString(spritesBlock, "cloned"));
+        }
+
+        return boss;
+    }
 
     private List<Move> parseAbilities(String characterBlock) {
         List<Move> moves = new ArrayList<>();
         String abilitiesArray = extractArray(characterBlock, "abilities");
-        if (abilitiesArray.equals("[]")) return moves; // mobs with no abilities
+        if (abilitiesArray.equals("[]")) return moves;
 
         List<String> objects = splitObjects(abilitiesArray);
         int index = 1;
         for (String obj : objects) {
-            String name   = extractString(obj, "name");
-            String desc   = extractString(obj, "desc");
+            String name  = extractString(obj, "name");
+            String desc  = extractString(obj, "desc");
             String effectsBlock = extractBlock(obj, "\"effects\"");
-            int damage = extractInt(effectsBlock, "damage"); // 0 if not present
-            moves.add(new Move("move" + index, name, damage, desc));
+            int damage   = extractInt(effectsBlock, "damage");
+            int hits     = extractInt(effectsBlock, "hits");
+            if (hits <= 0) hits = 1;
+
+            Move move = new Move("move" + index, name, damage, desc);
+
+            String statusEffect = extractString(obj, "statusEffect");
+            if (!statusEffect.isEmpty() && !statusEffect.equals("null")) {
+                move.setStatusEffect(statusEffect);
+            }
+            move.setDuration(extractInt(obj, "duration"));
+            move.setChance(extractDouble(obj, "chance"));
+            move.setHits(hits);
+            move.setHitStyle(extractString(obj, "hitStyle"));
+            move.setCooldown(extractInt(obj, "cooldown"));
+            move.setAbilitySprite(extractString(obj, "abilitySprite"));
+
+            moves.add(move);
             index++;
         }
         return moves;
     }
 
-    // ---------------------------------------------------------------
-    // JSON helpers
-    // ---------------------------------------------------------------
-
     private String extractCharacterBlock(String name) {
         String key = "\"" + name + "\"";
         int keyIdx = raw.indexOf(key);
-        if (keyIdx == -1) throw new IllegalArgumentException("Character not found in Stats.json: " + name);
+        if (keyIdx == -1) throw new IllegalArgumentException("Character not found: " + name);
         int brace = raw.indexOf("{", keyIdx);
         return extractBalanced(raw, brace, '{', '}');
     }
@@ -91,6 +106,7 @@ public class StatsLoader {
         if (keyIdx == -1) return "";
         int colon  = json.indexOf(":", keyIdx);
         int quote1 = json.indexOf("\"", colon + 1);
+        if (quote1 == -1) return "";
         int quote2 = json.indexOf("\"", quote1 + 1);
         return json.substring(quote1 + 1, quote2);
     }
@@ -101,11 +117,29 @@ public class StatsLoader {
         if (keyIdx == -1) return 0;
         int colon = json.indexOf(":", keyIdx);
         int start = colon + 1;
-        while (start < json.length() && (json.charAt(start) == ' ' || json.charAt(start) == '\n' || json.charAt(start) == '\r')) start++;
+        while (start < json.length() && (json.charAt(start) == ' ' ||
+               json.charAt(start) == '\n' || json.charAt(start) == '\r')) start++;
         int end = start;
-        while (end < json.length() && (Character.isDigit(json.charAt(end)) || json.charAt(end) == '-')) end++;
+        while (end < json.length() && (Character.isDigit(json.charAt(end)) ||
+               json.charAt(end) == '-')) end++;
         if (start == end) return 0;
         return Integer.parseInt(json.substring(start, end).trim());
+    }
+
+    private double extractDouble(String json, String key) {
+        String search = "\"" + key + "\"";
+        int keyIdx = json.indexOf(search);
+        if (keyIdx == -1) return 0.0;
+        int colon = json.indexOf(":", keyIdx);
+        int start = colon + 1;
+        while (start < json.length() && (json.charAt(start) == ' ' ||
+               json.charAt(start) == '\n')) start++;
+        int end = start;
+        while (end < json.length() && (Character.isDigit(json.charAt(end)) ||
+               json.charAt(end) == '.' || json.charAt(end) == '-')) end++;
+        if (start == end) return 0.0;
+        try { return Double.parseDouble(json.substring(start, end).trim()); }
+        catch (NumberFormatException e) { return 0.0; }
     }
 
     private String extractArray(String json, String key) {
@@ -114,7 +148,6 @@ public class StatsLoader {
         if (keyIdx == -1) return "[]";
         int bracket = json.indexOf("[", keyIdx);
         int nextBrace = json.indexOf("{", keyIdx);
-        // make sure the [ comes before any next block opener
         if (bracket == -1 || (nextBrace != -1 && nextBrace < bracket)) return "[]";
         return extractBalanced(json, bracket, '[', ']');
     }
@@ -134,9 +167,7 @@ public class StatsLoader {
                 String obj = extractBalanced(array, i, '{', '}');
                 objects.add(obj);
                 i += obj.length();
-            } else {
-                i++;
-            }
+            } else { i++; }
         }
         return objects;
     }

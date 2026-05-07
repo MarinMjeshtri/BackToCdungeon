@@ -1,0 +1,30 @@
+{
+  "shopItems": {
+    "smallHealthPotion": {
+      "price": 5,
+      "displayName": "Small Health Potion",
+      "desc": "A basic healing potion that restores a small amount of health.",
+      "effects": {
+        "heal": 50
+      }
+    },
+    "bigHealthPotion": {
+      "price": 5,
+      "displayName": "Big Health Potion",
+      "desc": "A powerful healing potion that restores a big amount of health.",
+      "effects": {
+        "heal": 120
+      }
+    },
+    "strPotion": {
+      "price": 5,
+      "displayName": "Strength Potion",
+      "desc": "A combat-enhancing potion that temporarily increases ATK, allowing attacks to deal more damage for a short time.",
+      "effects": {
+        "atk": 30
+      }
+    }
+  }
+}
+
+
