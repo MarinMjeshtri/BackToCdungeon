@@ -4,22 +4,26 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" style="-fx-background-color: #0a0a1a;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.creditsController">
+<StackPane style="-fx-background-color: #0a0a1a;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.creditsController">
 
     <children>
 
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
+            <children>
+
+
         <!-- TITLE -->
-        <Label layoutX="311.0" layoutY="24.0" prefWidth="800" style="-fx-font-size: 48px; -fx-text-fill: darkblue; -fx-effect: dropshadow(gaussian, #6666ff, 15, 0.7, 0, 0);" text="CREDITS" textAlignment="CENTER" />
+        <Label alignment="CENTER" layoutX="217.0" layoutY="21.0" prefWidth="800" style="-fx-font-size: 48px; -fx-text-fill: darkblue; -fx-effect: dropshadow(gaussian, #6666ff, 15, 0.7, 0, 0);" text="CREDITS" textAlignment="CENTER" />
 
         <!-- ── LEFT COLUMN ── -->
 
         <!-- Card 1 -->
         <AnchorPane layoutX="20.0" layoutY="100.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444aa; -fx-border-width: 2;">
             <children>
-                <Label layoutX="10" layoutY="10" style="-fx-text-fill: white; -fx-font-size: 14px;" text="MARIN MJESHTRI" />
+                <Label alignment="CENTER" layoutX="10" layoutY="10" prefHeight="20.0" prefWidth="228.0" style="-fx-text-fill: white; -fx-font-size: 14px;" text="MARIN MJESHTRI" />
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="10" layoutY="38" prefHeight="97" prefWidth="228" style="-fx-background: #1a1a2e; -fx-background-color: #1a1a2e;" vbarPolicy="AS_NEEDED">
                     <content>
                         <Label prefWidth="210" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px;" text="UI Screens, Screen Loaders, Controllers, Item System, Visual Assets, CSS Styling, Entry Point, Packaging" wrapText="true" />
@@ -31,7 +35,7 @@
         <!-- Card 2 -->
         <AnchorPane layoutX="20.0" layoutY="258.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444aa; -fx-border-width: 2;">
             <children>
-                <Label layoutX="10" layoutY="10" style="-fx-text-fill: white; -fx-font-size: 14px;" text="KLEDI ALLAMANI" />
+                <Label alignment="CENTER" layoutX="10" layoutY="10" prefHeight="20.0" prefWidth="228.0" style="-fx-text-fill: white; -fx-font-size: 14px;" text="KLEDI ALLAMANI" />
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="10" layoutY="38" prefHeight="97" prefWidth="228" style="-fx-background: #1a1a2e; -fx-background-color: #1a1a2e;" vbarPolicy="AS_NEEDED">
                     <content>
                         <Label prefWidth="210" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px;" text="Map System, Player, Collision, TilesetManager, MapRenderer, MapManager, Game Loop, Camera" wrapText="true" />
@@ -43,7 +47,7 @@
         <!-- Card 3 -->
         <AnchorPane layoutX="20.0" layoutY="416.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444aa; -fx-border-width: 2;">
             <children>
-                <Label layoutX="10" layoutY="10" style="-fx-text-fill: white; -fx-font-size: 14px;" text="SINDI LEKA" />
+                <Label alignment="CENTER" layoutX="10" layoutY="10" prefHeight="20.0" prefWidth="228.0" style="-fx-text-fill: white; -fx-font-size: 14px;" text="SINDI LEKA" />
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="10" layoutY="38" prefHeight="97" prefWidth="228" style="-fx-background: #1a1a2e; -fx-background-color: #1a1a2e;" vbarPolicy="AS_NEEDED">
                     <content>
                         <Label prefWidth="210" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px;" text="Audio System, Music Manager, Sound Effects, Game Story Script, Enemy Sprites" wrapText="true" />
@@ -53,22 +57,22 @@
         </AnchorPane>
 
         <!-- ── MIDDLE AUTOSCROLL ── -->
-        <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="460.0" prefWidth="220.0" style="-fx-background-color: #16213e; -fx-border-color: #4444aa; -fx-border-width: 2;">
+        <AnchorPane layoutX="290.0" layoutY="100.0" prefHeight="590.0" prefWidth="654.0" style="-fx-background-color: #16213e; -fx-border-color: #4444aa; -fx-border-width: 2;">
             <children>
-                <ScrollPane fx:id="creditScroll" fitToWidth="true" hbarPolicy="NEVER" layoutX="0" layoutY="0" prefHeight="460" prefWidth="220" style="-fx-background: #16213e; -fx-background-color: #16213e;" vbarPolicy="NEVER">
+                <ScrollPane fx:id="creditScroll" fitToWidth="true" hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="558.0" prefWidth="626.0" style="-fx-background: #16213e; -fx-background-color: #16213e;" vbarPolicy="NEVER">
                     <content>
-                        <VBox spacing="16" style="-fx-padding: 20; -fx-background-color: #16213e;">
-                            <Label prefWidth="180" style="-fx-text-fill: white; -fx-font-size: 14px;                                    -fx-effect: dropshadow(gaussian,#6666ff,8,0.6,0,0);" text="BACK TO CDUNGEONS" wrapText="true" />
-                            <Label prefWidth="180" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px;" text="A school project by" wrapText="true" />
+                        <VBox spacing="16" style="-fx-padding: 20; -fx-background-color: #16213e; -fx-alignment: center;">
+                            <Label alignment="CENTER" prefHeight="20.0" prefWidth="286.0" style="-fx-text-fill: white; -fx-font-size: 14px;                                    -fx-effect: dropshadow(gaussian,#6666ff,8,0.6,0,0);" text="BACK TO CDUNGEONS" wrapText="true" />
+                            <Label alignment="CENTER" prefWidth="180" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px;" text="A school project by" wrapText="true" />
                             <Label style="-fx-text-fill: #44ffaa; -fx-font-size: 12px;" text="Marin Mjeshtri" />
                             <Label style="-fx-text-fill: #44ffaa; -fx-font-size: 12px;" text="Kledi Allamani" />
                             <Label style="-fx-text-fill: #44ffaa; -fx-font-size: 12px;" text="Sindi Leka" />
                             <Label style="-fx-text-fill: #44ffaa; -fx-font-size: 12px;" text="Jon Toska" />
                      <Label layoutX="30.0" layoutY="199.0" style="-fx-text-fill: #44ffaa; -fx-font-size: 12px;" text="Kejvi Spaho" />
                             <Label style="-fx-text-fill: #4444aa;" text="────────────" />
-                            <Label prefWidth="180" style="-fx-text-fill: white; -fx-font-size: 13px;" text="Special Thanks" wrapText="true" />
-                            <Label prefWidth="180" style="-fx-text-fill: #aaaacc; -fx-font-size: 10px;" text="Tileset by marceles — itch.io" wrapText="true" />
-                            <Label prefHeight="15.0" prefWidth="182.0" style="-fx-text-fill: #aaaacc; -fx-font-size: 10px;" text="Font — Reano" wrapText="true" />
+                            <Label alignment="CENTER" prefWidth="180" style="-fx-text-fill: white; -fx-font-size: 13px;" text="Special Thanks" wrapText="true" />
+                            <Label alignment="CENTER" prefWidth="180" style="-fx-text-fill: #aaaacc; -fx-font-size: 10px;" text="Tileset by marceles — itch.io" wrapText="true" />
+                            <Label alignment="CENTER" prefHeight="15.0" prefWidth="182.0" style="-fx-text-fill: #aaaacc; -fx-font-size: 10px;" text="Font — Reano" wrapText="true" />
                             <Label style="-fx-text-fill: #4444aa;" text="────────────" />
                             <Label prefWidth="180" style="-fx-text-fill: #aaaacc; -fx-font-size: 10px;" text="Made with JavaFX" wrapText="true" />
                             <Label prefWidth="180" style="-fx-text-fill: #aaaacc; -fx-font-size: 10px;" text="Built with IntelliJ IDEA" wrapText="true" />
@@ -85,9 +89,9 @@
         <!-- ── RIGHT COLUMN ── -->
 
         <!-- Card 4 -->
-        <AnchorPane layoutX="530.0" layoutY="100.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444aa; -fx-border-width: 2;">
+        <AnchorPane layoutX="982.0" layoutY="100.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444aa; -fx-border-width: 2;">
             <children>
-                <Label layoutX="10" layoutY="10" style="-fx-text-fill: white; -fx-font-size: 14px;" text="JON TOSKA" />
+                <Label alignment="CENTER" layoutX="10" layoutY="10" prefHeight="20.0" prefWidth="228.0" style="-fx-text-fill: white; -fx-font-size: 14px;" text="JON TOSKA" />
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="10" layoutY="38" prefHeight="97" prefWidth="228" style="-fx-background: #1a1a2e; -fx-background-color: #1a1a2e;" vbarPolicy="AS_NEEDED">
                     <content>
                         <Label prefWidth="210" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px;" text="Dialogue System, DialogueManager, DialogueBoxController, Character Stats, Dialogue JSON" wrapText="true" />
@@ -97,9 +101,9 @@
         </AnchorPane>
 
         <!-- Card 5 — spare slot, use for tools/tech credits -->
-        <AnchorPane layoutX="530.0" layoutY="258.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444aa; -fx-border-width: 2;">
+        <AnchorPane layoutX="982.0" layoutY="259.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444aa; -fx-border-width: 2;">
             <children>
-                <Label layoutX="10" layoutY="10" style="-fx-text-fill: white; -fx-font-size: 14px;" text="KEJVI SPAHO" />
+                <Label alignment="CENTER" layoutX="10" layoutY="10" prefHeight="20.0" prefWidth="228.0" style="-fx-text-fill: white; -fx-font-size: 14px;" text="KEJVI SPAHO" />
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="10" layoutY="38" prefHeight="97" prefWidth="228" style="-fx-background: #1a1a2e; -fx-background-color: #1a1a2e;" vbarPolicy="AS_NEEDED">
                     <content>
                         <Label prefWidth="210" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px;" text="Combat Controller, Combat Loading, Stat Loading, Combat UI effects, Combat Sprites, Combat Functionality and Turnlog" wrapText="true" />
@@ -109,11 +113,13 @@
         </AnchorPane>
 
         <!-- EXIT BUTTON -->
-        <AnchorPane layoutX="530.0" layoutY="416.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444cc; -fx-border-width: 2;">
+        <AnchorPane layoutX="982.0" layoutY="416.0" prefHeight="145.0" prefWidth="250.0" style="-fx-background-color: #1a1a2e; -fx-border-color: #4444cc; -fx-border-width: 2;">
             <children>
                 <Button fx:id="exitButton" layoutX="50" layoutY="50" onAction="#handleExit" prefHeight="45" prefWidth="150" style="-fx-background-color: #16213e; -fx-text-fill: white;                            -fx-border-color: #4444cc; -fx-border-width: 2;                            -fx-font-size: 16px; -fx-cursor: hand;" text="EXIT" />
             </children>
         </AnchorPane>
 
+            </children>
+        </AnchorPane>
     </children>
-</Pane>
+</StackPane>
