@@ -258,7 +258,7 @@ public class GameScreen {
         );
 
         // ── LOAD STARTING MAP ──────────────────────────────
-        mapManager.loadMap("BossRoomJoni");
+        mapManager.loadMap("MobRoom1");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
