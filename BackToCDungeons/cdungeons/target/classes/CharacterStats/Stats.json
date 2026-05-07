@@ -8,7 +8,7 @@
         "hp": 420
       },
       "sprites": {
-        "neutral": "",
+        "neutral": "/Sprties_CombatUI/MainC.png",
         "angry": "",
         "defeated": ""
       },
@@ -76,7 +76,7 @@
         {
           "name": "Turret Volley",
           "desc": "Fires 6 rapid turret shots. Each bullet hits separately for 8 damage.",
-          "effects": { "damage": 20, "hits": 6 },
+          "effects": { "damage": 21, "hits": 30 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -181,7 +181,7 @@
     },
 
     "JohnMKati": {
-      "stats": { "atk": 28, "def": 12, "hp": 650 },
+      "stats": { "atk": 28, "def": 12, "hp": 450 },
       "sprites": {
         "neutral":  "/Sprties_CombatUI/JonMkati/Neutral.jpeg",
         "angry":    "/Sprties_CombatUI/JonMkati/Angry.jpeg",
@@ -192,7 +192,7 @@
         {
           "name": "Twin Combo",
           "desc": "Both clones attack in sequence. 3 hits of 28 damage each.",
-          "effects": { "damage": 28, "hits": 3 },
+          "effects": { "damage": 28, "hits": 20 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -203,7 +203,7 @@
         {
           "name": "Feminist Literature",
           "desc": "Reads an unbearable text. 5 slow hits of 15 damage. 35% chance to stun for 1 turn.",
-          "effects": { "damage": 15, "hits": 5 },
+          "effects": { "damage": 15, "hits": 20 },
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
@@ -270,55 +270,120 @@
       ]
     },
 
-    "RandomMob1": {
-      "stats": { "atk": 10, "def": 4, "hp": 90 },
-      "abilities": [
-        {
-          "name": "Scratch",
-          "desc": "A weak scratch.",
-          "effects": { "damage": 18 },
-          "statusEffect": null,
-          "duration": 0,
-          "chance": 0.0,
-          "abilitySprite": "",
-          "hitStyle": "single",
-          "cooldown": 0
-        }
-      ]
-    },
-
-    "RandomMob2": {
-      "stats": { "atk": 8, "def": 6, "hp": 110 },
-      "abilities": [
-        {
-          "name": "Tackle",
-          "desc": "Runs into you.",
-          "effects": { "damage": 16 },
-          "statusEffect": null,
-          "duration": 0,
-          "chance": 0.0,
-          "abilitySprite": "",
-          "hitStyle": "single",
-          "cooldown": 0
-        }
-      ]
-    },
-
-    "RandomMob3": {
-      "stats": { "atk": 6, "def": 2, "hp": 130 },
-      "abilities": [
-        {
-          "name": "Bite",
-          "desc": "Takes a bite.",
-          "effects": { "damage": 14 },
-          "statusEffect": null,
-          "duration": 0,
-          "chance": 0.0,
-          "abilitySprite": "",
-          "hitStyle": "single",
-          "cooldown": 0
-        }
-      ]
+      "Mob1": {
+  "stats": { "atk": 12, "def": 5, "hp": 100 },
+  "sprites": {
+    "neutral": "//KETU marin per te 5(Mund te ndrysosh dmg etj), angry etj mund ti fshish nuk ka problem. Nese nuk gjehet imazhi zv me netural",
+    "angry":   "",
+    "thinking": "",
+    "defeated": "",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 30 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "",
+      "hitStyle": "single",
+      "cooldown": 0
     }
+  ]
+},
+   "Mob2": {
+  "stats": { "atk": 12, "def": 5, "hp": 130 },
+  "sprites": {
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "thinking": "",
+    "defeated": "",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 30 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "",
+      "hitStyle": "single",
+      "cooldown": 0
+    }
+  ]
+},     
+"Mob3": {
+  "stats": { "atk": 12, "def": 5, "hp": 150 },
+  "sprites": {
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "thinking": "",
+    "defeated": "",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 35 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "",
+      "hitStyle": "single",
+      "cooldown": 0
+    }
+  ]
+},   
+   "Mob4": {
+  "stats": { "atk": 12, "def": 5, "hp": 200 },
+  "sprites": {
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "thinking": "",
+    "defeated": "",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 35 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "",
+      "hitStyle": "single",
+      "cooldown": 0
+    }
+  ]
+},   
+   "Mob5": {
+  "stats": { "atk": 12, "def": 5, "hp": 250 },
+  "sprites": {
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "thinking": "",
+    "defeated": "",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 40 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "",
+      "hitStyle": "single",
+      "cooldown": 0
+    }
+  ]
+}
   }
 }

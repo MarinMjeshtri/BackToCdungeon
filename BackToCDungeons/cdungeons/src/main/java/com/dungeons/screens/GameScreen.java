@@ -1,13 +1,21 @@
 package com.dungeons.screens;
 
+//COMBAT
 import com.dungeons.Controllers.CombatController;
+
+// DIALOUGE
 import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.dialogueManager.DialogueManager;
+
+//MAP
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
 import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
+
+//MUSIC
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -23,10 +31,12 @@ import java.io.IOException;
 
 public class GameScreen {
 
+
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 2;
 
     private shopScreen shopScreen;
+    private creditsScreen creditsScreen;
     private itemPickupScreen itemPickupScreen;
     private pauseScreen pauseScreen;
     private Pane gameRoot;
@@ -51,12 +61,18 @@ public class GameScreen {
 
     private AnimationTimer loop;
 
+    // Interaction lock
     private boolean interactionLocked = false;
 
+    // Dialogue state
     private DialogueBoxController activeDialogue = null;
     private Parent activeDialogueNode = null;
     private int lastDialogueTileX = -1;
     private int lastDialogueTileY = -1;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public GameScreen() {
         instance = this;
@@ -64,10 +80,6 @@ public class GameScreen {
 
     public static GameScreen getInstance() {
         return instance;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 
     public Parent getRoot() throws IOException {
@@ -99,43 +111,70 @@ public class GameScreen {
                         Platform.runLater(() -> {
                             try {
                                 combatScreen combat = new combatScreen();
+                                CombatController control = combat.getLoader().getController();
+                                String bossId = resolveBossFromCurrentMap();
                                 stage.getScene().setRoot(combat.getRoot());
+                                control.startCombat(bossId);
+
+                                if (mapManager.isCurrentMap("BossRoomJoni")) {
+                                    GameMusicManager.playFinalBoss();
+                                } else {
+                                    GameMusicManager.playCombat();
+                                }
                             } catch (Exception ex) {
-                                ex.printStackTrace();
                             }
                         });
                     }
 
                     if (type.equals("shop")) {
+
                         shopScreen shop = new shopScreen(this, stage);
                         Parent shopNode = shop.getRoot();
+
                         gameRoot.getChildren().add(shopNode);
+
                         this.shopScreen = shop;
 
                         gameRoot.setOnKeyPressed(e -> {
                             if (e.getCode() == KeyCode.E) {
-                                if (shopNode.isVisible()) {
+                                if(shopNode.isVisible()){
                                     shopNode.setVisible(false);
                                     shopNode.setDisable(true);
                                 }
                             }
                         });
+
                     }
 
                     if (type.equals("chest")) {
-                        itemPickupScreen chest = new itemPickupScreen(this, stage);
-                        Parent chestNode = chest.getRoot();
-                        gameRoot.getChildren().add(chestNode);
-                        this.itemPickupScreen = chest;
+
+                       itemPickupScreen chest = new itemPickupScreen(this,stage);
+                       Parent chestNode = chest.getRoot();
+                       gameRoot.getChildren().add(chestNode);
+
+                       this.itemPickupScreen = chest;
 
                         gameRoot.setOnKeyPressed(e -> {
                             if (e.getCode() == KeyCode.E) {
-                                if (chestNode.isVisible()) {
+                                if(chestNode.isVisible()){
                                     chestNode.setVisible(false);
                                     chestNode.setDisable(true);
                                 }
                             }
                         });
+
+                    }
+
+                    if (type.equals("credits")) {
+
+                        creditsScreen creditsscreen = new creditsScreen(this,stage);
+                        Parent credits = creditsscreen.getRoot();
+                        gameRoot.getChildren().add(credits);
+
+                        this.creditsScreen = creditsscreen;
+                        GameMusicManager.playEnding();
+
+
                     }
 
                     if (type.startsWith("dialogue:")) {
@@ -171,7 +210,7 @@ public class GameScreen {
                 }
         );
 
-        mapManager.loadMap("MobRoom2");
+        mapManager.loadMap("BossRoomJoni");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
@@ -202,7 +241,6 @@ public class GameScreen {
 
     public void returnFromCombat() {
         mapManager.markFightDone(fightTileX, fightTileY);
-        mapManager.getCurrentMap().clearLayer("Mob");
         interactionLocked = false;
         stage.getScene().setRoot(gameRoot);
         player.clearInput();
@@ -210,6 +248,7 @@ public class GameScreen {
         startLoop();
     }
 
+    // called by CombatController after a boss is defeated so loads next map then returns to game maps
     public void returnFromCombatWithMap(String nextMapName) {
         mapManager.loadMap(nextMapName);
         mapManager.markFightDone(fightTileX, fightTileY);
@@ -276,4 +315,21 @@ public class GameScreen {
 
         gc.restore();
     }
+    //Ui loader
+    private String resolveBossFromCurrentMap() {
+     String name = mapManager.getCurrentMap().getMapName();
+        if (name == null) return "CassieYarn";
+        switch (name) {
+        case "k3jviBossroom": return "CassieYarn";
+        case "RoomKledi":     return "FreakyRelah";
+        case "BossRoomJoni":  return "JohnMKati";
+        case "MobRoom1":      return "Mob1";
+        case "MobRoom2":      return "Mob2";    
+        case "MobRoom3":      return "Mob3";
+        case "MobRoom4":      return "Mob4";
+        case "MobRoom5":      return "Mob5";
+        default:              return "CassieYarn";
+    }
+}    
 }
+

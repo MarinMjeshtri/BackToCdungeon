@@ -104,4 +104,8 @@ public class MapManager {
             }
         }
     }
+
+    public boolean isCurrentMap(String mapName) {
+        return currentMap != null && mapName.equals(currentMap.getMapName());
+    }
 }

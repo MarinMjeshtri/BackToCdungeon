@@ -287,76 +287,85 @@ public class CombatController {
     // ── BOSS TURN EXECUTION ───────────────────────────────────────────
 
     private void executeBossTurn(TurnLog turnLog) {
-        // cancel thinking revert — we own the sprite from here
-        if (thinkingRevertTimer != null) {
-            thinkingRevertTimer.stop();
-            thinkingRevertTimer = null;
-        }
-
-        List<Integer> hits = engine.getLastBossHitList();
-        String hitStyle    = engine.getLastBossMoveHitStyle();
-        String abilityPath = boss.getCurrentAbilitySprite();
-
-        AnchorPane playerPane = (AnchorPane) playercharacterSprite.getParent();
-        AnchorPane bossPane   = (AnchorPane) enemycharacterSprite.getParent();
-
-        // show ability sprite only if path is set — never fall back to mood sprite here
-        if (abilityPath != null && !abilityPath.isEmpty()) {
-            loadSpriteOnto(enemycharacterSprite, abilityPath);
-        }
-
-        // boss defeated before acting
-        if (turnLog.getBossMoveName() == null) {
-            boss.clearAbilitySprite();
-            updateBossSpriteMood();
-            finishTurnUpdate(turnLog);
-            return;
-        }
-
-        if ("STUNNED".equals(turnLog.getBossMoveName())) {
-            spawnDamageLabel("STUNNED", bossPane, Color.GOLD, 50, 80, 18);
-            PauseTransition done = new PauseTransition(Duration.millis(800));
-            done.setOnFinished(e -> {
-                boss.clearAbilitySprite();
-                updateBossSpriteMood();
-                finishTurnUpdate(turnLog);
-            });
-            done.play();
-
-        } else if ("clone".equals(hitStyle)) {
-            showCloneEffect(bossPane, turnLog);
-
-        } else if ("heal".equals(hitStyle)) {
-            spawnDamageLabel("+80 HP", bossPane, Color.LIMEGREEN, 55, 80, 20);
-            PauseTransition healPause = new PauseTransition(Duration.millis(700));
-            healPause.setOnFinished(e -> {
-                tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
-                bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
-                boss.clearAbilitySprite();
-                updateBossSpriteMood();
-                finishTurnUpdate(turnLog);
-            });
-            healPause.play();
-
-        } else if (!hits.isEmpty()) {
-            if ("rapid".equals(hitStyle)) {
-                animateRapidHits(hits, playerPane, turnLog);
-            } else {
-                animateSingleHit(hits, playerPane, turnLog);
-            }
-        } else {
-            boss.clearAbilitySprite();
-            updateBossSpriteMood();
-            finishTurnUpdate(turnLog);
-        }
+    if (thinkingRevertTimer != null) {
+        thinkingRevertTimer.stop();
+        thinkingRevertTimer = null;
     }
+
+    List<Integer> hits = engine.getLastBossHitList();
+    String hitStyle    = engine.getLastBossMoveHitStyle();
+    String abilityPath = boss.getCurrentAbilitySprite();
+
+    AnchorPane playerPane = (AnchorPane) playercharacterSprite.getParent();
+    AnchorPane bossPane   = (AnchorPane) enemycharacterSprite.getParent();
+
+    if (abilityPath != null && !abilityPath.isEmpty()) {
+        loadSpriteOnto(enemycharacterSprite, abilityPath);
+    }
+
+    if (turnLog.getBossMoveName() == null) {
+        boss.clearAbilitySprite();
+        updateBossSpriteMood();
+        finishTurnUpdate(turnLog);
+        return;
+    }
+
+    if ("STUNNED".equals(turnLog.getBossMoveName())) {
+        spawnDamageLabel("STUNNED", bossPane, Color.GOLD, 50, 80, 18);
+        PauseTransition done = new PauseTransition(Duration.millis(800));
+        done.setOnFinished(e -> {
+            boss.clearAbilitySprite();
+            updateBossSpriteMood();
+            finishTurnUpdate(turnLog);
+        });
+        done.play();
+
+    } else if ("clone".equals(hitStyle)) {
+        showCloneEffect(bossPane, turnLog);
+
+    } else if ("heal".equals(hitStyle)) {
+        final TurnLog log = turnLog; // make it final for use inside lambdas
+        int healAmount = 80;
+        final int finalHealAmount = healAmount;
+
+        int preHealHp = Math.max(0, log.getBossHpAfter() - finalHealAmount);
+
+        bossHP.setWidth(BOSS_BAR_MAX * ((double) preHealHp / bossMaxHp));
+        bossHPnumber.setText(preHealHp + " / " + bossMaxHp);
+
+        PauseTransition wait = new PauseTransition(Duration.millis(300));
+        wait.setOnFinished(e -> {
+            spawnDamageLabel("+" + finalHealAmount + " HP", bossPane, Color.LIMEGREEN, 55, 80, 20);
+            PauseTransition afterPopup = new PauseTransition(Duration.millis(400));
+            afterPopup.setOnFinished(ev -> {
+                tweenHpBar(bossHP, log.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
+                bossHPnumber.setText(log.getBossHpAfter() + " / " + bossMaxHp);
+                boss.clearAbilitySprite();
+                updateBossSpriteMood();
+                finishTurnUpdate(log);
+            });
+            afterPopup.play();
+        });
+        wait.play();
+    } else if (!hits.isEmpty()) {
+        if ("rapid".equals(hitStyle)) {
+            animateRapidHits(hits, playerPane, turnLog);
+        } else {
+            animateSingleHit(hits, playerPane, turnLog);
+        }
+    } else {
+        boss.clearAbilitySprite();
+        updateBossSpriteMood();
+        finishTurnUpdate(turnLog);
+    }
+}
 
     private void animateRapidHits(List<Integer> hits, AnchorPane playerPane, TurnLog turnLog) {
         int startHp = turnLog.getPlayerHpAfter() +
                 hits.stream().mapToInt(Integer::intValue).sum();
         int[] displayHp = {Math.min(startHp, playerMaxHp)};
 
-        int delayPerHit = 120;
+        int delayPerHit = 50;
         Timeline rapid  = new Timeline();
 
         for (int i = 0; i < hits.size(); i++) {

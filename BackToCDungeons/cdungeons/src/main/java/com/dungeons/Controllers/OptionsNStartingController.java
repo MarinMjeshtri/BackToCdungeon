@@ -3,6 +3,7 @@ package com.dungeons.Controllers;
 import com.dungeons.screens.GameScreen;
 import com.dungeons.screens.creditsScreen;
 import com.dungeons.screens.areYouSureScreen;
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -37,13 +38,14 @@ public class OptionsNStartingController {
 
         stage.setScene(scene);
         gameScreen.startLoop();
+        GameMusicManager.playOpening();
 
     }
 
     //OPEN THE CREDITS
     @FXML
     private void handleButton2() throws IOException {
-        creditsScreen credits = new creditsScreen();
+        creditsScreen credits = new creditsScreen(null, stage);
         Scene scene = new Scene(credits.getRoot());
 
         stage.setScene(scene);
