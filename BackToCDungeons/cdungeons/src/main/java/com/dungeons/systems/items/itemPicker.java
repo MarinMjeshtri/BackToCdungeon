@@ -11,7 +11,7 @@ public class itemPicker {
     public void load() {
         Gson gson = new Gson();
 
-        InputStream is = getClass().getResourceAsStream("/Items/Items.json");
+        InputStream is = getClass().getResourceAsStream("/JSONfolders/Items/Items.json");
 
         if (is == null) {
             System.out.println("File not found!");

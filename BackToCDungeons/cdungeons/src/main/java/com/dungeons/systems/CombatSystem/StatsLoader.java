@@ -7,7 +7,7 @@ import java.util.List;
 
 public class StatsLoader {
 
-    private static final String STATS_FILE = "/CharacterStats/Stats.json";
+    private static final String STATS_FILE = "/JSONfolders/CharacterStats/Stats.json";
     private String raw;
 
     public StatsLoader() {

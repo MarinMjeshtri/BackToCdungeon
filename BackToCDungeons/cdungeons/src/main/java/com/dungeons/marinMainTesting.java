@@ -27,7 +27,7 @@ public class marinMainTesting extends Application {
             OptionsNStartingController controller = screen.getLoader().getController();
             controller.setStage(stage);
 
-            Scene scene = new Scene(screen.getRoot(), 800, 600);
+            Scene scene = new Scene(screen.getRoot(), 1280, 720);
 
             scene.getStylesheets().add(
                     marinMainTesting.class
