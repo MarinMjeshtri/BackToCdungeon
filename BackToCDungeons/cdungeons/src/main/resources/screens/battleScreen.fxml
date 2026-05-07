@@ -2,117 +2,119 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.control.TextArea?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.CombatController">
+<StackPane
+        xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.dungeons.Controllers.CombatController">
+
     <children>
 
-        <!-- ENEMY SPRITE AREA -->
-        <AnchorPane layoutX="495.0" layoutY="14.0" prefHeight="293.0" prefWidth="291.0" styleClass="panel">
+        <AnchorPane maxHeight="720.0" maxWidth="1280.0"
+                    prefHeight="720.0" prefWidth="1280.0">
+
+                <children>
+
+        <AnchorPane layoutX="835.0" layoutY="14.0" prefHeight="325.0" prefWidth="400.0" style="-fx-background-color: gray;" styleClass="panel">
             <children>
-                <ImageView fx:id="enemycharacterSprite" fitHeight="247.0" fitWidth="200.0" layoutX="46.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-                <Ellipse fill="DODGERBLUE" layoutX="146.0" layoutY="244.0" radiusX="100.0" radiusY="35.0" stroke="BLACK" strokeType="INSIDE" />
+                <ImageView fx:id="enemycharacterSprite" fitHeight="294.0" fitWidth="317.0" layoutX="41.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
             </children>
         </AnchorPane>
 
         <!-- PLAYER SPRITE AREA -->
-        <AnchorPane layoutX="14.0" layoutY="331.0" prefHeight="255.0" prefWidth="291.0" styleClass="panel">
+        <AnchorPane layoutX="59.0" layoutY="376.0" prefHeight="330.0" prefWidth="400.0" style="-fx-background-color: gray;" styleClass="panel">
             <children>
-                <ImageView fx:id="playercharacterSprite" fitHeight="247.0" fitWidth="200.0" layoutX="46.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="playercharacterSprite" fitHeight="267.0" fitWidth="308.0" layoutX="46.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
             </children>
         </AnchorPane>
 
         <!-- BOSS HP BAR -->
-        <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="104.0" prefWidth="464.0" styleClass="panel">
+        <AnchorPane layoutX="59.0" layoutY="14.0" prefHeight="104.0" prefWidth="650.0" style="-fx-background-color: gray;" styleClass="panel">
             <children>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" height="40.0" layoutX="14.0" layoutY="32.0" strokeType="INSIDE" styleClass="hp-bar-bg" width="435.0" />
-                <Rectangle fx:id="bossHP" arcHeight="5.0" arcWidth="5.0" height="40.0" layoutX="14.0" layoutY="32.0" strokeType="INSIDE" styleClass="hp-bar-fill" width="435.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="62.0" layoutX="14.0" layoutY="32.0" strokeType="INSIDE" style="-fx-fill: red;" styleClass="hp-bar-bg" width="566.0" />
+                <Rectangle fx:id="bossHP" arcHeight="5.0" arcWidth="5.0" height="62.0" layoutX="14.0" layoutY="32.0" strokeType="INSIDE" styleClass="hp-bar-fill" width="566.0" />
+
                 <Label fx:id="bossName" layoutX="14.0" layoutY="14.0" styleClass="label-title" text="BOSS NAME" />
-                <Label fx:id="bossHPnumber" layoutX="402.0" layoutY="14.0" styleClass="label-muted" text="BOSS HP" />
+                <Label fx:id="bossHPnumber" layoutX="517.0" layoutY="14.0" styleClass="label-muted" text="BOSS HP" />
             </children>
         </AnchorPane>
 
         <!-- PLAYER HP BAR -->
-        <AnchorPane layoutX="322.0" layoutY="516.0" prefHeight="70.0" prefWidth="464.0" styleClass="panel">
+        <AnchorPane layoutX="580.0" layoutY="610.0" prefHeight="96.0" prefWidth="650.0" style="-fx-background-color: gray;" styleClass="panel">
             <children>
-                <Label fx:id="playername" layoutX="14.0" layoutY="27.0" styleClass="label-title" text="YOUR NAME" />
-                <Rectangle arcHeight="5.0" arcWidth="5.0" height="40.0" layoutX="92.0" layoutY="16.0" strokeType="INSIDE" styleClass="hp-bar-bg" width="355.0" />
-                <Rectangle fx:id="playerHP" arcHeight="5.0" arcWidth="5.0" height="40.0" layoutX="92.0" layoutY="16.0" strokeType="INSIDE" styleClass="hp-bar-fill" width="355.0" />
+                <Label fx:id="playername" alignment="CENTER" layoutX="14.0" layoutY="25.0" prefHeight="54.0" prefWidth="149.0" styleClass="label-title" text="YOUR NAME" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="62.0" layoutX="181.0" layoutY="17.0" strokeType="INSIDE" style="-fx-fill: red;" styleClass="hp-bar-bg" width="436.0" />
+                <Rectangle fx:id="playerHP" arcHeight="5.0" arcWidth="5.0" height="62.0" layoutX="181.0" layoutY="17.0" strokeType="INSIDE" styleClass="hp-bar-fill" width="436.0" />
             </children>
         </AnchorPane>
 
         <!-- TURN LOG -->
-        <AnchorPane layoutX="14.0" layoutY="128.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel">
+        <AnchorPane layoutX="58.0" layoutY="138.0" prefHeight="210.0" prefWidth="650.0" style="-fx-background-color: gray;" styleClass="panel">
             <children>
-                <Label layoutX="14.0" layoutY="14.0" styleClass="label-title" text="TURNLOG" />
-                <Label fx:id="turnNumber" layoutX="395.0" layoutY="14.0" styleClass="label-muted" text="TURN: 0" />
-                <ScrollPane layoutX="14.0" layoutY="32.0" prefHeight="140.0" prefWidth="446.0" styleClass="scroll-pane">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="139.0" prefWidth="443.0">
-                            <children>
-                                <TextArea fx:id="turnInformation" layoutX="14.0" layoutY="14.0" prefHeight="139.0" prefWidth="443.0" styleClass="text-area" text="TURNINFO" />
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </ScrollPane>
+                <Label layoutX="42.0" layoutY="8.0" styleClass="label-title" text="TURNLOG" />
+                <Label fx:id="turnNumber" layoutX="529.0" layoutY="1.0" prefHeight="30.0" prefWidth="79.0" styleClass="label-muted" text="TURN: 0" />
+                    <TextArea fx:id="turnInformation" layoutX="42.0" layoutY="32.0" prefHeight="150.0" prefWidth="566.0" styleClass="text-area" text="TURN INFORMATION" />
             </children>
         </AnchorPane>
 
         <!-- MAIN ACTION MENU -->
-        <AnchorPane fx:id="mainAnchor" layoutX="322.0" layoutY="331.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel">
+        <AnchorPane fx:id="mainAnchor" layoutX="580.0" layoutY="377.0" prefHeight="210.0" prefWidth="650.0" style="-fx-background-color: gray;" styleClass="panel">
             <children>
-                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#openAttack" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="ATTACK" />
-                <Button layoutX="235.0" layoutY="14.0" mnemonicParsing="false" onAction="#openItems" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="ITEMS" />
-                <Button layoutX="14.0" layoutY="89.0" mnemonicParsing="false" onAction="#openDefense" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="GUARD" />
-                <Button layoutX="235.0" layoutY="89.0" mnemonicParsing="false" onAction="#openTalk" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="TALK" />
+                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#openAttack" prefHeight="54.0" prefWidth="290.0" styleClass="button" text="ATTACK" />
+                <Button layoutX="361.0" layoutY="14.0" mnemonicParsing="false" onAction="#openItems" prefHeight="54.0" prefWidth="274.0" styleClass="button" text="ITEMS" />
+                <Button layoutX="14.0" layoutY="78.0" mnemonicParsing="false" onAction="#openDefense" prefHeight="54.0" prefWidth="290.0" styleClass="button" text="GUARD" />
+                <Button layoutX="361.0" layoutY="78.0" mnemonicParsing="false" onAction="#openTalk" prefHeight="54.0" prefWidth="274.0" styleClass="button" text="TALK" />
+                  <Button layoutX="180.0" layoutY="141.0" mnemonicParsing="false" onAction="#openDefense" prefHeight="54.0" prefWidth="290.0" styleClass="button" text="RUN" />
             </children>
         </AnchorPane>
 
-        <!-- DEFENSE MENU -->
-        <AnchorPane fx:id="pressDefense" disable="true" layoutX="322.0" layoutY="323.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel" visible="false">
+              <!-- DEFENSE MENU -->
+        <AnchorPane fx:id="pressDefense" disable="true" layoutX="584.0" layoutY="367.0" prefHeight="220.0" prefWidth="650.0" styleClass="panel" visible="false">
             <children>
-                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="214.0" styleClass="button" text="GUARD" />
-                <Button layoutX="232.0" layoutY="14.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="214.0" styleClass="button" text="COUNTER" />
-                <Button layoutX="14.0" layoutY="117.0" mnemonicParsing="false" onAction="#goBack" prefHeight="53.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
+                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="138.0" prefWidth="308.0" styleClass="button" text="GUARD" />
+                <Button layoutX="328.0" layoutY="14.0" mnemonicParsing="false" prefHeight="138.0" prefWidth="308.0" styleClass="button" text="COUNTER" />
+                <Button layoutX="107.0" layoutY="167.0" mnemonicParsing="false" onAction="#goBack" prefHeight="53.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
             </children>
         </AnchorPane>
 
         <!-- TALK MENU -->
-        <AnchorPane fx:id="pressTalk" disable="true" layoutX="322.0" layoutY="330.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel" visible="false">
+        <AnchorPane fx:id="pressTalk" disable="true" layoutX="578.0" layoutY="370.0" prefHeight="229.0" prefWidth="650.0" styleClass="panel" visible="false">
             <children>
-                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="214.0" styleClass="button" text="TALK" />
-                <Button layoutX="235.0" layoutY="14.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="214.0" styleClass="button" text="INSULT" />
-                <Button layoutX="14.0" layoutY="117.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
+                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="126.0" prefWidth="308.0" styleClass="button" text="TALK" />
+                <Button layoutX="328.0" layoutY="14.0" mnemonicParsing="false" prefHeight="126.0" prefWidth="308.0" styleClass="button" text="INSULT" />
+                <Button layoutX="107.0" layoutY="150.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
             </children>
         </AnchorPane>
 
         <!-- ATTACK MENU -->
-        <AnchorPane fx:id="pressAttack" disable="true" layoutX="322.0" layoutY="330.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel" visible="false">
+        <AnchorPane fx:id="pressAttack" disable="true" layoutX="577.0" layoutY="367.0" prefHeight="235.0" prefWidth="650.0" styleClass="panel" visible="false">
             <children>
-                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="ABILITY1" />
-                <Button layoutX="235.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="ABILITY2" />
-                <Button layoutX="14.0" layoutY="62.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="ABILITY3" />
-                <Button layoutX="235.0" layoutY="62.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="ABILITY4" />
-                <Button layoutX="14.0" layoutY="110.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
+                <Button layoutX="14.0" layoutY="12.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="284.0" styleClass="button" text="ABILITY1" />
+                <Button layoutX="345.0" layoutY="12.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="290.0" styleClass="button" text="ABILITY2" />
+                <Button layoutX="14.0" layoutY="86.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="284.0" styleClass="button" text="ABILITY3" />
+                <Button layoutX="345.0" layoutY="86.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="290.0" styleClass="button" text="ABILITY4" />
+                <Button layoutX="107.0" layoutY="166.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
             </children>
         </AnchorPane>
 
         <!-- ITEMS MENU -->
-        <AnchorPane fx:id="pressItem" disable="true" layoutX="322.0" layoutY="330.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel" visible="false">
+        <AnchorPane fx:id="pressItem" disable="true" layoutX="577.0" layoutY="364.0" prefHeight="235.0" prefWidth="650.0" styleClass="panel" visible="false">
             <children>
-                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="item1" />
-                <Button layoutX="235.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="item2" />
-                <Button layoutX="13.0" layoutY="62.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="item3" />
-                <Button layoutX="235.0" layoutY="62.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="item4" />
-                <Button layoutX="14.0" layoutY="111.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
+                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="308.0" styleClass="button" text="item1" />
+                <Button layoutX="330.0" layoutY="14.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="308.0" styleClass="button" text="item2" />
+                <Button layoutX="14.0" layoutY="90.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="308.0" styleClass="button" text="item3" />
+                <Button layoutX="330.0" layoutY="90.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="308.0" styleClass="button" text="item4" />
+                <Button layoutX="107.0" layoutY="166.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
             </children>
         </AnchorPane>
 
+                </children>
+
+        </AnchorPane>
+
     </children>
-</Pane>
+</StackPane>

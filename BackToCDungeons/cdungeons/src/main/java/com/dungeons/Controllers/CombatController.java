@@ -86,7 +86,6 @@ public class CombatController {
 
         engine = new CombatEngine(player, boss);
 
-        hideBlueOval();
         setStart(player.getName(), boss.getName(), bossMaxHp);
         injectStatusLabels();
         wireAbilityButtons();
@@ -97,12 +96,6 @@ public class CombatController {
         log("Combat started. Choose your action.");
     }
 
-    private void hideBlueOval() {
-        AnchorPane enemyPane = (AnchorPane) enemycharacterSprite.getParent();
-        enemyPane.getChildren().stream()
-                .filter(n -> n instanceof Ellipse)
-                .forEach(n -> n.setVisible(false));
-    }
 
     private void injectStatusLabels() {
         AnchorPane bossHpPane   = (AnchorPane) bossHP.getParent();
