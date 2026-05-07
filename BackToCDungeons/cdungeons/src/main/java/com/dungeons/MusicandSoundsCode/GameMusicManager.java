@@ -4,12 +4,20 @@ public class GameMusicManager {
 
     public static final String FINAL_BOSS_ID = "SuperCoolSigma";
 
-    public enum MusicState { NONE, OPENING, GAMEPLAY, COMBAT, FINAL_BOSS, ENDING }
+    public enum MusicState { NONE, INTRO, OPENING, GAMEPLAY, COMBAT, FINAL_BOSS, ENDING }
 
     private static MusicState currentState = MusicState.NONE;
     private static int        walkTimer    = 0;
 
     private GameMusicManager() {}
+
+    public static void playIntro() {
+        if (currentState == MusicState.INTRO) return;
+        currentState = MusicState.INTRO;
+        AudioManager.stopMusic();
+        AudioManager.playMusic(AudioManager.MUSIC_LABORATORY);
+        System.out.println("[GameMusicManager] -> INTRO (" + AudioManager.MUSIC_LABORATORY + ")");
+    }
 
     public static void playOpening() {
         transition(MusicState.OPENING, AudioManager.MUSIC_EXPLORATION);
@@ -34,13 +42,8 @@ public class GameMusicManager {
         AudioManager.playMusicOnce(AudioManager.MUSIC_LABORATORY);
     }
 
-    public static void pauseMusic() {
-        AudioManager.pauseMusic();
-    }
-
-    public static void resumeMusic() {
-        AudioManager.resumeMusic();
-    }
+    public static void pauseMusic()  { AudioManager.pauseMusic(); }
+    public static void resumeMusic() { AudioManager.resumeMusic(); }
 
     public static void stopMusic() {
         AudioManager.stopMusic();
@@ -78,22 +81,16 @@ public class GameMusicManager {
         else                                                                     AudioManager.playSound(AudioManager.SFX_SWORD);
     }
 
-    public static void playPickupSound() {
-        AudioManager.playSound(AudioManager.SFX_PICKUP);
-    }
-
-    public static void playGameOverSound() {
-        AudioManager.playSound(AudioManager.SFX_GAME_OVER);
-    }
+    public static void playPickupSound()  { AudioManager.playSound(AudioManager.SFX_PICKUP); }
+    public static void playGameOverSound() { AudioManager.playSound(AudioManager.SFX_GAME_OVER); }
 
     public static void setSfxVolume(double volume) { AudioManager.setSfxVolume(volume); }
 
     private static void transition(MusicState newState, String track) {
         if (currentState == newState) return;
+        AudioManager.stopMusic();
         currentState = newState;
         AudioManager.playMusic(track);
         System.out.println("[GameMusicManager] -> " + newState + " (" + track + ")");
     }
-
-
 }
