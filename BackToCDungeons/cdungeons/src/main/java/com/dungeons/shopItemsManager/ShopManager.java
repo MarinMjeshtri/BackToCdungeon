@@ -13,7 +13,7 @@ public class ShopManager {
 
     public void load(){
         Gson gson = new Gson();
-        InputStream is = getClass().getResourceAsStream("/shopItems.json");
+        InputStream is = getClass().getResourceAsStream("/ShopItems/shopItems.json");
         Reader reader = new InputStreamReader(is);
         shopData = gson.fromJson(reader, ShopData.class);
     }

@@ -4,6 +4,7 @@ import java.util.Map;
 
 public class Shop {
 
+    public String image;
     public int price;
     public String displayName;
     public String desc;
