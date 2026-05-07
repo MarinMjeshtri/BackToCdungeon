@@ -3,59 +3,52 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.StackPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="602.0" prefWidth="800.0"
-      style="-fx-background-color: rgba(0,0,0,0.75);"
-      xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.dungeons.Controllers.chestController">
+<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.chestController">
     <children>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: rgba(0,0,0,0.75);">
+            <children>
+
 
         <!-- main panel -->
-        <AnchorPane styleClass="dark-panel" layoutX="235.0" layoutY="68.0" prefHeight="434.0" prefWidth="331.0">
+        <AnchorPane layoutX="474.0" layoutY="124.0" prefHeight="434.0" prefWidth="331.0" styleClass="dark-panel">
             <children>
 
                 <!-- ESC hint -->
-                <Label styleClass="hint-label" layoutX="95.0" layoutY="31.0" text="PRESS ESC to close screen"/>
+                <Label layoutX="95.0" layoutY="31.0" styleClass="hint-label" text="PRESS ESC to close screen" />
 
                 <!-- item name panel -->
-                <AnchorPane styleClass="inner-panel" layoutX="13.0" layoutY="56.0" prefHeight="42.0" prefWidth="305.0">
+                <AnchorPane layoutX="13.0" layoutY="56.0" prefHeight="42.0" prefWidth="305.0" styleClass="inner-panel">
                     <children>
-                        <Label styleClass="item-name" fx:id="itemName" layoutX="3.0" layoutY="12.0"
-                               prefHeight="18.0" prefWidth="299.0" text="ITEMNAME"
-                               textAlignment="CENTER" wrapText="true"/>
+                        <Label fx:id="itemName" alignment="CENTER" layoutX="3.0" layoutY="12.0" prefHeight="18.0" prefWidth="299.0" styleClass="item-name" text="ITEMNAME" textAlignment="CENTER" wrapText="true" />
                     </children>
                 </AnchorPane>
 
                 <!-- image panel -->
-                <AnchorPane styleClass="inner-panel" layoutX="22.0" layoutY="106.0" prefHeight="177.0" prefWidth="287.0">
+                <AnchorPane layoutX="22.0" layoutY="106.0" prefHeight="177.0" prefWidth="287.0" styleClass="inner-panel">
                     <children>
-                        <ImageView fx:id="img1" fitHeight="150.0" fitWidth="200.0"
-                                   layoutX="49.0" layoutY="14.0"
-                                   pickOnBounds="true" preserveRatio="true"/>
+                        <ImageView fx:id="img1" fitHeight="150.0" fitWidth="200.0" layoutX="49.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                     </children>
                 </AnchorPane>
 
                 <!-- stats panel -->
-                <AnchorPane styleClass="inner-panel" layoutX="12.0" layoutY="294.0" prefHeight="42.0" prefWidth="305.0">
+                <AnchorPane layoutX="12.0" layoutY="294.0" prefHeight="42.0" prefWidth="305.0" styleClass="inner-panel">
                     <children>
-                        <Label styleClass="desc-label" fx:id="statsItem" layoutX="9.0"
-                               prefHeight="42.0" prefWidth="287.0" text="buffs/debuffs"
-                               textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true"/>
+                        <Label fx:id="statsItem" alignment="CENTER" layoutX="9.0" prefHeight="42.0" prefWidth="287.0" styleClass="desc-label" text="buffs/debuffs" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
                     </children>
                 </AnchorPane>
 
                 <!-- description panel -->
-                <AnchorPane styleClass="inner-panel" layoutX="12.0" layoutY="348.0" prefHeight="74.0" prefWidth="305.0">
+                <AnchorPane layoutX="12.0" layoutY="348.0" prefHeight="74.0" prefWidth="305.0" styleClass="inner-panel">
                     <children>
-                        <Label styleClass="desc-label" fx:id="descItem" layoutX="3.0" layoutY="4.0"
-                               prefHeight="66.0" prefWidth="299.0" text="description" wrapText="true"/>
+                        <Label fx:id="descItem" alignment="CENTER" layoutX="3.0" layoutY="4.0" prefHeight="66.0" prefWidth="299.0" styleClass="desc-label" text="description" wrapText="true" />
                     </children>
                 </AnchorPane>
 
             </children>
         </AnchorPane>
+            </children>
+        </AnchorPane>
     </children>
-</Pane>
+</StackPane>

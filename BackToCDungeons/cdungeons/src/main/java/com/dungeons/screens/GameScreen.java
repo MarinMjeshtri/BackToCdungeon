@@ -123,6 +123,7 @@ public class GameScreen {
         gameRoot = new StackPane(gamePane, uiPane, secondUIPane, escapePane);
         gameRoot.setPrefSize(1280, 720);
 
+
         // ── MAP MANAGER ────────────────────────────────────
         mapManager = new MapManager(
                 tilesetManager,
@@ -190,19 +191,18 @@ public class GameScreen {
 
                     //Put the callers for chest and shop outside to stop repeating code dattebayo
                     // in getRoot() — set ONCE, outside the interact listener
+                    // ── CHANGED: moved E key logic here, removed duplicate from interact lambda ──
                     canvas.setOnKeyPressed(e -> {
                         if (e.getCode() == KeyCode.ESCAPE) {
                             togglePause();
                         } else if (e.getCode() == KeyCode.E) {
-                            if(shopNode != null && !shopNode.isVisible() && mapManager.isCurrentMap("ShopRoom")){
+                            if (shopNode != null && !shopNode.isVisible() && mapManager.isCurrentMap("ShopRoom")) {
                                 shopNode.setVisible(true);
                                 secondUIPane.setVisible(true);
-                            }
-                            else if(chestNode != null && !chestNode.isVisible() && mapManager.isCurrentMap("ChestRoom")){
+                            } else if (chestNode != null && !chestNode.isVisible() && mapManager.isCurrentMap("ChestRoom")) {
                                 chestNode.setVisible(true);
                                 secondUIPane.setVisible(true);
-                            }
-                            else if (shopNode != null && shopNode.isVisible()) {
+                            } else if (shopNode != null && shopNode.isVisible()) {
                                 shopNode.setVisible(false);
                                 secondUIPane.setVisible(false);
                             } else if (chestNode != null && chestNode.isVisible()) {
@@ -213,6 +213,7 @@ public class GameScreen {
                             player.keyPressed(e.getCode());
                         }
                     });
+                    canvas.setOnKeyReleased(e -> player.keyReleased(e.getCode()));
 
                     // ── CREDITS → uiPane ──────────────────
                     if (type.equals("credits")) {
@@ -258,7 +259,7 @@ public class GameScreen {
         );
 
         // ── LOAD STARTING MAP ──────────────────────────────
-        mapManager.loadMap("ShopRoom");
+        mapManager.loadMap("MobRoom1");
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
         player.setMap(currentMap);
@@ -288,6 +289,7 @@ public class GameScreen {
         stage.getScene().setRoot(gameRoot);
         player.clearInput();
         canvas.requestFocus();
+        GameMusicManager.playGameplay();
         startLoop();
     }
 
@@ -298,6 +300,7 @@ public class GameScreen {
         stage.getScene().setRoot(gameRoot);
         player.clearInput();
         canvas.requestFocus();
+        GameMusicManager.playGameplay();
         startLoop();
     }
 

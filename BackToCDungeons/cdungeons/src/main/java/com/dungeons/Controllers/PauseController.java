@@ -4,10 +4,11 @@ import javafx.fxml.FXML;
 import com.dungeons.screens.GameScreen;
 import com.dungeons.screens.areYouSureScreen;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Stack;
 
 public class PauseController {
 
@@ -36,7 +37,7 @@ public class PauseController {
 
     @FXML
     private void exit() {
-        Pane currentRoot = (Pane) stage.getScene().getRoot();
+        StackPane currentRoot = (StackPane) stage.getScene().getRoot();
 
         //CHECK IF ITS LOADED OR NOT
         if (!currentRoot.getChildren().contains(uSureScreen.getRoot())) {
