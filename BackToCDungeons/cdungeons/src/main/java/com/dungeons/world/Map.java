@@ -18,6 +18,9 @@ public class Map {
 
     public int spawnX = 0, spawnY = 0;
 
+    // persists across all object layers so every Tiled object gets a unique id
+    private int nextObjId = 0;
+
     // ── CHAIN ──────────────────────────────────────────────
     private static final List<String> SEQUENCE = new ArrayList<>();
     private static int currentSequenceIndex = 0;
@@ -51,13 +54,11 @@ public class Map {
         SEQUENCE.add("k3jviBossroom");
         SEQUENCE.add("ShopRoom");
 
-        // pass last room of block1 so block2 doesn't repeat it
         List<String> block2 = randomBlock(3, block1.get(block1.size() - 1));
         SEQUENCE.addAll(block2);
         SEQUENCE.add("RoomKledi");
         SEQUENCE.add("ChestRoom");
 
-        // pass last room of block2 so block3 doesn't repeat it
         List<String> block3 = randomBlock(2, block2.get(block2.size() - 1));
         SEQUENCE.addAll(block3);
         SEQUENCE.add("ShopRoom");
@@ -113,6 +114,7 @@ public class Map {
     public void load(String mapName) {
         this.currentMapName = mapName;
 
+        nextObjId = 0;
         layers.clear();
         collisionLayers.clear();
         tilesetRanges.clear();
@@ -175,7 +177,6 @@ public class Map {
 
         System.out.println("Loading object layer: '" + name + "' with " + objects.size() + " objects");
 
-        int objIndex = 0;
         for (JsonElement objEl : objects) {
             JsonObject obj = objEl.getAsJsonObject();
             int tileX = (int)(obj.get("x").getAsFloat() / 16);
@@ -228,17 +229,17 @@ public class Map {
             } else if (nameLower.equals("fight")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++)
                     for (int tx = tileX; tx < tileX + rectW; tx++)
-                        interactZones.add(new InteractZone(tx, ty, "fight", objIndex));
+                        interactZones.add(new InteractZone(tx, ty, "fight", nextObjId));
 
             } else if (nameLower.equals("shop")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++)
                     for (int tx = tileX; tx < tileX + rectW; tx++)
-                        interactZones.add(new InteractZone(tx, ty, "shop", 0));
+                        interactZones.add(new InteractZone(tx, ty, "shop", nextObjId));
 
             } else if (nameLower.equals("chest")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++)
                     for (int tx = tileX; tx < tileX + rectW; tx++)
-                        interactZones.add(new InteractZone(tx, ty, "chest", 0));
+                        interactZones.add(new InteractZone(tx, ty, "chest", nextObjId));
 
             } else if (nameLower.equals("cassie_encounter")
                     || nameLower.equals("freki_encounter")
@@ -246,10 +247,10 @@ public class Map {
                     || nameLower.equals("johnmkati_lab_reveal")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++)
                     for (int tx = tileX; tx < tileX + rectW; tx++)
-                        interactZones.add(new InteractZone(tx, ty, "dialogue:" + name, 0));
+                        interactZones.add(new InteractZone(tx, ty, "dialogue:" + name, nextObjId));
             }
 
-            objIndex++;
+            nextObjId++;
         }
     }
 
@@ -276,7 +277,7 @@ public class Map {
         if (source.contains("north"))        return "north";
         if (source.contains("southwest"))    return "south-west";
         if (source.contains("west"))         return "west";
-        if (source.contains("south"))         return "south";
+        if (source.contains("south"))        return "south";
         return "floor";
     }
 
@@ -297,6 +298,7 @@ public class Map {
     // ── GETTERS ────────────────────────────────────────────
     public static String getStartRoom() {
         currentSequenceIndex = 0;
+        roomCounter = 1;
         return startRoom;
     }
 
