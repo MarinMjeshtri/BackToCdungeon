@@ -148,7 +148,7 @@ public class Player {
         } else if (currentDirection == Direction.DOWN_RIGHT) {
             spritePath = "/sprites/characters/Joni2/rotations/south-east.png";
         } else {
-            spritePath = "/sprites/characters/Joni2/rotations/north.png";
+            spritePath = "/sprites/characters/Joni2/rotations/south.png";
         }
 
         Image img = new Image(getClass().getResourceAsStream(spritePath));

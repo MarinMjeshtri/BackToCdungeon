@@ -525,7 +525,6 @@ public class CombatController {
     private void updateBossSpriteMood() {
         loadSpriteOnto(enemycharacterSprite, boss.getCurrentSprite());
     }
-
     // ── FLOATING DAMAGE LABEL ───────────────────────────────────
 
     private void spawnDamageLabel(String text, AnchorPane parent,
