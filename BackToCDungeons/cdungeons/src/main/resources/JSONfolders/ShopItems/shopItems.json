@@ -22,7 +22,7 @@
       "price": 5,
       "displayName": "Strength Potion",
       "desc": "A combat-enhancing potion that temporarily increases ATK, allowing attacks to deal more damage for a short time.",
-      "image": "/sprites/shopItems/smallHealthPotion.png",
+      "image": "/sprites/shopItems/strengthPotion.png",
       "effects": {
         "atk": 30
       }
