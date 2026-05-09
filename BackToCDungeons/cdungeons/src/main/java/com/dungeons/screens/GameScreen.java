@@ -382,10 +382,10 @@ public class GameScreen {
             case "RoomKledi":     return "FreakyRelah";
             case "BossRoomJoni":  return "JohnMKati";
             case "MobRoom1":      return "Mob1";
-            case "MobRoom2":      return "Mob2";
-            case "MobRoom3":      return "Mob3";
-            case "MobRoom4":      return "Mob4";
-            case "MobRoom5":      return "Mob5";
+            case "MobRoom2":      return "Mob1";
+            case "MobRoom3":      return "Mob1";
+            case "MobRoom4":      return "Mob1";
+            case "MobRoom5":      return "Mob1";
             default:              return "CassieYarn";
         }
     }
