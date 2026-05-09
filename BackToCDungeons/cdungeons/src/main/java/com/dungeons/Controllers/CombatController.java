@@ -104,8 +104,6 @@ public class CombatController {
         bossMaxHp   = boss.getMaxHp();
 
         engine = new CombatEngine(player, boss);
-
-        //hideBlueOval();
         // Shows the enemy level in the UI title, e.g. "Mob1 Lv.3"
         setStart(player.getName(), boss.getName() + " Lv." + level, bossMaxHp);
         injectStatusLabels();
@@ -314,6 +312,7 @@ public class CombatController {
                 spawnDamageLabel("-" + turnLog.getPlayerDamageDealt(),
                         bossPane, Color.RED, 70, 90, 26);
             }
+
 
             PauseTransition afterPlayerHit = new PauseTransition(Duration.millis(500));
             afterPlayerHit.setOnFinished(ev -> {
@@ -714,6 +713,7 @@ public class CombatController {
             PlayerProgress progress = PlayerProgress.getInstance();
             log("Victory. " + boss.getName() + " defeated.");
             // Shows the XP and gold this specific enemy gave (comes from RewardTable via BossLoader)
+            GameScreen.getInstance().showItemPickup(); //Won Change name here too pookie
             log("+" + boss.getXPReward() + " XP  |  +" + boss.getGoldReward() + " Gold");
             // Shows current level progress after the reward was applied
             log("Level: " + progress.getLevel() + "  |  XP: " + progress.getXp() + "/" + progress.getXpToNextLevel());
@@ -721,6 +721,7 @@ public class CombatController {
 
         } else {
             log("Defeated. " + player.getName() + " has fallen. Game over.");
+            GameScreen.getInstance().showGameOver();
             PlayerProgress.getInstance().setCurrentHp(-1);
         }
 
