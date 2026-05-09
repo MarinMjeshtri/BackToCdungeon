@@ -14,7 +14,7 @@ public class DialogueManager {
         Gson gson = new Gson();
 
         //I ben load file te dialogjeve.
-        InputStream is = getClass().getResourceAsStream("/Dialogues/dialogue.json");;
+        InputStream is = getClass().getResourceAsStream("/JSONfolders/Dialogues/dialogue.json");;
 
         if (is == null) {
             System.out.println("File not found!");

@@ -2,6 +2,7 @@ package com.dungeons.systems;
 
 import com.dungeons.world.Map;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 public class Player {
@@ -13,12 +14,18 @@ public class Player {
 
     private static final double SPEED = 2.0;
     private static final int TILE_SIZE = 16;
-    private static final int SCALE = 2;
+    private static final int SCALE = 3;
     private static final int SIZE = 14;
 
+    private SpriteSheet sprite;
     public Player(double startX, double startY) {
         this.x = startX;
         this.y = startY;
+
+        this.sprite = new SpriteSheet(
+                "/sprites/characters/Joni2/rotations/east.png",
+                16
+        );
     }
 
     public void setMap(Map map) {
@@ -54,6 +61,14 @@ public class Player {
     }
 
     // ---------------- UPDATE ----------------
+    public enum Direction {
+        IDLE,
+        UP, DOWN, LEFT, RIGHT,
+        UP_LEFT, UP_RIGHT,
+        DOWN_LEFT, DOWN_RIGHT
+    }
+
+    private Direction currentDirection = Direction.IDLE;
 
     public void update() {
         double dx = 0;
@@ -64,7 +79,21 @@ public class Player {
         if (left)  dx -= SPEED;
         if (right) dx += SPEED;
 
+        if      (up && left)   currentDirection = Direction.UP_LEFT;
+        else if (up && right)  currentDirection = Direction.UP_RIGHT;
+        else if (down && left) currentDirection = Direction.DOWN_LEFT;
+        else if (down && right)currentDirection = Direction.DOWN_RIGHT;
+        else if (up)           currentDirection = Direction.UP;
+        else if (down)         currentDirection = Direction.DOWN;
+        else if (left)         currentDirection = Direction.LEFT;
+        else if (right)        currentDirection = Direction.RIGHT;
+        else                   currentDirection = Direction.IDLE;
+
         move(dx, dy);
+    }
+
+    public Direction getCurrentDirection() {
+        return currentDirection;
     }
 
     private void move(double dx, double dy) {
@@ -93,7 +122,33 @@ public class Player {
     // ---------------- RENDER ----------------
 
     public void render(GraphicsContext gc) {
-        gc.fillRect(x, y, SIZE * SCALE, SIZE * SCALE);
+        String spritePath;
+
+        if (currentDirection == Direction.UP) {
+            spritePath = "/sprites/characters/Joni2/rotations/north.png";
+        } else if (currentDirection == Direction.DOWN) {
+            spritePath = "/sprites/characters/Joni2/rotations/south.png";
+        } else if (currentDirection == Direction.LEFT) {
+            spritePath = "/sprites/characters/Joni2/rotations/west.png";
+        } else if (currentDirection == Direction.RIGHT) {
+            spritePath = "/sprites/characters/Joni2/rotations/east.png";
+        } else if (currentDirection == Direction.UP_LEFT) {
+            spritePath = "/sprites/characters/Joni2/rotations/north-west.png";
+        } else if (currentDirection == Direction.UP_RIGHT) {
+            spritePath = "/sprites/characters/Joni2/rotations/north-east.png";
+        } else if (currentDirection == Direction.DOWN_LEFT) {
+            spritePath = "/sprites/characters/Joni2/rotations/south-west.png";
+        } else if (currentDirection == Direction.DOWN_RIGHT) {
+            spritePath = "/sprites/characters/Joni2/rotations/south-east.png";
+        } else { // IDLE or fallback
+            spritePath = "/sprites/characters/Joni2/rotations/north.png";
+        }
+
+        Image img = new Image(getClass().getResourceAsStream(spritePath));
+        gc.setImageSmoothing(false);
+        double squish = 1 + 0.05 * Math.sin(System.currentTimeMillis() * 0.005);
+        gc.drawImage(img, x, y, 128 * squish, 128 / squish);
+
     }
 
     // ---------------- GETTERS ----------------

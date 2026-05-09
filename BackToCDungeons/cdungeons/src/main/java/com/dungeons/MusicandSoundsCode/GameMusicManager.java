@@ -90,6 +90,7 @@ public class GameMusicManager {
 
     private static void transition(MusicState newState, String track) {
         if (currentState == newState) return;
+        AudioManager.stopMusic();
         currentState = newState;
         AudioManager.playMusic(track);
         System.out.println("[GameMusicManager] -> " + newState + " (" + track + ")");

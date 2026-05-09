@@ -177,6 +177,12 @@ public class Map {
                         interactZones.add(new InteractZone(tx, ty, "chest"));
                     }
                 }
+            } else if (nameLower.equals("credits")) {
+                    for (int ty = tileY; ty < tileY + rectH; ty++) {
+                        for (int tx = tileX; tx < tileX + rectW; tx++) {
+                            interactZones.add(new InteractZone(tx, ty, "credits"));
+                        }
+                    }
 
             } else if (nameLower.equals("cassie_encounter")
                     || nameLower.equals("freki_encounter")
