@@ -27,7 +27,8 @@ public class Map {
     public static int getRoomCounter() { return roomCounter; }
 
     private static final List<String> RANDOM_POOL = Arrays.asList(
-            "MobRoom1", "MobRoom2", "MobRoom3", "MobRoom4", "MobRoom5", "HealingRoom"
+            "MobRoom1", "MobRoom2", "MobRoom3", "MobRoom4", "MobRoom5"
+            //"HealingRoom"
     );
 
     private static final int SPAWN_AFTER_CHEST_X = 15;
