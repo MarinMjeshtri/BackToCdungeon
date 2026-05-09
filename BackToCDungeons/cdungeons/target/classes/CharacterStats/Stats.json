@@ -217,7 +217,7 @@
           "effects": { "damage": 80 },
           "statusEffect": "skip",
           "duration": 1,
-          "chance": 0.7,
+          "chance": 0.35,
           "abilitySprite": "/Sprties_CombatUI/JonMkati/Fist3.png",
           "hitStyle": "single",
           "cooldown": 0
@@ -299,8 +299,7 @@
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
     "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
     "thinking": "",
-    "defeated": "",
-    "cloned":   ""
+    "defeated": ""
   },
   "abilities": [
     {

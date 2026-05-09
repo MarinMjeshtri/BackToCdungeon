@@ -34,23 +34,20 @@ public class GameScreen {
     private static final int SCALE = 3;
 
     // ── PANES ──────────────────────────────────────────────
-    private Pane gamePane;       // canvas lives here — the actual game
-    private Pane uiOverlayA;
-    private Pane uiPane;         // dialogue, credits, combat overlays
-    private Pane secondUIPane;   // shop and chest overlays
+    private Pane gamePane;
+    private Pane uiPane;
+    private Pane secondUIPane;
     private Pane combatPane;
-    private Pane escapePane;     // pause screen only
-    private StackPane gameRoot;  // master root — stacks all four panes
+    private Pane escapePane;
+    private StackPane gameRoot;
 
     // ── SCREENS ────────────────────────────────────────────
     private shopScreen shopScreen;
     private creditsScreen creditsScreen;
     private itemPickupScreen itemPickupScreen;
     private pauseScreen pauseScreen;
-    private UIscreen uiSkreen;
     private Stage stage;
     private static GameScreen instance;
-
 
     private Parent shopNode;
     private Parent chestNode;
@@ -100,26 +97,20 @@ public class GameScreen {
 
         tilesetManager.loadAll();
         dialogueManager.load();
+        Map.generateChain();
+        dialogueManager.load();
 
         // ── BUILD PANES ────────────────────────────────────
-        // I plan on adding an inventory pane too!
-        gamePane     = new Pane(canvas);           // GAME
-        uiPane       = new Pane();                 // DIALOUGE CREDITS AND OVERALL UI
-        uiOverlayA   = new Pane();
-        secondUIPane = new Pane();                 // SHOP AND CHEST
-        combatPane   = new Pane();                 // FOR LOADING COMBAT
-        escapePane   = new Pane();                 // PAUSE
+        gamePane     = new Pane(canvas);
+        uiPane       = new Pane();
+        secondUIPane = new Pane();
+        combatPane   = new Pane();
+        escapePane   = new Pane();
 
-        for (Pane p : new Pane[]{gamePane,uiOverlayA, uiPane, secondUIPane, combatPane, escapePane}) {
+        for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
             p.setPrefSize(1280, 720);
-            p.setPickOnBounds(false); // transparent panes don't block mouse
+            p.setPickOnBounds(false);
         }
-
-        // UI OVERLAY HEALTH N STUFF IDK
-        UIscreen uIscreen = new UIscreen(this, stage);
-        uiPane.getChildren().add(uIscreen.getRoot());
-        uIscreen.getRoot().setVisible(true);
-        this.uiSkreen = uIscreen;
 
         // ── PAUSE SCREEN → escapePane ──────────────────────
         pauseScreen ps = new pauseScreen(this, stage);
@@ -128,10 +119,8 @@ public class GameScreen {
         this.pauseScreen = ps;
 
         // ── STACK ALL PANES ────────────────────────────────
-        // order = bottom to top: game → ui → secondUI → escape
         gameRoot = new StackPane(gamePane, uiPane, secondUIPane, escapePane);
         gameRoot.setPrefSize(1280, 720);
-
 
         // ── MAP MANAGER ────────────────────────────────────
         mapManager = new MapManager(
@@ -142,8 +131,8 @@ public class GameScreen {
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
                     player.setPosition(
-                            spawnX * TILE_SIZE * SCALE,
-                            spawnY * TILE_SIZE * SCALE
+                            spawnX * TILE_SIZE * SCALE - Player.HITBOX_OFFSET_X,
+                            spawnY * TILE_SIZE * SCALE - Player.HITBOX_OFFSET_Y
                     );
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
                 },
@@ -152,7 +141,7 @@ public class GameScreen {
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
-                    // ── FIGHT → switches scene to combat ──
+                    // ── FIGHT ─────────────────────────────
                     if (type.equals("fight")) {
                         fightTileX = tileX;
                         fightTileY = tileY;
@@ -177,18 +166,16 @@ public class GameScreen {
                         });
                     }
 
-                    // ── SHOP → secondUIPane ───────────────
+                    // ── SHOP ──────────────────────────────
                     if (type.equals("shop")) {
                         shopScreen shop = new shopScreen(this, stage);
                         shopNode = shop.getRoot();
                         secondUIPane.getChildren().add(shopNode);
                         secondUIPane.setVisible(true);
                         this.shopScreen = shop;
-
                     }
 
-                    // ── CHEST → secondUIPane ──────────────
-
+                    // ── CHEST ─────────────────────────────
                     if (type.equals("chest")) {
                         itemPickupScreen chest = new itemPickupScreen(this, stage);
                         chestNode = chest.getRoot();
@@ -197,34 +184,7 @@ public class GameScreen {
                         this.itemPickupScreen = chest;
                     }
 
-
-                    //Put the callers for chest and shop outside to stop repeating code dattebayo
-                    // in getRoot() — set ONCE, outside the interact listener
-                    // ── CHANGED: moved E key logic here, removed duplicate from interact lambda ──
-                    canvas.setOnKeyPressed(e -> {
-                        if (e.getCode() == KeyCode.ESCAPE) {
-                            togglePause();
-                        } else if (e.getCode() == KeyCode.E) {
-                            if (shopNode != null && !shopNode.isVisible() && mapManager.isCurrentMap("ShopRoom")) {
-                                shopNode.setVisible(true);
-                                secondUIPane.setVisible(true);
-                            } else if (chestNode != null && !chestNode.isVisible() && mapManager.isCurrentMap("ChestRoom")) {
-                                chestNode.setVisible(true);
-                                secondUIPane.setVisible(true);
-                            } else if (shopNode != null && shopNode.isVisible()) {
-                                shopNode.setVisible(false);
-                                secondUIPane.setVisible(false);
-                            } else if (chestNode != null && chestNode.isVisible()) {
-                                chestNode.setVisible(false);
-                                secondUIPane.setVisible(false);
-                            }
-                        } else {
-                            player.keyPressed(e.getCode());
-                        }
-                    });
-                    canvas.setOnKeyReleased(e -> player.keyReleased(e.getCode()));
-
-                    // ── CREDITS → uiPane ──────────────────
+                    // ── CREDITS ───────────────────────────
                     if (type.equals("credits")) {
                         creditsScreen creditsscreen = new creditsScreen(this, stage);
                         Parent credits = creditsscreen.getRoot();
@@ -233,7 +193,7 @@ public class GameScreen {
                         GameMusicManager.playEnding();
                     }
 
-                    // ── DIALOGUE → uiPane ─────────────────
+                    // ── DIALOGUE ──────────────────────────
                     if (type.startsWith("dialogue:")) {
                         lastDialogueTileX = tileX;
                         lastDialogueTileY = tileY;
@@ -267,36 +227,54 @@ public class GameScreen {
                 }
         );
 
-        // ── LOAD STARTING MAP ──────────────────────────────
-        mapManager.loadMap("MobRoom1");
-        Map currentMap = mapManager.getCurrentMap();
-        mapRenderer = new MapRenderer(currentMap, tilesetManager);
-        player.setMap(currentMap);
-        player.setPosition(
-                currentMap.spawnX * TILE_SIZE * SCALE,
-                currentMap.spawnY * TILE_SIZE * SCALE
-        );
-
         // ── INPUT ──────────────────────────────────────────
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
 
         canvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) togglePause();
-            else player.keyPressed(e.getCode());
+            if (e.getCode() == KeyCode.ESCAPE) {
+                togglePause();
+            } else if (e.getCode() == KeyCode.E) {
+                if (shopNode != null && !shopNode.isVisible() && mapManager.isCurrentMap("ShopRoom")) {
+                    shopNode.setVisible(true);
+                    secondUIPane.setVisible(true);
+                } else if (chestNode != null && !chestNode.isVisible() && mapManager.isCurrentMap("ChestRoom")) {
+                    chestNode.setVisible(true);
+                    secondUIPane.setVisible(true);
+                } else if (shopNode != null && shopNode.isVisible()) {
+                    shopNode.setVisible(false);
+                    secondUIPane.setVisible(false);
+                } else if (chestNode != null && chestNode.isVisible()) {
+                    chestNode.setVisible(false);
+                    secondUIPane.setVisible(false);
+                }
+            } else {
+                player.keyPressed(e.getCode());
+            }
         });
         canvas.setOnKeyReleased(e -> player.keyReleased(e.getCode()));
 
+        // ── LOAD STARTING MAP ──────────────────────────────
+        mapManager.loadMap(Map.getStartRoom());
+        Map currentMap = mapManager.getCurrentMap();
+        mapRenderer = new MapRenderer(currentMap, tilesetManager);
+        player.setMap(currentMap);
+        player.setPosition(
+                currentMap.spawnX * TILE_SIZE * SCALE - Player.HITBOX_OFFSET_X,
+                currentMap.spawnY * TILE_SIZE * SCALE - Player.HITBOX_OFFSET_Y
+        );
+
         return gameRoot;
     }
-    
+
+    // ── COMBAT RETURN ──────────────────────────────────────
+
     public void returnFromCombat() {
         mapManager.markFightDone(fightTileX, fightTileY);
         interactionLocked = false;
         stage.getScene().setRoot(gameRoot);
         player.clearInput();
         canvas.requestFocus();
-        GameMusicManager.playGameplay();
         startLoop();
     }
 
@@ -307,7 +285,6 @@ public class GameScreen {
         stage.getScene().setRoot(gameRoot);
         player.clearInput();
         canvas.requestFocus();
-        GameMusicManager.playGameplay();
         startLoop();
     }
 
@@ -316,8 +293,6 @@ public class GameScreen {
     public void togglePause() {
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
-
-        // escapePane absorbs input when paused
         escapePane.setPickOnBounds(nowPaused);
 
         if (nowPaused) loop.stop();
