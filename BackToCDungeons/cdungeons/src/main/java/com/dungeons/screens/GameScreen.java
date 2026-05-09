@@ -48,6 +48,7 @@ public class GameScreen {
     private pauseScreen pauseScreen;
     private Stage stage;
     private static GameScreen instance;
+    private gameoverScreen gameoverScreen; //Game over
 
     private Parent shopNode;
     private Parent chestNode;
@@ -106,6 +107,7 @@ public class GameScreen {
         secondUIPane = new Pane();
         combatPane   = new Pane();
         escapePane   = new Pane();
+
 
         for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
             p.setPrefSize(1280, 720);
@@ -223,10 +225,28 @@ public class GameScreen {
                                 ex.printStackTrace();
                             }
                         });
+
+
                     }
+
+
                 }
         );
 
+<<<<<<< HEAD
+=======
+
+        // ── LOAD STARTING MAP ──────────────────────────────
+        mapManager.loadMap("MobRoom1");
+        Map currentMap = mapManager.getCurrentMap();
+        mapRenderer = new MapRenderer(currentMap, tilesetManager);
+        player.setMap(currentMap);
+        player.setPosition(
+                currentMap.spawnX * TILE_SIZE * SCALE,
+                currentMap.spawnY * TILE_SIZE * SCALE
+        );
+
+>>>>>>> 6fcf8c24d9f3a9b6369b657ce5162f9d1007d515
         // ── INPUT ──────────────────────────────────────────
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
@@ -288,6 +308,24 @@ public class GameScreen {
         startLoop();
     }
 
+    //--Game over and Game Won// Rn replaced with ShowitemPickUp
+    public void showGameOver() {
+        try {
+            gameoverScreen gameOver = new gameoverScreen();
+            stage.getScene().setRoot(gameOver.getRoot());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showItemPickup() {
+        try {
+            itemPickupScreen pickup = new itemPickupScreen(this, stage);
+            stage.getScene().setRoot(pickup.getRoot());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // ── PAUSE ──────────────────────────────────────────────
 
     public void togglePause() {

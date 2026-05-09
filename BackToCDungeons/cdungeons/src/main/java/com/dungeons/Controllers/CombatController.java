@@ -706,6 +706,7 @@ public class CombatController {
         if (bossIntentLabel   != null) bossIntentLabel.setText("");
 
         if (playerWon) {
+<<<<<<< HEAD
             //HP setter
             PlayerProgress.getInstance().setCurrentHp(player.getCurrentHp());
             // Read the shared PlayerProgress singleton - rewards were already added
@@ -722,6 +723,14 @@ public class CombatController {
         } else {
             log("Defeated. " + player.getName() + " has fallen. Game over.");
             PlayerProgress.getInstance().setCurrentHp(-1);
+=======
+            log("Victory. " + boss.getName() + " defeated. Loading next area...");
+            GameScreen.getInstance().showItemPickup(); //Won Change name here too pookie
+
+        } else {
+            log("Defeated. " + player.getName() + " has fallen. Game over.");
+            GameScreen.getInstance().showGameOver();
+>>>>>>> 6fcf8c24d9f3a9b6369b657ce5162f9d1007d515
         }
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
