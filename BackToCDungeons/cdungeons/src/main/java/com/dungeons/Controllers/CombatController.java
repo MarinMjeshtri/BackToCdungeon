@@ -46,6 +46,7 @@ public class CombatController {
     private CombatEngine engine;
     private Player player;
     private BossLoader boss;
+    private PlayerProgress progress;
     private int playerMaxHp;
     private int bossMaxHp;
 
@@ -91,6 +92,8 @@ public class CombatController {
         if (progress.getCurrentHp() != -1) {
             player.setCurrentHp(progress.getCurrentHp()); // restore saved HP on top
         }
+
+
 
         // When player stat scaling is ready, uncomment this one line.
         // It pushes level-scaled HP/ATK/DEF from PlayerProgress into the player object
@@ -713,7 +716,7 @@ public class CombatController {
             PlayerProgress progress = PlayerProgress.getInstance();
             log("Victory. " + boss.getName() + " defeated.");
             // Shows the XP and gold this specific enemy gave (comes from RewardTable via BossLoader)
-            GameScreen.getInstance().showItemPickup(); //Won Change name here too pookie
+            GameScreen.getInstance().showVictoryScreen(); //Won Change name here too pookie
             log("+" + boss.getXPReward() + " XP  |  +" + boss.getGoldReward() + " Gold");
             // Shows current level progress after the reward was applied
             log("Level: " + progress.getLevel() + "  |  XP: " + progress.getXp() + "/" + progress.getXpToNextLevel());

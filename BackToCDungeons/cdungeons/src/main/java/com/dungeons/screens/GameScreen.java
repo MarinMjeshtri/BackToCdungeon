@@ -55,6 +55,8 @@ public class GameScreen {
     private static GameScreen instance;
     private gameoverScreen gameoverScreen;
     private uiOverlayScreen uiOverlaySkreen;
+    private victoryScreen victoryScreen;
+
 
     private Parent shopNode;
     private Parent chestNode;
@@ -362,10 +364,10 @@ public class GameScreen {
         }
     }
 
-    public void showItemPickup() {
+    public void showVictoryScreen() {
         try {
-            itemPickupScreen pickup = new itemPickupScreen(this, stage);
-            stage.getScene().setRoot(pickup.getRoot());
+            victoryScreen victory = new victoryScreen(this, stage);
+            stage.getScene().setRoot(victory.getRoot());
         } catch (Exception e) {
             e.printStackTrace();
         }

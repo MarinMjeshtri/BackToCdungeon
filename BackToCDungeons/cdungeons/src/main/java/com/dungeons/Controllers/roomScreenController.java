@@ -41,6 +41,11 @@ public class roomScreenController {
         ){
             roomType.setText("Utility Room");
         }
+        else if(
+                mapManager.isCurrentMap("HealingRoom")
+        ){
+            roomType.setText("Safe Room");
+        }
         roomCounter.setText("ROOM: " + String.valueOf(map.getRoomCounter()-1));
     }
 
