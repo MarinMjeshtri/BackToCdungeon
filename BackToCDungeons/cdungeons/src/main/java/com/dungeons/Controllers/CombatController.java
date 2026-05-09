@@ -105,7 +105,7 @@ public class CombatController {
 
         engine = new CombatEngine(player, boss);
 
-        hideBlueOval();
+        //hideBlueOval();
         // Shows the enemy level in the UI title, e.g. "Mob1 Lv.3"
         setStart(player.getName(), boss.getName() + " Lv." + level, bossMaxHp);
         injectStatusLabels();

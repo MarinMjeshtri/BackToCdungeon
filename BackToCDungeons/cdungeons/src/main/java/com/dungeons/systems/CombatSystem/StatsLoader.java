@@ -14,7 +14,7 @@ public class StatsLoader {
 
     // Path to Stats.json inside the project's resources folder.
     // The leading "/" means it searches from the root of the resources directory.
-    private static final String STATS_FILE = "/CharacterStats/Stats.json";
+    private static final String STATS_FILE = "/JSONfolders/CharacterStats/Stats.json";
 
     // 'raw' holds the entire Stats.json file as one big string after the constructor runs.
     // All parsing methods operate on this string.
