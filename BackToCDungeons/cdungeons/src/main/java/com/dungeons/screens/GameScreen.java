@@ -48,6 +48,7 @@ public class GameScreen {
     private pauseScreen pauseScreen;
     private Stage stage;
     private static GameScreen instance;
+    private gameoverScreen gameoverScreen;
 
     private Parent shopNode;
     private Parent chestNode;
@@ -318,6 +319,23 @@ public class GameScreen {
             }
         };
         loop.start();
+    }
+    public void showGameOver() {
+        try {
+            gameoverScreen gameOver = new gameoverScreen();
+            stage.getScene().setRoot(gameOver.getRoot());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showItemPickup() {
+        try {
+            itemPickupScreen pickup = new itemPickupScreen(this, stage);
+            stage.getScene().setRoot(pickup.getRoot());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void update() throws Exception {
