@@ -227,6 +227,7 @@
     -fx-font-family: "Courier New", monospace;
     -fx-font-size: 12px;
     -fx-text-fill: #8899dd;
+    -fx-editable: false;
 }
 
 .text-area .content {

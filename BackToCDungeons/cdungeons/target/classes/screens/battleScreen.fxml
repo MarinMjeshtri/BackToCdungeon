@@ -57,7 +57,7 @@
             <children>
                 <Label layoutX="42.0" layoutY="8.0" styleClass="label-title" text="TURNLOG" />
                 <Label fx:id="turnNumber" layoutX="529.0" layoutY="1.0" prefHeight="30.0" prefWidth="79.0" styleClass="label-muted" text="TURN: 0" />
-                    <TextArea fx:id="turnInformation" layoutX="42.0" layoutY="32.0" prefHeight="150.0" prefWidth="566.0" styleClass="text-area" text="TURN INFORMATION" />
+                    <TextArea fx:id="turnInformation" layoutX="42.0" layoutY="32.0" prefHeight="150.0" prefWidth="566.0" styleClass="text-area" editable="false" text="TURN INFORMATION" />
             </children>
         </AnchorPane>
 
