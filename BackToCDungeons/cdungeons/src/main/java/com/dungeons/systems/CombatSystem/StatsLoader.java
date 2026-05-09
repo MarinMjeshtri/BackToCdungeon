@@ -52,7 +52,10 @@ public class StatsLoader {
         Player player = new Player();
         player.setName(characterName);
         player.setMaxHp(extractInt(statsBlock, "hp"));       // read hp value from stats block
-        player.setCurrentHp(extractInt(statsBlock, "hp"));   // current HP = max HP at start
+        //player.setCurrentHp(extractInt(statsBlock, "hp"));   // current HP = max HP at start
+        int savedHp = PlayerProgress.getInstance().getCurrentHp();
+        player.setCurrentHp(savedHp != -1 ? savedHp : extractInt(statsBlock, "hp"));
+
         player.setAttack(extractInt(statsBlock, "atk"));     // read atk value
         player.setDefense(extractInt(statsBlock, "def"));    // read def value
         player.setMoves(parseAbilities(block));              // parse all abilities

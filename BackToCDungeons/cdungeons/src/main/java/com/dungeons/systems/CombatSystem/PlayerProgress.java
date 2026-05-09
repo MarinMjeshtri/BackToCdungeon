@@ -56,6 +56,7 @@ public class PlayerProgress {
     private int level = 1;  // current player level, starts at 1
     private int xp    = 0;  // current XP within this level, starts at 0
     private int gold  = 0;  // total gold collected, starts at 0
+    private int currentHp = -1; //If its the first run, player spawns full hp
 
     // Constructor is private - nobody can write 'new PlayerProgress()' from outside.
     // The only way to get this object is getInstance(). This enforces the singleton.
@@ -118,22 +119,18 @@ public class PlayerProgress {
     public int getScaledDef() { return BASE_DEF + (level - 1) * DEF_PER_LEVEL; }
 
 
-    // --- applyToPlayer (CURRENTLY DISABLED) ---
-    // When you are ready to make level affect player stats in actual combat, do two things:
-    // 1. Uncomment the block below.
-    // 2. In CombatController.startCombat() and startCombatAtLevel(), after
-    //    'player = loader.loadPlayer("Player")', add this line:
-    //    PlayerProgress.getInstance().applyToPlayer(player);
-    //
-    // public void applyToPlayer(Player player) {
-    //     int hp  = getScaledHp();
-    //     int atk = getScaledAtk();
-    //     int def = getScaledDef();
-    //     player.setMaxHp(hp);       // update the max HP the engine uses
-    //     player.setCurrentHp(hp);   // also set current HP so player starts at full
-    //     player.setAttack(atk);     // update ATK used in damage formula
-    //     player.setDefense(def);    // update DEF used in takeDamage formula
-    // }
+    // --- applyToPlayer ---
+    // Applies the player's scaled level stats to the actual Player object used in combat.
+    public void applyToPlayer(Player player) {
+        int hp  = getScaledHp();
+        int atk = getScaledAtk();
+        int def = getScaledDef();
+
+        player.setMaxHp(hp);       // update the max HP the engine uses
+        player.setCurrentHp(hp);   // also set current HP so player starts at full
+        player.setAttack(atk);     // update ATK used in damage formula
+        player.setDefense(def);    // update DEF used in takeDamage formula
+    }
 
 
     // --- GETTERS ---
@@ -143,6 +140,8 @@ public class PlayerProgress {
     public int getXp()            { return xp; }
     public int getGold()          { return gold; }
     public int getXpToNextLevel() { return xpToNextLevel(); } // shortcut for UI display
+    public int getCurrentHp()        { return currentHp; }
+    public void setCurrentHp(int hp) { this.currentHp = hp; }
 
 
     // toString: used for console debug output. Example: "Level 3 | XP 45/163 | Gold 12"

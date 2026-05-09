@@ -20,7 +20,7 @@ public class OptionsNStartingController {
 
     @FXML
     public void initialize() {
-//use css, unless ur a lazy bum and want to just hard code it in (did i mention ur a bum if u do that) cough cough past me
+//use css, unless ur a lazy bum and want to just hard code it in (did i mention ur a bum if u do that) cough cough past me (i wil rape ur ass alive)
     }
     @FXML
     private void handleButton1() throws IOException {
