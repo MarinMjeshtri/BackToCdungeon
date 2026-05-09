@@ -35,6 +35,7 @@ public class GameScreen {
 
     // ── PANES ──────────────────────────────────────────────
     private Pane gamePane;
+    private Pane uiOverlayPane;
     private Pane uiPane;
     private Pane secondUIPane;
     private Pane combatPane;
@@ -49,6 +50,7 @@ public class GameScreen {
     private Stage stage;
     private static GameScreen instance;
     private gameoverScreen gameoverScreen;
+    private uiOverlayScreen uiOverlaySkreen;
 
     private Parent shopNode;
     private Parent chestNode;
@@ -103,6 +105,7 @@ public class GameScreen {
 
         // ── BUILD PANES ────────────────────────────────────
         gamePane     = new Pane(canvas);
+        uiOverlayPane = new Pane();
         uiPane       = new Pane();
         secondUIPane = new Pane();
         combatPane   = new Pane();
@@ -119,8 +122,14 @@ public class GameScreen {
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
 
+        // ── PAUSE SCREEN → escapePane ──────────────────────
+        uiOverlayScreen ovalay = new uiOverlayScreen(this, stage);
+        uiOverlayPane.getChildren().add(ovalay.getRoot());
+        ovalay.getRoot().setVisible(true);
+        this.uiOverlaySkreen = ovalay;
+
         // ── STACK ALL PANES ────────────────────────────────
-        gameRoot = new StackPane(gamePane, uiPane, secondUIPane, escapePane);
+        gameRoot = new StackPane(gamePane,uiOverlayPane, uiPane, secondUIPane, escapePane);
         gameRoot.setPrefSize(1280, 720);
 
         // ── MAP MANAGER ────────────────────────────────────

@@ -5,7 +5,7 @@
       "stats": {
         "atk": 25,
         "def": 8,
-        "hp": 420
+        "hp": 100
       },
       "sprites": {
         "neutral": "/Sprties_CombatUI/MainC.png",

@@ -23,7 +23,7 @@ public class PlayerProgress {
     // These must match the player's stats in Stats.json.
     // If you change the player's HP in Stats.json, change BASE_HP here too.
     // 'static final' means these are constants - one shared value, never changes at runtime.
-    private static final int BASE_HP  = 420; // player HP at level 1
+    private static final int BASE_HP  = 100; // player HP at level 1
     private static final int BASE_ATK = 25;  // player ATK at level 1
     private static final int BASE_DEF = 8;   // player DEF at level 1
 
@@ -45,7 +45,7 @@ public class PlayerProgress {
     //   Level 1 -> 2:  80 * 1^1.4 =  80 XP
     //   Level 5 -> 6:  80 * 5^1.4 = 262 XP
     //   Level 10 -> 11: 80 * 10^1.4 = 506 XP
-    private static final int    XP_BASE     = 80;
+    private static final int    XP_BASE     = 20;
     private static final double XP_EXPONENT = 1.4;
 
     // Hard cap on level. Player cannot go above this no matter how much XP they gain.
