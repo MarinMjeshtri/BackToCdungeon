@@ -6,11 +6,13 @@ import com.dungeons.Controllers.CombatController;
 // DIALOGUE
 import com.dungeons.Controllers.DialogueBoxController;
 import com.dungeons.Controllers.roomScreenController;
+import com.dungeons.Controllers.uiOverlayController;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.animations.premadeAnimation;
 import com.dungeons.dialogueManager.DialogueManager;
 
 //MAP
+import com.dungeons.systems.CombatSystem.PlayerProgress;
 import com.dungeons.systems.Player;
 import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
@@ -133,6 +135,10 @@ public class GameScreen {
         uiOverlayPane.getChildren().add(ovalay.getRoot());
         ovalay.getRoot().setVisible(true);
         this.uiOverlaySkreen = ovalay;
+
+        uiOverlayController ctrl = uiOverlaySkreen.getLoader().getController();
+        ctrl.setProgress(PlayerProgress.getInstance());
+
 
         // TRANSITION
         roomTransitionScreen transaction = new roomTransitionScreen(this, stage);
@@ -305,6 +311,8 @@ public class GameScreen {
     // ── COMBAT RETURN ──────────────────────────────────────
 
     public void returnFromCombat() {
+        uiOverlayController ctrl = uiOverlaySkreen.getLoader().getController();
+        ctrl.setProgress(PlayerProgress.getInstance());
         mapManager.markFightDone(fightTileX, fightTileY);
         interactionLocked = false;
         stage.getScene().setRoot(gameRoot);
