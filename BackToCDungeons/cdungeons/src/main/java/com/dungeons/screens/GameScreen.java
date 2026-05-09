@@ -5,7 +5,9 @@ import com.dungeons.Controllers.CombatController;
 
 // DIALOGUE
 import com.dungeons.Controllers.DialogueBoxController;
+import com.dungeons.Controllers.roomScreenController;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
+import com.dungeons.animations.premadeAnimation;
 import com.dungeons.dialogueManager.DialogueManager;
 
 //MAP
@@ -16,6 +18,7 @@ import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -41,6 +44,7 @@ public class GameScreen {
     private Pane combatPane;
     private Pane escapePane;
     private StackPane gameRoot;
+    private roomTransitionScreen transitionScreen;
 
     // ── SCREENS ────────────────────────────────────────────
     private shopScreen shopScreen;
@@ -122,11 +126,18 @@ public class GameScreen {
         ps.getRoot().setVisible(false);
         this.pauseScreen = ps;
 
-        // ── PAUSE SCREEN → escapePane ──────────────────────
+        // OVERLAY
         uiOverlayScreen ovalay = new uiOverlayScreen(this, stage);
         uiOverlayPane.getChildren().add(ovalay.getRoot());
         ovalay.getRoot().setVisible(true);
         this.uiOverlaySkreen = ovalay;
+
+        // TRANSITION
+        roomTransitionScreen transaction = new roomTransitionScreen(this, stage);
+        escapePane.getChildren().add(transaction.getRoot());
+        transaction.getRoot().setVisible(false);
+        transaction.getRoot().setPickOnBounds(false);
+        this.transitionScreen = transaction;
 
         // ── STACK ALL PANES ────────────────────────────────
         gameRoot = new StackPane(gamePane,uiOverlayPane, uiPane, secondUIPane, escapePane);
@@ -137,7 +148,13 @@ public class GameScreen {
                 tilesetManager,
 
                 // map changed
+
                 (newMap, spawnX, spawnY) -> {
+                    roomScreenController controller = transitionScreen.getLoader().getController();
+                    controller.setMapManager(mapManager);
+                    controller.updateScreen();
+                    premadeAnimation.showFor(transitionScreen.getRoot(), 2);
+
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
                     player.setPosition(
@@ -274,6 +291,12 @@ public class GameScreen {
                 currentMap.spawnY * TILE_SIZE * SCALE - Player.HITBOX_OFFSET_Y
         );
 
+        roomScreenController controller = transitionScreen.getLoader().getController();
+        controller.setMapManager(mapManager);
+        controller.updateScreen();
+        premadeAnimation.showFor(transitionScreen.getRoot(), 2);
+
+
         return gameRoot;
     }
 
@@ -329,6 +352,7 @@ public class GameScreen {
         };
         loop.start();
     }
+
     public void showGameOver() {
         try {
             gameoverScreen gameOver = new gameoverScreen();
