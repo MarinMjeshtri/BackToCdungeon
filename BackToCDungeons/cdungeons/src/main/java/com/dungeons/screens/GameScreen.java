@@ -48,6 +48,7 @@ public class GameScreen {
     private pauseScreen pauseScreen;
     private Stage stage;
     private static GameScreen instance;
+    private gameoverScreen gameoverScreen; //Game over
 
 
     private Parent shopNode;
@@ -106,6 +107,7 @@ public class GameScreen {
         secondUIPane = new Pane();                 // SHOP AND CHEST
         combatPane   = new Pane();                 // FOR LOADING COMBAT
         escapePane   = new Pane();                 // PAUSE
+
 
         for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
             p.setPrefSize(1280, 720);
@@ -254,9 +256,14 @@ public class GameScreen {
                                 ex.printStackTrace();
                             }
                         });
+
+
                     }
+
+
                 }
         );
+
 
         // ── LOAD STARTING MAP ──────────────────────────────
         mapManager.loadMap("MobRoom1");
@@ -304,6 +311,24 @@ public class GameScreen {
         startLoop();
     }
 
+    //--Game over and Game Won// Rn replaced with ShowitemPickUp
+    public void showGameOver() {
+        try {
+            gameoverScreen gameOver = new gameoverScreen();
+            stage.getScene().setRoot(gameOver.getRoot());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showItemPickup() {
+        try {
+            itemPickupScreen pickup = new itemPickupScreen(this, stage);
+            stage.getScene().setRoot(pickup.getRoot());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // ── PAUSE ──────────────────────────────────────────────
 
     public void togglePause() {

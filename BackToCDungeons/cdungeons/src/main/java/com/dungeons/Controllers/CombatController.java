@@ -652,8 +652,11 @@ public class CombatController {
 
         if (playerWon) {
             log("Victory. " + boss.getName() + " defeated. Loading next area...");
+            GameScreen.getInstance().showItemPickup(); //Won Change name here too pookie
+
         } else {
             log("Defeated. " + player.getName() + " has fallen. Game over.");
+            GameScreen.getInstance().showGameOver();
         }
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
