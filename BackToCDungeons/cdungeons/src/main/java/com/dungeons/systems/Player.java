@@ -147,7 +147,7 @@ public class Player {
         Image img = new Image(getClass().getResourceAsStream(spritePath));
         gc.setImageSmoothing(false);
         double squish = 1 + 0.05 * Math.sin(System.currentTimeMillis() * 0.005);
-        gc.drawImage(img, x, y, 128 * squish, 128 / squish);
+        gc.drawImage(img, x, y, 64 * squish, 64 / squish);
 
     }
 

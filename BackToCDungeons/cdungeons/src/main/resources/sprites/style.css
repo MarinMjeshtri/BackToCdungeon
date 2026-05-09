@@ -2,7 +2,7 @@
 -fx-font-family: 'REANO';
 }
 
-/* MAIN SCREEN */
+/* MAIN SCREEN
 
 #startingScreenPane{
 -fx-background-image: url('../sprites/UiDecor/startingScreenDecor.png');
@@ -236,4 +236,3 @@
 .text-area:focused {
     -fx-border-color: #7b8cc7;
 }
-

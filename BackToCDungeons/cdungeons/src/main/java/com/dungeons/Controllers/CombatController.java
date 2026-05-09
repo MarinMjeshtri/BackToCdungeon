@@ -1,5 +1,6 @@
 package com.dungeons.Controllers;
 
+import com.dungeons.screens.gameoverScreen;
 import com.dungeons.systems.CombatSystem.*;
 import com.dungeons.screens.GameScreen;
 
@@ -11,9 +12,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.InputStream;
@@ -511,17 +512,17 @@ public class CombatController {
             sb.append("You are stunned. Turn skipped.\n");
         } else if (turnLog.getItemUsed() != null) {
             sb.append("You used ").append(turnLog.getItemUsed())
-              .append(". Restored ").append(turnLog.getPlayerHpRestored()).append(" HP.\n");
+                    .append(". Restored ").append(turnLog.getPlayerHpRestored()).append(" HP.\n");
         } else if (turnLog.getPlayerMoveName() != null) {
             sb.append("You used ").append(turnLog.getPlayerMoveName())
-              .append(". Dealt ").append(turnLog.getPlayerDamageDealt()).append(" damage.\n");
+                    .append(". Dealt ").append(turnLog.getPlayerDamageDealt()).append(" damage.\n");
         }
 
         StatusEffect pe = player.getActiveEffect();
         StatusEffect be = boss.getActiveEffect();
         if (pe != null) sb.append("Status on you: ").append(pe.getLabel()).append("\n");
         if (be != null) sb.append("Status on ").append(boss.getName())
-                          .append(": ").append(be.getLabel()).append("\n");
+                .append(": ").append(be.getLabel()).append("\n");
 
         if ("STUNNED".equals(turnLog.getBossMoveName())) {
             sb.append(boss.getName()).append(" is stunned. Their turn skipped.\n");
@@ -531,29 +532,30 @@ public class CombatController {
             sb.append(boss.getName()).append(" repaired systems. Healed 80 HP.\n");
         } else if (turnLog.getBossMoveName() != null) {
             sb.append(boss.getName()).append(" used ").append(turnLog.getBossMoveName())
-              .append(". Dealt ").append(turnLog.getBossDamageDealt()).append(" damage.\n");
+                    .append(". Dealt ").append(turnLog.getBossDamageDealt()).append(" damage.\n");
         } else {
             sb.append(boss.getName()).append(" was defeated before acting.\n");
         }
 
         sb.append("Your HP: ").append(turnLog.getPlayerHpAfter())
-          .append(" / ").append(playerMaxHp)
-          .append("  |  Boss HP: ").append(turnLog.getBossHpAfter())
-          .append(" / ").append(bossMaxHp).append("\n");
+                .append(" / ").append(playerMaxHp)
+                .append("  |  Boss HP: ").append(turnLog.getBossHpAfter())
+                .append(" / ").append(bossMaxHp).append("\n");
 
         log(sb.toString());
 
         boolean combatOver =
                 turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN ||
-                turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE;
+                        turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE;
 
         // only unlock buttons if combat is still going
         if (!combatOver) lockAllActions(false);
 
-        if (turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN)
+        if (turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN) {
             onCombatEnd(true);
-        else if (turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE)
+        } else if (turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE) {
             onCombatEnd(false);
+        }
     }
 
     private void updateCooldownUI() {
@@ -570,7 +572,7 @@ public class CombatController {
         }
     }
 
-    private void lockAllActions(boolean lock) {
+    public void lockAllActions(boolean lock) {
         mainAnchor.setDisable(lock);
         pressAttack.setDisable(lock);
         pressDefense.setDisable(lock);
@@ -668,33 +670,7 @@ public class CombatController {
         delay.play();
     }
 
-    // loads the next map based on which boss was just defeated
-//    private void loadNextArea() {
-//    String bossId  = boss.getId();
-//    String nextMap = BOSS_NEXT_MAP.get(bossId);
-//
-//    if ("JohnMKati".equals(bossId)) {
-//        // Here you can set what happens after JohnMKati is defeated (load room etc)
-//        System.out.println("JohnMKati defeated — end of boss chain.");
-//        // for now just return to game without map change
-//        GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
-//        if (gs != null) gs.returnFromCombat();
-//        return;
-//    }
-//
-//    if (nextMap == null) {
-//        System.out.println("No next map defined for boss: " + bossId);
-//        return;
-//    }
-//
-//    com.dungeons.screens.GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
-//    if (gs != null) {
-//        gs.returnFromCombatWithMap(nextMap);
-//    } else {
-//        System.out.println("GameScreen instance not found.");
-//    }
-//}
-    private void loadNextArea() {
+    protected void loadNextArea() {
         GameScreen gs = GameScreen.getInstance();
         if (gs != null) {
             gs.returnFromCombat(); // ← this already calls markFightDone internally

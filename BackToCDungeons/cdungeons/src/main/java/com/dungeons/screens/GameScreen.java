@@ -35,6 +35,7 @@ public class GameScreen {
 
     // ── PANES ──────────────────────────────────────────────
     private Pane gamePane;       // canvas lives here — the actual game
+    private Pane uiOverlayA;
     private Pane uiPane;         // dialogue, credits, combat overlays
     private Pane secondUIPane;   // shop and chest overlays
     private Pane combatPane;
@@ -46,6 +47,7 @@ public class GameScreen {
     private creditsScreen creditsScreen;
     private itemPickupScreen itemPickupScreen;
     private pauseScreen pauseScreen;
+    private UIscreen uiSkreen;
     private Stage stage;
     private static GameScreen instance;
 
@@ -103,14 +105,21 @@ public class GameScreen {
         // I plan on adding an inventory pane too!
         gamePane     = new Pane(canvas);           // GAME
         uiPane       = new Pane();                 // DIALOUGE CREDITS AND OVERALL UI
+        uiOverlayA   = new Pane();
         secondUIPane = new Pane();                 // SHOP AND CHEST
         combatPane   = new Pane();                 // FOR LOADING COMBAT
         escapePane   = new Pane();                 // PAUSE
 
-        for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
+        for (Pane p : new Pane[]{gamePane,uiOverlayA, uiPane, secondUIPane, combatPane, escapePane}) {
             p.setPrefSize(1280, 720);
             p.setPickOnBounds(false); // transparent panes don't block mouse
         }
+
+        // UI OVERLAY HEALTH N STUFF IDK
+        UIscreen uIscreen = new UIscreen(this, stage);
+        uiPane.getChildren().add(uIscreen.getRoot());
+        uIscreen.getRoot().setVisible(true);
+        this.uiSkreen = uIscreen;
 
         // ── PAUSE SCREEN → escapePane ──────────────────────
         pauseScreen ps = new pauseScreen(this, stage);
@@ -280,9 +289,7 @@ public class GameScreen {
 
         return gameRoot;
     }
-
-    // ── COMBAT RETURN ──────────────────────────────────────
-
+    
     public void returnFromCombat() {
         mapManager.markFightDone(fightTileX, fightTileY);
         interactionLocked = false;
