@@ -86,10 +86,10 @@ public class CombatController {
     public void startCombatAtLevel(String bossId, int level) {
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
-        //Set HP
+        PlayerProgress.getInstance().applyToPlayer(player); // apply level scaling
         PlayerProgress progress = PlayerProgress.getInstance();
         if (progress.getCurrentHp() != -1) {
-            player.setCurrentHp(progress.getCurrentHp());
+            player.setCurrentHp(progress.getCurrentHp()); // restore saved HP on top
         }
 
         // When player stat scaling is ready, uncomment this one line.
@@ -122,10 +122,10 @@ public class CombatController {
     public void startCombat(String bossId) {
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
-        //Set HP
+        PlayerProgress.getInstance().applyToPlayer(player); // apply level scaling
         PlayerProgress progress = PlayerProgress.getInstance();
         if (progress.getCurrentHp() != -1) {
-            player.setCurrentHp(progress.getCurrentHp());
+            player.setCurrentHp(progress.getCurrentHp()); // restore saved HP on top
         }
 
         boss   = loader.loadBoss(bossId);

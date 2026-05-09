@@ -45,8 +45,8 @@ public class PlayerProgress {
     //   Level 1 -> 2:  80 * 1^1.4 =  80 XP
     //   Level 5 -> 6:  80 * 5^1.4 = 262 XP
     //   Level 10 -> 11: 80 * 10^1.4 = 506 XP
-    private static final int    XP_BASE     = 20;
-    private static final double XP_EXPONENT = 1.4;
+    private static final int    XP_BASE     = 1;
+    private static final double XP_EXPONENT = 1.1;
 
     // Hard cap on level. Player cannot go above this no matter how much XP they gain.
     private static final int MAX_LEVEL = 20;
