@@ -93,14 +93,14 @@
               </AnchorPane>
       
               <!-- PLAYER SPRITE AREA -->
-              <AnchorPane layoutX="14.0" layoutY="337.0" prefHeight="255.0" prefWidth="291.0" styleClass="panel">
+              <AnchorPane layoutX="19.0" layoutY="315.0" prefHeight="285.0" prefWidth="285.0" styleClass="panel">
                   <children>
                       <ImageView fx:id="playercharacterSprite" fitHeight="247.0" fitWidth="200.0" layoutX="46.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
                   </children>
               </AnchorPane>
       
               <!-- ENEMY SPRITE AREA -->
-              <AnchorPane layoutX="496.0" layoutY="14.0" prefHeight="293.0" prefWidth="291.0" styleClass="panel">
+              <AnchorPane layoutX="496.0" layoutY="14.0" prefHeight="291.0" prefWidth="291.0" styleClass="panel">
                   <children>
                       <ImageView fx:id="enemycharacterSprite" fitHeight="247.0" fitWidth="200.0" layoutX="46.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                   </children>

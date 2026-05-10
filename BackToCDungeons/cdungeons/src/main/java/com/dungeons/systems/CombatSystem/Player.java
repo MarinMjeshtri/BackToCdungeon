@@ -18,10 +18,40 @@ public class Player extends Combatant {
         }
         return -1;
     }
+//debug
+    public void setCurrentHp(int currentHp) {
+        System.out.println("setCurrentHp called with: " + currentHp);
+        this.currentHp = currentHp;
+    }
 
+    //for the images
     public boolean hasItems() {
         return items != null && items.stream().anyMatch(Item::isAvailable);
     }
+    private String spriteNeutral  = "";
+    private String spriteDefeated = "";
+    private String spriteAttack1  = "";
+    private String spriteAttack2  = "";
+    private String spriteAttack3  = "";
+    private String spriteAttack4  = "";
+
+    public String getSpriteNeutral()   { return spriteNeutral; }
+    public String getSpriteDefeated()  { return spriteDefeated; }
+    public String getSpriteAttack(int index) {
+        switch (index) {
+            case 0: return spriteAttack1;
+            case 1: return spriteAttack2;
+            case 2: return spriteAttack3;
+            case 3: return spriteAttack4;
+            default: return spriteNeutral;
+        }
+    }
+    public void setSpriteNeutral(String s)  { this.spriteNeutral  = s; }
+    public void setSpriteDefeated(String s) { this.spriteDefeated = s; }
+    public void setSpriteAttack1(String s)  { this.spriteAttack1  = s; }
+    public void setSpriteAttack2(String s)  { this.spriteAttack2  = s; }
+    public void setSpriteAttack3(String s)  { this.spriteAttack3  = s; }
+    public void setSpriteAttack4(String s)  { this.spriteAttack4  = s; }
 
     @Override
     public Move chooseMove() {
