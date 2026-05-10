@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="1">
+ <editorsettings>
+  <export target="MobRoom5.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" source="../../../../../../../Downloads/tilesFloor.tsx"/>
  <tileset firstgid="199" source="../../../../../../../Downloads/spriteSheet_tiledLiquids_16x16.tsx"/>
  <tileset firstgid="247" source="../../../../../../../Downloads/tilesWalls.tsx"/>

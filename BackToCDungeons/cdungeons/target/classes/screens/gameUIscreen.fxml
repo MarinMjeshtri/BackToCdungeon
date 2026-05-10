@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.uiOverlayController">
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="29.0" layoutX="204.0" layoutY="102.0" stroke="#111f2d" strokeType="INSIDE" style="-fx-fill: #1a1a2e;" width="334.0" fx:id="xpBar1" />
+                <Rectangle fx:id="healthBar1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="71.0" layoutX="204.0" layoutY="22.0" stroke="#111f2d" strokeType="INSIDE" style="-fx-fill: #1a1a2e;" width="334.0" />
+                <Circle fill="#111f2d" layoutX="111.0" layoutY="92.0" radius="70.0" stroke="#111f2d" strokeType="INSIDE" />
+                <ImageView fitHeight="105.0" fitWidth="93.0" layoutX="66.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
+                <Rectangle fx:id="healthBar" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="71.0" layoutX="204.0" layoutY="22.0" stroke="#111f2d" strokeType="INSIDE" style="-fx-fill: #2a7a3b;" width="334.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="29.0" layoutX="204.0" layoutY="102.0" stroke="#111f2d" strokeType="INSIDE" style="-fx-fill: #1a3a6e;" width="334.0" fx:id="xpBar" />
+                <AnchorPane layoutX="1008.0" layoutY="27.0" prefHeight="90.0" prefWidth="232.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+                    <children>
+                        <Label layoutX="38.0" layoutY="33.0" text="GOLD" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="totalGold" layoutX="114.0" layoutY="33.0" text="amount" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="466.0" layoutY="620.0" prefHeight="71.0" prefWidth="347.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+                    <children>
+                        <AnchorPane fx:id="slot1" layoutX="22.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 2;">
+                            <children>
+                                <Label layoutX="61.0" layoutY="5.0" text="1." style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" />
+                                <Label fx:id="slotItem1" layoutX="6.0" layoutY="29.0" text="" style="-fx-text-fill: #1a1a2e;" />
+                                <ImageView fx:id="slotImg1" fitHeight="52.0" fitWidth="52.0" layoutX="5.0" layoutY="2.0" preserveRatio="true" pickOnBounds="true" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="slot2" layoutX="100.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 2;">
+                            <children>
+                                <Label layoutX="61.0" layoutY="5.0" text="2." style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" />
+                                <Label fx:id="slotItem2" layoutX="6.0" layoutY="29.0" text="" style="-fx-text-fill: #1a1a2e;" />
+                                <ImageView fx:id="slotImg2" fitHeight="52.0" fitWidth="52.0" layoutX="5.0" layoutY="2.0" preserveRatio="true" pickOnBounds="true" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="slot3" layoutX="178.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 2;">
+                            <children>
+                                <Label layoutX="61.0" layoutY="5.0" text="3." style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" />
+                                <Label fx:id="slotItem3" layoutX="6.0" layoutY="29.0" text="" style="-fx-text-fill: #1a1a2e;" />
+                                <ImageView fx:id="slotImg3" fitHeight="52.0" fitWidth="52.0" layoutX="5.0" layoutY="2.0" preserveRatio="true" pickOnBounds="true" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="slot4" layoutX="256.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 2;">
+                            <children>
+                                <Label layoutX="61.0" layoutY="5.0" text="4." style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" />
+                                <Label fx:id="slotItem4" layoutX="6.0" layoutY="29.0" text="" style="-fx-text-fill: #1a1a2e;" />
+                                <ImageView fx:id="slotImg4" fitHeight="52.0" fitWidth="52.0" layoutX="5.0" layoutY="2.0" preserveRatio="true" pickOnBounds="true" />
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+                <Label fx:id="totalHP" layoutX="459.0" layoutY="40.0" prefHeight="35.0" prefWidth="71.0" text="TOTAL HP:" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold;" />
+                <Label fx:id="currHP" layoutX="214.0" layoutY="43.0" prefHeight="30.0" prefWidth="178.0" text="CURR HP" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold;" />
+                <Label fx:id="currXP" layoutX="216.0" layoutY="107.0" prefHeight="18.0" prefWidth="165.0" text="CURR XP" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold;" />
+                <Label fx:id="totalXP" layoutX="459.0" layoutY="107.0" prefHeight="18.0" prefWidth="71.0" text="TOTAL XP" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold;" />
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

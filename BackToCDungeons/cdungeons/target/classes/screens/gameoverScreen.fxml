@@ -6,31 +6,49 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="801.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <AnchorPane id="gameOverPane" layoutX="56.0" layoutY="44.0" prefHeight="230.0" prefWidth="688.0">
-         <children>
-            <Label layoutX="80.0" layoutY="44.0" text="GAME OVER">
-               <font>
-                  <Font size="96.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <AnchorPane id="buttonsPane" layoutX="56.0" layoutY="317.0" prefHeight="200.0" prefWidth="688.0">
-         <children>
-            <Button id="RestartButton" layoutX="43.0" layoutY="61.0" mnemonicParsing="false" text="START OVER">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Button>
-            <Button id="exitButton" layoutX="418.0" layoutY="61.0" mnemonicParsing="false" text="EXIT BITCH">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Button>
-         </children>
-      </AnchorPane>
-   </children>
+<Pane fx:id="gameOver" maxHeight="-Infinity"
+      maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="600.0"
+      style="-fx-pref-height: 720; -fx-pref-width: 1280; -fx-background-color: #111f2d;"
+      xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.dungeons.Controllers.gameoverController">
+    <children>
+        <AnchorPane id="gameOverPane" layoutX="296.0" layoutY="54.0" prefHeight="230.0" prefWidth="688.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+            <children>
+                <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="50.0" prefWidth="688.0" style="-fx-background-color: #111f2d;">
+                    <children>
+                        <Label layoutX="14.0" layoutY="10.0" text="GAME OVER" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold;">
+                            <font>
+                                <Font size="26.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <Label layoutX="80.0" layoutY="80.0" text="GAME OVER" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;">
+                    <font>
+                        <Font size="96.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <AnchorPane id="buttonsPane" layoutX="296.0" layoutY="344.0" prefHeight="200.0" prefWidth="688.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+            <children>
+                <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="40.0" prefWidth="688.0" style="-fx-background-color: #111f2d;">
+                    <children>
+                        <Label layoutX="14.0" layoutY="8.0" text="WHAT WILL YOU DO?" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-font-size: 16px;" />
+                    </children>
+                </AnchorPane>
+                <Button onAction="#restart" id="RestartButton" layoutX="43.0" layoutY="80.0" mnemonicParsing="false" text="START OVER" style="-fx-background-color: #111f2d; -fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-border-color: #e9f0ff; -fx-border-width: 1; -fx-cursor: hand;">
+                    <font>
+                        <Font size="36.0" />
+                    </font>
+                </Button>
+                <Button onAction="#getOut" id="exitButton" layoutX="418.0" layoutY="80.0" mnemonicParsing="false" text="EXIT BITCH" style="-fx-background-color: #111f2d; -fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-border-color: #e9f0ff; -fx-border-width: 1; -fx-cursor: hand;">
+                    <font>
+                        <Font size="36.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+    </children>
 </Pane>

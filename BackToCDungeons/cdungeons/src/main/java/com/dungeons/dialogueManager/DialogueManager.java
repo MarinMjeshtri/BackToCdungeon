@@ -8,12 +8,13 @@ public class DialogueManager {
     private Map<String, Dialogue> dialogues;
     private String[] currentLines;
     private int currentIndex;
+    private Dialogue currentDialogue;
 
     public void load() {
         Gson gson = new Gson();
 
         //I ben load file te dialogjeve.
-        InputStream is = getClass().getResourceAsStream("/Dialogues/dialogue.json");;
+        InputStream is = getClass().getResourceAsStream("/JSONfolders/Dialogues/dialogue.json");;
 
         if (is == null) {
             System.out.println("File not found!");
@@ -32,8 +33,17 @@ public class DialogueManager {
     }
 
     public void startDialogue(String id) {
-        currentLines = dialogues.get(id).lines;
+        currentDialogue = dialogues.get(id);
+        currentLines = currentDialogue.lines;
         currentIndex = 0;
+    }
+
+    public String getCurrentCharacter() {
+        return currentDialogue.character;
+    }
+
+    public String getSprite() {
+        return currentDialogue.sprite;
     }
 
     public String getNextLine() {

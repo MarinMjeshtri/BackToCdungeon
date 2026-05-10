@@ -3,16 +3,17 @@ package com.dungeons.screens;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.stage.Stage;
 
 public class shopScreen {
 
     private Parent root;
     private FXMLLoader loader;
 
-    public shopScreen() {
+    public shopScreen(GameScreen gameScreen, Stage stage) throws IOException {
         try {
             loader = new FXMLLoader(
-                    getClass().getResource("/screens/shopScreem.fxml")
+                    getClass().getResource("/screens/shopScreen.fxml")
             );
 
             root = loader.load();

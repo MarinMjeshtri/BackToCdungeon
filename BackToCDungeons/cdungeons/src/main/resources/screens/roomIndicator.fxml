@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.roomScreenController">
+    <children>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: black;">
+            <children>
+                <AnchorPane layoutX="247.0" layoutY="120.0" prefHeight="390.0" prefWidth="678.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+                    <children>
+                        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="50.0" prefWidth="699.0" style="-fx-background-color: #111f2d;">
+                            <children>
+                                <Label layoutX="14.0" layoutY="8.0" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold;" text="ENTERING ROOM">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                        <Label fx:id="roomCounter" alignment="CENTER" layoutX="54.0" layoutY="80.0" prefHeight="94.0" prefWidth="598.0" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" text="ROOM  : 1">
+                            <font>
+                                <Font size="64.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="roomType" alignment="CENTER" layoutX="50.0" layoutY="183.0" prefHeight="94.0" prefWidth="606.0" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" text="MOB ROOM">
+                            <font>
+                                <Font size="64.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

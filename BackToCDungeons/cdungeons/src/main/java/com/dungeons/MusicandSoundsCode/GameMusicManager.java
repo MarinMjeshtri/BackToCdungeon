@@ -32,8 +32,6 @@ public class GameMusicManager {
         currentState = MusicState.ENDING;
         AudioManager.stopMusic();
         AudioManager.playMusicOnce(AudioManager.MUSIC_LABORATORY);
-        System.out.println("[GameMusicManager] → ENDING");
-        printEndingMessage();
     }
 
     public static void pauseMusic() {
@@ -68,24 +66,21 @@ public class GameMusicManager {
         AudioManager.playSound(AudioManager.SFX_HIT);
     }
 
-
     public static void playMoveSound(String moveName) {
         if (moveName == null) return;
         String lower = moveName.toLowerCase();
-
-        if      (lower.contains("clone"))  AudioManager.playSound(AudioManager.SFX_CLONE);
-        else if (lower.contains("wall"))   AudioManager.playSound(AudioManager.SFX_SPAWN_WALL);
-        else if (lower.contains("turret")) AudioManager.playSound(AudioManager.SFX_SPAWN_TURRET);
-        else if (lower.contains("lightning")) AudioManager.playSound(AudioManager.SFX_LIGHTNING);
+        if      (lower.contains("clone"))                                        AudioManager.playSound(AudioManager.SFX_CLONE);
+        else if (lower.contains("wall"))                                         AudioManager.playSound(AudioManager.SFX_SPAWN_WALL);
+        else if (lower.contains("turret"))                                       AudioManager.playSound(AudioManager.SFX_SPAWN_TURRET);
+        else if (lower.contains("lightning"))                                    AudioManager.playSound(AudioManager.SFX_LIGHTNING);
         else if (lower.contains("spell") || lower.contains("magic")
-              || lower.contains("literature") || lower.contains("lore")) AudioManager.playSound(AudioManager.SFX_MAGIC_SPELL);
-        else  AudioManager.playSound(AudioManager.SFX_SWORD);
+              || lower.contains("literature") || lower.contains("lore"))         AudioManager.playSound(AudioManager.SFX_MAGIC_SPELL);
+        else                                                                     AudioManager.playSound(AudioManager.SFX_SWORD);
     }
 
     public static void playPickupSound() {
         AudioManager.playSound(AudioManager.SFX_PICKUP);
     }
-
 
     public static void playGameOverSound() {
         AudioManager.playSound(AudioManager.SFX_GAME_OVER);
@@ -95,9 +90,11 @@ public class GameMusicManager {
 
     private static void transition(MusicState newState, String track) {
         if (currentState == newState) return;
+        AudioManager.stopMusic();
         currentState = newState;
         AudioManager.playMusic(track);
-        System.out.println("[GameMusicManager] → " + newState + " (" + track + ")");
+        System.out.println("[GameMusicManager] -> " + newState + " (" + track + ")");
     }
+
 
 }
