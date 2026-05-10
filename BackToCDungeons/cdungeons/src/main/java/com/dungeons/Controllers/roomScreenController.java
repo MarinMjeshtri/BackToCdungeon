@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 public class roomScreenController {
     MapManager mapManager;
+    Map map = new Map();
     @FXML Label roomType;
     @FXML Label roomCounter;
 
@@ -20,25 +21,35 @@ public class roomScreenController {
     public void updateScreen() {
         if(
                 mapManager.isCurrentMap("MobRoom1") ||
-                mapManager.isCurrentMap("MobRoom2") ||
-                mapManager.isCurrentMap("MobRoom3") ||
-                mapManager.isCurrentMap("MobRoom4") ||
-                mapManager.isCurrentMap("MobRoom5")
+                        mapManager.isCurrentMap("MobRoom2") ||
+                        mapManager.isCurrentMap("MobRoom3") ||
+                        mapManager.isCurrentMap("MobRoom4") ||
+                        mapManager.isCurrentMap("MobRoom5")
         ){
             roomType.setText("Mob Room");
         }
         else if(
                 mapManager.isCurrentMap("BossRoomJoni") ||
-                mapManager.isCurrentMap("RoomKledi") ||
-                mapManager.isCurrentMap("k3jviBossroom")
+                        mapManager.isCurrentMap("RoomKledi") ||
+                        mapManager.isCurrentMap("k3jviBossroom")
         ){
             roomType.setText("Boss Room");
         }
         else if(
                 mapManager.isCurrentMap("ShopRoom") ||
-                mapManager.isCurrentMap("ChestRoom")
+                        mapManager.isCurrentMap("ChestRoom")
         ){
             roomType.setText("Utility Room");
         }
+        else if(
+                mapManager.isCurrentMap("HealingRoom")
+        ){
+            roomType.setText("Safe Room");
+        }
+        roomCounter.setText("ROOM: " + String.valueOf(map.getRoomCounter()-1));
+    }
+
+    public void setMapManager(MapManager m) {
+        this.mapManager = m;
     }
 }

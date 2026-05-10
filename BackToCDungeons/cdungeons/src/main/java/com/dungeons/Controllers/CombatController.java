@@ -46,6 +46,7 @@ public class CombatController {
     private CombatEngine engine;
     private Player player;
     private BossLoader boss;
+    private PlayerProgress progress;
     private int playerMaxHp;
     private int bossMaxHp;
 
@@ -86,11 +87,13 @@ public class CombatController {
     public void startCombatAtLevel(String bossId, int level) {
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
-        //Set HP
+        PlayerProgress.getInstance().applyToPlayer(player); // apply level scaling
         PlayerProgress progress = PlayerProgress.getInstance();
         if (progress.getCurrentHp() != -1) {
-            player.setCurrentHp(progress.getCurrentHp());
+            player.setCurrentHp(progress.getCurrentHp()); // restore saved HP on top
         }
+
+
 
         // When player stat scaling is ready, uncomment this one line.
         // It pushes level-scaled HP/ATK/DEF from PlayerProgress into the player object
@@ -104,8 +107,6 @@ public class CombatController {
         bossMaxHp   = boss.getMaxHp();
 
         engine = new CombatEngine(player, boss);
-
-        //hideBlueOval();
         // Shows the enemy level in the UI title, e.g. "Mob1 Lv.3"
         setStart(player.getName(), boss.getName() + " Lv." + level, bossMaxHp);
         injectStatusLabels();
@@ -124,10 +125,10 @@ public class CombatController {
     public void startCombat(String bossId) {
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
-        //Set HP
+        PlayerProgress.getInstance().applyToPlayer(player); // apply level scaling
         PlayerProgress progress = PlayerProgress.getInstance();
         if (progress.getCurrentHp() != -1) {
-            player.setCurrentHp(progress.getCurrentHp());
+            player.setCurrentHp(progress.getCurrentHp()); // restore saved HP on top
         }
 
         boss   = loader.loadBoss(bossId);
@@ -314,6 +315,7 @@ public class CombatController {
                 spawnDamageLabel("-" + turnLog.getPlayerDamageDealt(),
                         bossPane, Color.RED, 70, 90, 26);
             }
+
 
             PauseTransition afterPlayerHit = new PauseTransition(Duration.millis(500));
             afterPlayerHit.setOnFinished(ev -> {
@@ -523,7 +525,6 @@ public class CombatController {
     private void updateBossSpriteMood() {
         loadSpriteOnto(enemycharacterSprite, boss.getCurrentSprite());
     }
-
     // ── FLOATING DAMAGE LABEL ───────────────────────────────────
 
     private void spawnDamageLabel(String text, AnchorPane parent,
@@ -714,6 +715,7 @@ public class CombatController {
             PlayerProgress progress = PlayerProgress.getInstance();
             log("Victory. " + boss.getName() + " defeated.");
             // Shows the XP and gold this specific enemy gave (comes from RewardTable via BossLoader)
+            GameScreen.getInstance().showVictoryScreen(); //Won Change name here too pookie
             log("+" + boss.getXPReward() + " XP  |  +" + boss.getGoldReward() + " Gold");
             // Shows current level progress after the reward was applied
             log("Level: " + progress.getLevel() + "  |  XP: " + progress.getXp() + "/" + progress.getXpToNextLevel());
@@ -721,6 +723,7 @@ public class CombatController {
 
         } else {
             log("Defeated. " + player.getName() + " has fallen. Game over.");
+            GameScreen.getInstance().showGameOver();
             PlayerProgress.getInstance().setCurrentHp(-1);
         }
 

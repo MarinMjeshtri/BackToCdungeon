@@ -1,16 +1,16 @@
 {
   "character": {
-    "id": "f92e94a4-7be6-4976-a0a6-ad535b12c5fe",
-    "name": "create a little monster I need to defeat in my game animal shaped",
-    "prompt": "create a little monster I need to defeat in my game animal shaped",
+    "id": "d0baec4f-4346-4110-a6dd-64aecaaf4526",
+    "name": "pixel art character, male scientist, full body, black lab coat, \nshort brown hair, beard, glasses, yellow t-shirt underneath, \njeans, brown boots, holding a tablet with green glowing text, \nrobotic/skeletal left hand, atom logo on chest,\ntransparent background, isolated character, no background, \n16-bit pixel art style, high detail, game sprite",
+    "prompt": "pixel art character, male scientist, full body, black lab coat, \nshort brown hair, beard, glasses, yellow t-shirt underneath, \njeans, brown boots, holding a tablet with green glowing text, \nrobotic/skeletal left hand, atom logo on chest,\ntransparent background, isolated character, no background, \n16-bit pixel art style, high detail, game sprite",
     "size": {
       "width": 48,
       "height": 48
     },
-    "template_id": "lion",
+    "template_id": "mannequin",
     "directions": 8,
-    "view": "low top-down",
-    "created_at": "2026-04-27T16:59:18.731221+00:00"
+    "view": "high top-down",
+    "created_at": "2026-05-09T23:16:11.868951+00:00"
   },
   "frames": {
     "rotations": {
@@ -26,5 +26,5 @@
     "animations": {}
   },
   "export_version": "2.0",
-  "export_date": "2026-04-27T17:00:17.324940"
+  "export_date": "2026-05-09T23:17:31.506341"
 }
