@@ -109,7 +109,7 @@ public class Player {
         if (!collides(x, y + dy)) y += dy;
 
         boolean actuallyMoved = (x != prevX || y != prevY);
-        GameMusicManager.tickWalkSound(actuallyMoved);
+//        GameMusicManager.tickWalkSound(actuallyMoved);
     }
 
     // ---------------- COLLISION ----------------

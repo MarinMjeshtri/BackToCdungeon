@@ -1,12 +1,9 @@
 package com.dungeons.screens;
 
 //COMBAT
-import com.dungeons.Controllers.CombatController;
+import com.dungeons.Controllers.*;
 
 // DIALOGUE
-import com.dungeons.Controllers.DialogueBoxController;
-import com.dungeons.Controllers.roomScreenController;
-import com.dungeons.Controllers.uiOverlayController;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.animations.premadeAnimation;
 import com.dungeons.dialogueManager.DialogueManager;
@@ -57,11 +54,14 @@ public class GameScreen {
     private static GameScreen instance;
     private gameoverScreen gameoverScreen;
     private uiOverlayScreen uiOverlaySkreen;
+    private uiOverlayController overlayController;
     private victoryScreen victoryScreen;
+    private boolean triggerEyesActive = false;
 
 
     private Parent shopNode;
     private Parent chestNode;
+    private Parent scaryNode;
 
     // ── CANVAS ─────────────────────────────────────────────
     private final Canvas canvas = new Canvas(1280, 720);
@@ -104,6 +104,11 @@ public class GameScreen {
         this.stage = stage;
     }
 
+    //Getter for the overlay so that I can update the inventory
+    public uiOverlayController getOverlayController() {
+        return overlayController;
+    }
+
     public Parent getRoot() throws IOException {
 
         tilesetManager.loadAll();
@@ -119,7 +124,7 @@ public class GameScreen {
         combatPane   = new Pane();
         escapePane   = new Pane();
 
-        for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
+        for (Pane p : new Pane[]{gamePane,combatPane, uiPane, secondUIPane, escapePane}) {
             p.setPrefSize(1280, 720);
             p.setPickOnBounds(false);
         }
@@ -138,6 +143,8 @@ public class GameScreen {
 
         uiOverlayController ctrl = uiOverlaySkreen.getLoader().getController();
         ctrl.setProgress(PlayerProgress.getInstance());
+        overlayController = ctrl; // add this
+
 
 
         // TRANSITION
@@ -148,7 +155,7 @@ public class GameScreen {
         this.transitionScreen = transaction;
 
         // ── STACK ALL PANES ────────────────────────────────
-        gameRoot = new StackPane(gamePane,uiOverlayPane, uiPane, secondUIPane, escapePane);
+        gameRoot = new StackPane(gamePane,combatPane,uiOverlayPane, uiPane, secondUIPane, escapePane);
         gameRoot.setPrefSize(1280, 720);
 
         // ── MAP MANAGER ────────────────────────────────────
@@ -161,7 +168,7 @@ public class GameScreen {
                     roomScreenController controller = transitionScreen.getLoader().getController();
                     controller.setMapManager(mapManager);
                     controller.updateScreen();
-                    premadeAnimation.showFor(transitionScreen.getRoot(), 2);
+                    premadeAnimation.showFor(transitionScreen.getRoot(), 1);
 
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
@@ -175,6 +182,17 @@ public class GameScreen {
                 // interact trigger
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
+
+
+
+                    if (type.equals("triggerEyes")) {
+
+                        if (triggerEyesActive) return;
+
+                        triggerEyesActive = true;
+
+                        handleTriggerEyes();
+                    }
 
                     // ── FIGHT ─────────────────────────────
                     if (type.equals("fight")) {
@@ -218,6 +236,7 @@ public class GameScreen {
                         secondUIPane.setVisible(true);
                         this.itemPickupScreen = chest;
                     }
+
 
                     // ── CREDITS ───────────────────────────
                     if (type.equals("credits")) {
@@ -300,9 +319,7 @@ public class GameScreen {
         );
 
         roomScreenController controller = transitionScreen.getLoader().getController();
-        controller.setMapManager(mapManager);
-        controller.updateScreen();
-        premadeAnimation.showFor(transitionScreen.getRoot(), 2);
+        premadeAnimation.showFor(transitionScreen.getRoot(), 1);
 
 
         return gameRoot;
@@ -372,9 +389,12 @@ public class GameScreen {
         }
     }
 
+    // CORRECT
     public void showVictoryScreen() {
         try {
             victoryScreen victory = new victoryScreen(this, stage);
+            victoryScreenController controller = victory.getLoader().getController();
+            controller.setMapManager(mapManager);
             stage.getScene().setRoot(victory.getRoot());
         } catch (Exception e) {
             e.printStackTrace();
@@ -433,4 +453,34 @@ public class GameScreen {
             //crasy okay
         }
     }
+
+    private void handleTriggerEyes() {
+        try {
+            scaryScreen scary = new scaryScreen(this, stage);
+            scaryNode = scary.getRoot();
+            combatPane.getChildren().add(scaryNode);
+
+            // second canvas just for player, sits on top of scaryScreen
+            Canvas playerOverlay = new Canvas(1280, 720);
+            playerOverlay.setMouseTransparent(true);
+            combatPane.getChildren().add(playerOverlay);
+            GraphicsContext pgc = playerOverlay.getGraphicsContext2D();
+
+            new AnimationTimer() {
+                public void handle(long now) {
+                    pgc.clearRect(0, 0, 1280, 720);
+                    pgc.save();
+                    pgc.translate(-cameraX, -cameraY);
+                    player.render(pgc);
+                    pgc.restore();
+                }
+            }.start();
+
+            combatPane.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -22,6 +22,7 @@ public class TilesetManager {
         load("south-west.png", "south-west");
         load("west.png", "west");
         load("south.png", "south");
+        load("blackTile.png", "blackTile");
     }
 
     private void load(String file, String key) {
