@@ -56,6 +56,7 @@
                         <!-- Tutorial Button  add onAction for functions or ask me-->
                         <Button
                                 layoutY="35.0"
+                                onAction="#handleButton3"
                                 prefWidth="160.0"
                                 styleClass="nonGameSelector"
                                 text="TUTORIAL" />
@@ -63,6 +64,7 @@
                         <!-- Options Button  add onAction for functions or ask me -->
                         <Button
                                 layoutY="70.0"
+                                onAction="#handleButton5"
                                 prefWidth="160.0"
                                 styleClass="nonGameSelector"
                                 text="OPTIONS" />
@@ -78,7 +80,7 @@
                         <!-- Exit Button -->
                         <Button
                                 layoutY="140.0"
-                                onAction="#handleButton3"
+                                onAction="#handleButton4"
                                 prefWidth="160.0"
                                 styleClass="nonGameSelector" text="EXIT" />
 

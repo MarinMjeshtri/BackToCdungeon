@@ -1,10 +1,7 @@
 package com.dungeons.Controllers;
 
-import com.dungeons.screens.GameScreen;
-import com.dungeons.screens.creditsScreen;
-import com.dungeons.screens.areYouSureScreen;
+import com.dungeons.screens.*;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
-import com.dungeons.screens.scaryScreen;
 
 import com.dungeons.screens.scaryScreen;
 import javafx.fxml.FXML;
@@ -58,6 +55,18 @@ public class OptionsNStartingController {
     private void handleButton3() throws IOException {
         scaryScreen scary = new scaryScreen(null,stage );
         Scene scene = new Scene(scary.getRoot());
+
+        stage.setScene(scene);
+    }
+
+    private void handleButton4(){
+        System.exit(0);
+    }
+
+    @FXML
+    private void handleButton5() throws IOException {
+        optionsMenu options = new optionsMenu(null,stage );
+        Scene scene = new Scene(options.getRoot());
 
         stage.setScene(scene);
     }
