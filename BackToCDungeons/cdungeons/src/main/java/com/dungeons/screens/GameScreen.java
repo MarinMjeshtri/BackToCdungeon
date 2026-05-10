@@ -183,6 +183,8 @@ public class GameScreen {
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
 
+
+
                     if (type.equals("triggerEyes")) {
 
                         if (triggerEyesActive) return;
@@ -452,12 +454,29 @@ public class GameScreen {
             default:              return "CassieYarn";
         }
     }
+
     private void handleTriggerEyes() {
         try {
             scaryScreen scary = new scaryScreen(this, stage);
-
             scaryNode = scary.getRoot();
             combatPane.getChildren().add(scaryNode);
+
+            // second canvas just for player, sits on top of scaryScreen
+            Canvas playerOverlay = new Canvas(1280, 720);
+            playerOverlay.setMouseTransparent(true);
+            combatPane.getChildren().add(playerOverlay);
+            GraphicsContext pgc = playerOverlay.getGraphicsContext2D();
+
+            new AnimationTimer() {
+                public void handle(long now) {
+                    pgc.clearRect(0, 0, 1280, 720);
+                    pgc.save();
+                    pgc.translate(-cameraX, -cameraY);
+                    player.render(pgc);
+                    pgc.restore();
+                }
+            }.start();
+
             combatPane.setVisible(true);
 
         } catch (Exception e) {
