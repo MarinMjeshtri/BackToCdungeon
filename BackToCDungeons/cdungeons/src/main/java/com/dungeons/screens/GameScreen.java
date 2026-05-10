@@ -42,6 +42,7 @@ public class GameScreen {
     private Pane secondUIPane;
     private Pane combatPane;
     private Pane escapePane;
+    private Pane actualCombatPane;
     private StackPane gameRoot;
     private roomTransitionScreen transitionScreen;
 
@@ -62,6 +63,7 @@ public class GameScreen {
     private Parent shopNode;
     private Parent chestNode;
     private Parent scaryNode;
+    private Parent combatNode;
 
     // ── CANVAS ─────────────────────────────────────────────
     private final Canvas canvas = new Canvas(1280, 720);
@@ -123,8 +125,9 @@ public class GameScreen {
         secondUIPane = new Pane();
         combatPane   = new Pane();
         escapePane   = new Pane();
+        actualCombatPane = new Pane();
 
-        for (Pane p : new Pane[]{gamePane,combatPane, uiPane, secondUIPane, escapePane}) {
+        for (Pane p : new Pane[]{gamePane,combatPane, uiPane, secondUIPane, escapePane,actualCombatPane}) {
             p.setPrefSize(1280, 720);
             p.setPickOnBounds(false);
         }
@@ -155,7 +158,7 @@ public class GameScreen {
         this.transitionScreen = transaction;
 
         // ── STACK ALL PANES ────────────────────────────────
-        gameRoot = new StackPane(gamePane,combatPane,uiOverlayPane, uiPane, secondUIPane, escapePane);
+        gameRoot = new StackPane(gamePane,combatPane,uiOverlayPane, uiPane, secondUIPane,actualCombatPane, escapePane);
         gameRoot.setPrefSize(1280, 720);
 
         // ── MAP MANAGER ────────────────────────────────────
@@ -205,7 +208,13 @@ public class GameScreen {
                                 combatScreen combat = new combatScreen();
                                 CombatController control = combat.getLoader().getController();
                                 String bossId = resolveBossFromCurrentMap();
-                                stage.getScene().setRoot(combat.getRoot());
+
+                                // ← add to combatPane instead of replacing scene
+                                combatNode = combat.getRoot();
+                                combatPane.getChildren().clear();
+                                actualCombatPane.getChildren().add(combatNode);
+                                actualCombatPane.setVisible(true);
+
                                 control.startCombat(bossId);
 
                                 if (mapManager.isCurrentMap("BossRoomJoni")) {
@@ -332,7 +341,11 @@ public class GameScreen {
         ctrl.setProgress(PlayerProgress.getInstance());
         mapManager.markFightDone(fightTileX, fightTileY);
         interactionLocked = false;
-        stage.getScene().setRoot(gameRoot);
+
+        // clear actualCombatPane not combatPane
+        actualCombatPane.getChildren().clear();
+        actualCombatPane.setVisible(false);
+
         player.clearInput();
         canvas.requestFocus();
         startLoop();
@@ -342,7 +355,11 @@ public class GameScreen {
         mapManager.loadMap(nextMapName);
         mapManager.markFightDone(fightTileX, fightTileY);
         interactionLocked = false;
-        stage.getScene().setRoot(gameRoot);
+
+        // same fix here
+        actualCombatPane.getChildren().clear();
+        actualCombatPane.setVisible(false);
+
         player.clearInput();
         canvas.requestFocus();
         startLoop();
@@ -383,7 +400,12 @@ public class GameScreen {
     public void showGameOver() {
         try {
             gameoverScreen gameOver = new gameoverScreen();
-            stage.getScene().setRoot(gameOver.getRoot());
+            Parent gameOverNode = gameOver.getRoot();
+
+            // add to escapePane on top of everything
+            escapePane.getChildren().add(gameOverNode);
+            escapePane.setVisible(true);
+            escapePane.setPickOnBounds(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -395,7 +417,12 @@ public class GameScreen {
             victoryScreen victory = new victoryScreen(this, stage);
             victoryScreenController controller = victory.getLoader().getController();
             controller.setMapManager(mapManager);
-            stage.getScene().setRoot(victory.getRoot());
+            Parent victoryNode = victory.getRoot();
+
+            // add to uiPane
+            uiPane.getChildren().add(victoryNode);
+            uiPane.setVisible(true);
+            uiPane.setPickOnBounds(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

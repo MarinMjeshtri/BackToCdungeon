@@ -13,6 +13,7 @@ import java.util.List;
 // It reads the entire file as a plain text string and searches it using the
 // private helper methods at the bottom.
 public class StatsLoader {
+    public static boolean opMode = false;
 
     // Path to Stats.json inside the project's resources folder.
     // The leading "/" means it searches from the root of the resources directory.
@@ -62,6 +63,13 @@ public class StatsLoader {
         player.setDefense(extractInt(statsBlock, "def"));    // read def value
         player.setMoves(parseAbilities(block));              // parse all abilities
         player.setItems(new ArrayList<>());                  // empty list - items not yet implemented
+
+        if (opMode) {
+            player.setMaxHp(9999);
+            player.setCurrentHp(9999);
+            player.setAttack(999);
+            player.setDefense(999);
+        }
         return player;
     }
 

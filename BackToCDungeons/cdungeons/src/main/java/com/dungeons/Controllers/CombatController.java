@@ -708,7 +708,7 @@ public class CombatController {
             PlayerProgress.getInstance().setCurrentHp(-1);
         }
 
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        PauseTransition delay = new PauseTransition(Duration.seconds(0));
         delay.setOnFinished(e -> {
             if (playerWon) {
                 loadNextArea();
