@@ -5,6 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
+import com.dungeons.MusicandSoundsCode.*;
+
 public class Player {
 
     private double x, y;
@@ -16,8 +18,11 @@ public class Player {
     private static final int TILE_SIZE = 16;
     private static final int SCALE = 3;
     private static final int SIZE = 14;
+    public static final int HITBOX_OFFSET_X = 43; // tweak to fit your sprite
+    public static final int HITBOX_OFFSET_Y = 86; // tweak to fit your sprite
 
     private SpriteSheet sprite;
+
     public Player(double startX, double startY) {
         this.x = startX;
         this.y = startY;
@@ -61,6 +66,7 @@ public class Player {
     }
 
     // ---------------- UPDATE ----------------
+
     public enum Direction {
         IDLE,
         UP, DOWN, LEFT, RIGHT,
@@ -79,15 +85,15 @@ public class Player {
         if (left)  dx -= SPEED;
         if (right) dx += SPEED;
 
-        if      (up && left)   currentDirection = Direction.UP_LEFT;
-        else if (up && right)  currentDirection = Direction.UP_RIGHT;
-        else if (down && left) currentDirection = Direction.DOWN_LEFT;
-        else if (down && right)currentDirection = Direction.DOWN_RIGHT;
-        else if (up)           currentDirection = Direction.UP;
-        else if (down)         currentDirection = Direction.DOWN;
-        else if (left)         currentDirection = Direction.LEFT;
-        else if (right)        currentDirection = Direction.RIGHT;
-        else                   currentDirection = Direction.IDLE;
+        if      (up && left)    currentDirection = Direction.UP_LEFT;
+        else if (up && right)   currentDirection = Direction.UP_RIGHT;
+        else if (down && left)  currentDirection = Direction.DOWN_LEFT;
+        else if (down && right) currentDirection = Direction.DOWN_RIGHT;
+        else if (up)            currentDirection = Direction.UP;
+        else if (down)          currentDirection = Direction.DOWN;
+        else if (left)          currentDirection = Direction.LEFT;
+        else if (right)         currentDirection = Direction.RIGHT;
+        else                    currentDirection = Direction.IDLE;
 
         move(dx, dy);
     }
@@ -97,8 +103,13 @@ public class Player {
     }
 
     private void move(double dx, double dy) {
+        double prevX = x, prevY = y;
+
         if (!collides(x + dx, y)) x += dx;
         if (!collides(x, y + dy)) y += dy;
+
+        boolean actuallyMoved = (x != prevX || y != prevY);
+        GameMusicManager.tickWalkSound(actuallyMoved);
     }
 
     // ---------------- COLLISION ----------------
@@ -108,10 +119,13 @@ public class Player {
 
         int scaledTile = TILE_SIZE * SCALE;
 
-        int leftTile   = (int)(px / scaledTile);
-        int rightTile  = (int)((px + SIZE * SCALE - 1) / scaledTile);
-        int topTile    = (int)(py / scaledTile);
-        int bottomTile = (int)((py + SIZE * SCALE - 1) / scaledTile);
+        double hx = px + HITBOX_OFFSET_X;
+        double hy = py + HITBOX_OFFSET_Y;
+
+        int leftTile   = (int)(hx / scaledTile);
+        int rightTile  = (int)((hx + SIZE * SCALE - 1) / scaledTile);
+        int topTile    = (int)(hy / scaledTile);
+        int bottomTile = (int)((hy + SIZE * SCALE - 1) / scaledTile);
 
         return map.isSolid(leftTile, topTile)    ||
                 map.isSolid(rightTile, topTile)   ||
@@ -140,8 +154,8 @@ public class Player {
             spritePath = "/sprites/characters/Joni2/rotations/south-west.png";
         } else if (currentDirection == Direction.DOWN_RIGHT) {
             spritePath = "/sprites/characters/Joni2/rotations/south-east.png";
-        } else { // IDLE or fallback
-            spritePath = "/sprites/characters/Joni2/rotations/north.png";
+        } else {
+            spritePath = "/sprites/characters/Joni2/rotations/south.png";
         }
 
         Image img = new Image(getClass().getResourceAsStream(spritePath));
@@ -149,6 +163,9 @@ public class Player {
         double squish = 1 + 0.05 * Math.sin(System.currentTimeMillis() * 0.005);
         gc.drawImage(img, x, y, 128 * squish, 128 / squish);
 
+        // ── DEBUG: shows hitbox, remove when done ──
+        gc.setStroke(javafx.scene.paint.Color.RED);
+        gc.strokeRect(x + HITBOX_OFFSET_X, y + HITBOX_OFFSET_Y, SIZE * SCALE, SIZE * SCALE);
     }
 
     // ---------------- GETTERS ----------------
@@ -156,6 +173,11 @@ public class Player {
     public double getX() { return x; }
     public double getY() { return y; }
 
-    public int getTileX() { return (int)((x + (SIZE * SCALE) / 2.0) / (TILE_SIZE * SCALE)); }
-    public int getTileY() { return (int)((y + (SIZE * SCALE) / 2.0) / (TILE_SIZE * SCALE)); }
+    public int getTileX() {
+        return (int)((x + HITBOX_OFFSET_X + (SIZE * SCALE) / 2.0) / (TILE_SIZE * SCALE));
+    }
+
+    public int getTileY() {
+        return (int)((y + HITBOX_OFFSET_Y + (SIZE * SCALE) / 2.0) / (TILE_SIZE * SCALE));
+    }
 }

@@ -3,6 +3,7 @@ package com.dungeons.Controllers;
 import com.dungeons.shopItemsManager.Shop;
 import com.dungeons.shopItemsManager.ShopManager;
 
+import com.dungeons.systems.CombatSystem.PlayerProgress;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -93,7 +94,16 @@ public class shopController {
             return;
         }
 
-        // TODO: check player gold, deduct, add to inventory
+        PlayerProgress progress = PlayerProgress.getInstance();
+
+        if (progress.getGold() < selectedItem.price) {
+            descLabel.setText("Not enough gold!");
+            return;
+        }
+
+        progress.addGold(-selectedItem.price);
+
+        // TODO: add to inventory
         // For now just confirm
         descLabel.setText("Purchased: " + selectedItem.displayName + " for " + selectedItem.price + " G");
 

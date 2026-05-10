@@ -5,10 +5,10 @@
       "stats": {
         "atk": 25,
         "def": 8,
-        "hp": 420
+        "hp": 100
       },
       "sprites": {
-        "neutral": "/Sprties_CombatUI/MainC.png",
+        "neutral": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
         "angry": "",
         "defeated": ""
       },
@@ -273,10 +273,10 @@
       "Mob1": {
   "stats": { "atk": 12, "def": 5, "hp": 100 },
   "sprites": {
-    "neutral": "//KETU marin per te 5(Mund te ndrysosh dmg etj), angry etj mund ti fshish nuk ka problem. Nese nuk gjehet imazhi zv me netural",
+    "neutral": "/Sprties_CombatUI/Mob1/mobNeutral.png",
     "angry":   "",
     "thinking": "",
-    "defeated": "",
+    "defeated": "/Sprties_CombatUI/Mob1/mobDef.png",
     "cloned":   ""
   },
   "abilities": [
@@ -287,7 +287,7 @@
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
-      "abilitySprite": "",
+      "abilitySprite": "/Sprties_CombatUI/Mob1/mobClaw.png",
       "hitStyle": "single",
       "cooldown": 0
     }

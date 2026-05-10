@@ -1,5 +1,7 @@
 package com.dungeons.systems.CombatSystem;
 
+import com.dungeons.world.Map;
+
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -107,6 +109,7 @@ public class StatsLoader {
     private static final int MOB_DEF_PER_LEVEL = 1;  // +1 DEF per level
 
     public BossLoader loadBossAtLevel(String characterName, int level) {
+        level = Map.getRoomCounter();
         String block      = extractCharacterBlock(characterName);
         String statsBlock = extractBlock(block, "\"stats\"");
 

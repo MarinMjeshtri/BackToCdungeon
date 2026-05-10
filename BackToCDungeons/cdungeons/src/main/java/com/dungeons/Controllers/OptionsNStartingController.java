@@ -54,10 +54,7 @@ public class OptionsNStartingController {
     //OPEN THE ARE U SURE OR WHATEVER I NAME IT
     @FXML
     private void handleButton3() throws IOException {
-        areYouSureScreen uSure = new areYouSureScreen();
-
-        Pane currentRoot = (Pane) stage.getScene().getRoot();
-        currentRoot.getChildren().add(uSure.getRoot());
+        System.exit(0);
     }
 
     public void setStage(Stage stage) {

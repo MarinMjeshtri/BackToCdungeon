@@ -1,9 +1,11 @@
 package com.dungeons.Controllers;
 
+import com.dungeons.marinMainTesting;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 
 public class quitController {
@@ -53,7 +55,8 @@ public class quitController {
 
     @FXML
     public void closeEntirely(){
-        System.exit(0);
+        Stage stage = (Stage) closePane.getScene().getWindow();
+        marinMainTesting.loadStartingScreen(stage);
     }
 
     @FXML
