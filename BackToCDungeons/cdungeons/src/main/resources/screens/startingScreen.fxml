@@ -3,15 +3,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="startingScreenPane" fx:id="startingScreenPane" prefHeight="600.0" prefWidth="800.0"
-      xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.dungeons.Controllers.OptionsNStartingController">
+<StackPane
+        xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.dungeons.Controllers.OptionsNStartingController">
 
     <children>
 
+<<<<<<< HEAD
         <Label id="mainNAME" layoutX="110.0" layoutY="122.0" text="WELCOME TO LABDUNG" />
 
         <Label id="gameVersion" layoutX="664.0" layoutY="580.0" text="SCHOOL PROJECT DEMO 0.0.1">
@@ -50,9 +51,84 @@
                         onAction="#handleButton3"
                         prefHeight="55.0" prefWidth="160.0"
                         text="EXIT" />
+=======
+        <AnchorPane
+                fx:id="startingScreenPane"
+                maxHeight="720.0" maxWidth="1280.0"
+                prefHeight="720.0" prefWidth="1280.0">
+
+            <children>
+
+                <!-- GAME NAME -->
+                <Label
+                        id="mainNAME"
+                        alignment="CENTER"
+                        layoutX="271.0" layoutY="87.0"
+                        prefHeight="209.0" prefWidth="737.0"
+                        text="WELCOME TO LABDUNG" />
+
+                <!-- VERSION -->
+                <Label
+                        id="gameVersion"
+                        layoutX="1016.0" layoutY="667.0"
+                        prefHeight="47.0" prefWidth="249.0"
+                        text="SCHOOL PROJECT DEMO 0.1">
+
+                    <font>
+                        <Font size="9.0" />
+                    </font>
+                </Label>
+
+                <!-- MENU -->
+                <AnchorPane
+                        layoutX="560.0" layoutY="404.0"
+                        prefHeight="200.0" prefWidth="160.0">
+
+                    <children>
+                        <!-- Play Button -->
+                        <Button
+                                layoutY="0.0"
+                                onAction="#handleButton1"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector"
+                                text="PLAY" />
+
+                        <!-- Tutorial Button  add onAction for functions or ask me-->
+                        <Button
+                                layoutY="35.0"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector"
+                                text="TUTORIAL" />
+
+                        <!-- Options Button  add onAction for functions or ask me -->
+                        <Button
+                                layoutY="70.0"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector"
+                                text="OPTIONS" />
+
+                        <!-- Credits Button -->
+                        <Button
+                                layoutY="105.0"
+                                onAction="#handleButton2"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector"
+                                text="CREDITS" />
+
+                        <!-- Exit Button -->
+                        <Button
+                                layoutY="140.0"
+                                onAction="#handleButton3"
+                                prefWidth="160.0"
+                                styleClass="nonGameSelector" text="EXIT" />
+
+                    </children>
+
+                </AnchorPane>
+>>>>>>> e134caa1f11d0b969d6b1e0b152282853c0a1574
 
             </children>
         </AnchorPane>
 
     </children>
-</Pane>
+</StackPane>

@@ -40,6 +40,7 @@ public class GameMusicManager {
         currentState = MusicState.ENDING;
         AudioManager.stopMusic();
         AudioManager.playMusicOnce(AudioManager.MUSIC_LABORATORY);
+        System.out.println("[GameMusicManager] -> ENDING");
     }
 
     public static void pauseMusic()  { AudioManager.pauseMusic(); }
@@ -81,8 +82,11 @@ public class GameMusicManager {
         else                                                                     AudioManager.playSound(AudioManager.SFX_SWORD);
     }
 
-    public static void playPickupSound()  { AudioManager.playSound(AudioManager.SFX_PICKUP); }
+    public static void playPickupSound()   { AudioManager.playSound(AudioManager.SFX_PICKUP); }
+
     public static void playGameOverSound() { AudioManager.playSound(AudioManager.SFX_GAME_OVER); }
+
+    public static void playLevelUpSound()  { AudioManager.playSound(AudioManager.SFX_LEVEL_UP); }
 
     public static void setSfxVolume(double volume) { AudioManager.setSfxVolume(volume); }
 

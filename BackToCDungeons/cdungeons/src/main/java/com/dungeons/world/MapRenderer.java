@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 public class MapRenderer {
 
     private static final int TILE_SIZE = 16;
-    private static final int SCALE = 2; // was 2, must match Player and GameScreen
+    private static final int SCALE = 3; // was 2, must match Player and GameScreen feeling kinda cute
 
     private final Map map;
     private final TilesetManager tiles;

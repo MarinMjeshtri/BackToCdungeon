@@ -1,5 +1,4 @@
 *{
--fx-font-family: 'REANO';
 }
 
 /* MAIN SCREEN */
@@ -163,7 +162,6 @@
 .label {
     -fx-text-fill: #1e2352;
     -fx-font-family: "Courier New", monospace;
-    -fx-font-size: 13px;
 }
 
 .label-title {
@@ -228,6 +226,7 @@
     -fx-font-family: "Courier New", monospace;
     -fx-font-size: 12px;
     -fx-text-fill: #8899dd;
+    -fx-editable: false;
 }
 
 .text-area .content {

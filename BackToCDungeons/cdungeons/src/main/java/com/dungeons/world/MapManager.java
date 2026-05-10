@@ -29,6 +29,7 @@ public class MapManager {
     }
 
     public void loadMap(String mapName) {
+        Map.recordVisit(mapName); // track BEFORE loading so previousMap is correct
         Map map = new Map();
         map.load(mapName);
         currentMap = map;
@@ -46,6 +47,7 @@ public class MapManager {
     private void checkTransitions(int charTileX, int charTileY) {
         for (TransitionZone zone : currentMap.transitions) {
             if (zone.x == charTileX && zone.y == charTileY) {
+                Map.recordVisit(zone.targetMap); // track BEFORE loading
                 Map newMap = new Map();
                 newMap.load(zone.targetMap);
                 currentMap = newMap;
@@ -90,9 +92,20 @@ public class MapManager {
     }
 
     public void markFightDone(int tileX, int tileY) {
+        // find the id of the triggered zone
+        int triggeredId = -1;
         for (InteractZone zone : currentMap.interactZones) {
-            if (zone.type.equals("fight")) {
-                zone.triggered = true;
+            if (zone.type.equals("fight") && zone.x == tileX && zone.y == tileY) {
+                triggeredId = zone.id;
+                break;
+            }
+        }
+        // mark all tiles belonging to that same fight zone as done
+        if (triggeredId != -1) {
+            for (InteractZone zone : currentMap.interactZones) {
+                if (zone.id == triggeredId) {
+                    zone.triggered = true;
+                }
             }
         }
     }
@@ -103,5 +116,9 @@ public class MapManager {
                 zone.triggered = true;
             }
         }
+    }
+
+    public boolean isCurrentMap(String mapName) {
+        return currentMap != null && mapName.equals(currentMap.getMapName());
     }
 }

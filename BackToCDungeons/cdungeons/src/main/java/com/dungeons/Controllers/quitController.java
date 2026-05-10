@@ -1,18 +1,11 @@
 package com.dungeons.Controllers;
 
-import com.dungeons.screens.areYouSureScreen;
-import com.dungeons.screens.GameScreen;
-import com.dungeons.Main;
-
+import com.dungeons.marinMainTesting;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-
 
 
 public class quitController {
@@ -28,7 +21,7 @@ public class quitController {
     @FXML
     public void initialize() {
         String url = getClass().getResource(
-                "/sprites/DialougeSprites/MrBalls/willy.jpg"
+                "/sprites/DialougeSprites/MrBalls/willy2.jpg"
         ).toExternalForm();
 
         anchorDecor.setStyle(
@@ -62,9 +55,8 @@ public class quitController {
 
     @FXML
     public void closeEntirely(){
-        System.exit(0);
-
-
+        Stage stage = (Stage) closePane.getScene().getWindow();
+        marinMainTesting.loadStartingScreen(stage);
     }
 
     @FXML

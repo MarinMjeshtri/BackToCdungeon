@@ -8,15 +8,17 @@ public class SpriteSheet {
     private final Image image;
     private final int tileSize;
 
+    public Image getImage() {
+        return image;
+    }
     public SpriteSheet(String path, int tileSize) {
         var stream = getClass().getResourceAsStream(path);
+
         if (stream == null) {
-            throw new RuntimeException(
-                "Sprite not found: " + path +
-                " \u2014 check the file exists in src/main/resources/sprites/"
-            );
+            throw new RuntimeException("Sprite not found: " + path);
         }
-        this.image    = new Image(stream);
+
+        this.image = new Image(stream);
         this.tileSize = tileSize;
     }
 

@@ -3,13 +3,14 @@ package com.dungeons.screens;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.stage.Stage;
 
 public class creditsScreen {
 
     private Parent root;
     private FXMLLoader loader;
 
-    public creditsScreen() throws IOException {
+    public creditsScreen(GameScreen gameScreen, Stage stage) throws IOException {
         try {
             loader = new FXMLLoader(
                     getClass().getResource("/screens/creditsScreen.fxml")
@@ -18,7 +19,7 @@ public class creditsScreen {
             root = loader.load();
 
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load startingScreen.fxml", e);
+            throw new RuntimeException("Failed to load shopScreen.fxml", e);
         }
     }
 

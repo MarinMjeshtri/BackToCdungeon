@@ -1,9 +1,13 @@
 package com.dungeons.Controllers;
 
 import com.dungeons.screens.areYouSureScreen;
+<<<<<<< HEAD
 import com.dungeons.screens.creditsScreen;
 import com.dungeons.screens.introScreen;
 import com.dungeons.screens.tutorialScreen;
+=======
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
+>>>>>>> e134caa1f11d0b969d6b1e0b152282853c0a1574
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -21,6 +25,10 @@ public class OptionsNStartingController {
 
     @FXML
     public void initialize() {
+<<<<<<< HEAD
+=======
+//use css, unless ur a lazy bum and want to just hard code it in (did i mention ur a bum if u do that) cough cough past me (i wil rape ur ass alive)
+>>>>>>> e134caa1f11d0b969d6b1e0b152282853c0a1574
     }
 
     @FXML
@@ -32,6 +40,11 @@ public class OptionsNStartingController {
                 getClass().getResource("/sprites/style.css").toExternalForm()
         );
         stage.setScene(scene);
+<<<<<<< HEAD
+=======
+        gameScreen.startLoop();
+        GameMusicManager.playOpening();
+>>>>>>> e134caa1f11d0b969d6b1e0b152282853c0a1574
 
     }
 
@@ -54,9 +67,13 @@ public class OptionsNStartingController {
 
     @FXML
     private void handleButton3() throws IOException {
+<<<<<<< HEAD
         areYouSureScreen uSure = new areYouSureScreen();
         Pane currentRoot = (Pane) stage.getScene().getRoot();
         currentRoot.getChildren().add(uSure.getRoot());
+=======
+        System.exit(0);
+>>>>>>> e134caa1f11d0b969d6b1e0b152282853c0a1574
     }
 
     public void setStage(Stage stage) {

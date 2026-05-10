@@ -4,54 +4,112 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="598.0" prefWidth="794.0" style="-fx-background-color: rgba(0,0,0,0.75);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.shopController">
+<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.shopController">
     <children>
 
-        <!-- title -->
-        <Label layoutX="209.0" layoutY="86.0" styleClass="title-label" text="SHOPPING AREA" />
-
-        <!-- item cards panel -->
-        <AnchorPane layoutX="108.0" layoutY="169.0" prefHeight="200.0" prefWidth="578.0" styleClass="dark-panel">
+        <AnchorPane maxHeight="720.0" maxWidth="1280.0" prefHeight="720.0" prefWidth="1280.0">
             <children>
 
-                <!-- item 1 -->
-                <AnchorPane layoutX="14.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel">
+                <!-- title -->
+                <Label alignment="CENTER" layoutX="268.0" layoutY="59.0" prefHeight="70.0" prefWidth="742.0" text="SHOPPING AREA">
+                    <font><Font size="48.0" /></font>
+                </Label>
+
+                <!-- row 1 -->
+                <AnchorPane layoutX="350.0" layoutY="150.0" prefHeight="200.0" prefWidth="578.0" styleClass="dark-panel">
                     <children>
-                        <Label fx:id="item1" layoutX="11.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM1" />
-                        <ImageView fx:id="img1" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="price1" layoutX="61.0" layoutY="171.0" styleClass="price-label" text="PRICE" />
+
+                        <!-- item 1 -->
+                        <AnchorPane fx:id="card1" layoutX="14.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel"
+                                    userData="smallHealthPotion" onMouseClicked="#handleCardClick">
+                            <children>
+                                <Label fx:id="item1" alignment="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM1" style="-fx-text-fill: #a6cbff;" />
+                                <ImageView fx:id="img1" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" />
+                                <Label fx:id="price1" alignment="CENTER" layoutX="14.0" layoutY="171.0" prefHeight="18.0" prefWidth="136.0" styleClass="price-label" text="PRICE" style="-fx-text-fill: #a6cbff;" />
+                            </children>
+                        </AnchorPane>
+
+                        <!-- item 2 -->
+                        <AnchorPane fx:id="card2" layoutX="204.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel"
+                                    userData="bigHealthPotion" onMouseClicked="#handleCardClick">
+                            <children>
+                                <Label fx:id="item2" alignment="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM2" style="-fx-text-fill: #a6cbff;" />
+                                <ImageView fx:id="img2" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+                                <Label fx:id="price2" alignment="CENTER" layoutX="17.0" layoutY="176.0" prefHeight="18.0" prefWidth="136.0" styleClass="price-label" text="PRICE" style="-fx-text-fill: #a6cbff;" />
+                            </children>
+                        </AnchorPane>
+
+                        <!-- item 3 -->
+                        <AnchorPane fx:id="card3" layoutX="393.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel"
+                                    userData="strPotion" onMouseClicked="#handleCardClick">
+                            <children>
+                                <Label fx:id="item3" alignment="CENTER" layoutX="17.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM3" style="-fx-text-fill: #a6cbff;" />
+                                <ImageView fx:id="img3" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
+                                <Label fx:id="price3" alignment="CENTER" layoutX="17.0" layoutY="176.0" prefHeight="18.0" prefWidth="136.0" styleClass="price-label" text="PRICE" style="-fx-text-fill: #a6cbff;" />
+                            </children>
+                        </AnchorPane>
+
                     </children>
                 </AnchorPane>
 
-                <!-- item 2 -->
-                <AnchorPane layoutX="204.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel">
+                <!-- description panel -->
+                <AnchorPane layoutX="350.0" layoutY="365.0" prefHeight="50.0" prefWidth="578.0" styleClass="dark-panel">
                     <children>
-                        <Label fx:id="item2" layoutX="11.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM2" />
-                        <ImageView fx:id="img2" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="price2" layoutX="62.0" layoutY="171.0" styleClass="price-label" text="PRICE" />
+                        <Label fx:id="descLabel" alignment="CENTER" layoutX="10.0" layoutY="10.0"
+                               prefHeight="30.0" prefWidth="558.0" text="Select an item to see its description." style="-fx-text-fill: #a6cbff;" />
                     </children>
                 </AnchorPane>
 
-                <!-- item 3 -->
-                <AnchorPane layoutX="393.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel">
+                <!-- row 2 -->
+                <AnchorPane layoutX="350.0" layoutY="430.0" prefHeight="200.0" prefWidth="578.0" styleClass="dark-panel">
                     <children>
-                        <Label fx:id="item3" layoutX="17.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM3" />
-                        <ImageView fx:id="img3" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="price3" layoutX="62.0" layoutY="171.0" styleClass="price-label" text="PRICE" />
+
+                        <!-- item 4 -->
+                        <AnchorPane fx:id="card4" layoutX="14.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel"
+                                    userData="" onMouseClicked="#handleCardClick">
+                            <children>
+                                <Label fx:id="item4" alignment="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM4" style="-fx-text-fill: #a6cbff;" />
+                                <ImageView fx:id="img4" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" />
+                                <Label fx:id="price4" alignment="CENTER" layoutX="14.0" layoutY="171.0" prefHeight="18.0" prefWidth="136.0" styleClass="price-label" text="PRICE" style="-fx-text-fill: #a6cbff;" />
+                            </children>
+                        </AnchorPane>
+
+                        <!-- item 5 -->
+                        <AnchorPane fx:id="card5" layoutX="204.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel"
+                                    userData="" onMouseClicked="#handleCardClick">
+                            <children>
+                                <Label fx:id="item5" alignment="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM5" style="-fx-text-fill: #a6cbff;" />
+                                <ImageView fx:id="img5" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+                                <Label fx:id="price5" alignment="CENTER" layoutX="17.0" layoutY="176.0" prefHeight="18.0" prefWidth="136.0" styleClass="price-label" text="PRICE" style="-fx-text-fill: #a6cbff;" />
+                            </children>
+                        </AnchorPane>
+
+                        <!-- item 6 -->
+                        <AnchorPane fx:id="card6" layoutX="393.0" layoutY="0.0" prefHeight="199.0" prefWidth="170.0" styleClass="inner-panel"
+                                    userData="" onMouseClicked="#handleCardClick">
+                            <children>
+                                <Label fx:id="item6" alignment="CENTER" layoutX="17.0" layoutY="14.0" prefHeight="18.0" prefWidth="136.0" styleClass="item-name" text="ITEM6" style="-fx-text-fill: #a6cbff;" />
+                                <ImageView fx:id="img6" fitHeight="116.0" fitWidth="136.0" layoutX="17.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
+                                <Label fx:id="price6" alignment="CENTER" layoutX="17.0" layoutY="176.0" prefHeight="18.0" prefWidth="136.0" styleClass="price-label" text="PRICE" style="-fx-text-fill: #a6cbff;" />
+                            </children>
+                        </AnchorPane>
+
+                    </children>
+                </AnchorPane>
+
+                <!-- purchase button -->
+                <AnchorPane layoutX="501.0" layoutY="648.0" prefHeight="64.0" prefWidth="277.0" styleClass="dark-panel">
+                    <children>
+                        <Button fx:id="purchaseBtn" onAction="#handlePurchase" layoutX="64.0" layoutY="7.0"
+                                mnemonicParsing="false" prefHeight="50.0" prefWidth="151.0"
+                                styleClass="button" text="PURCHASE" />
                     </children>
                 </AnchorPane>
 
             </children>
         </AnchorPane>
-
-        <!-- purchase button panel -->
-        <AnchorPane layoutX="258.0" layoutY="381.0" prefHeight="64.0" prefWidth="277.0" styleClass="dark-panel">
-            <children>
-                <Button layoutX="64.0" layoutY="7.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="151.0" styleClass="button" text="PURCHASE" />
-            </children>
-        </AnchorPane>
-
     </children>
-</Pane>
+</StackPane>

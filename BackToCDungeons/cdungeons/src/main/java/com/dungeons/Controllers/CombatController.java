@@ -1,5 +1,6 @@
 package com.dungeons.Controllers;
 
+import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.systems.CombatSystem.*;
 import com.dungeons.screens.GameScreen;
 
@@ -11,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
 import javafx.util.Duration;
@@ -46,6 +46,7 @@ public class CombatController {
     private CombatEngine engine;
     private Player player;
     private BossLoader boss;
+    private PlayerProgress progress;
     private int playerMaxHp;
     private int bossMaxHp;
 
@@ -60,60 +61,92 @@ public class CombatController {
 
     private boolean guardUsedThisTurn = false;
 
-    // stored so we can cancel it before ability sprite loads
     private PauseTransition thinkingRevertTimer = null;
-
-//    // maps boss ID to the next map to load after they are defeated
-//    private static final java.util.Map<String, String> BOSS_NEXT_MAP = new java.util.HashMap<>();
-//    static {
-//        BOSS_NEXT_MAP.put("CassieYarn",  "MobRoom3");
-//        BOSS_NEXT_MAP.put("FreakyRelah", "MobRoom5");
-//        // JohnMKati end — handled separately below
-//    }
 
     @FXML
     public void initialize() {
         startCombat("CassieYarn");
     }
 
-    public void startCombat(String bossId) {
+    public void startCombatAtLevel(String bossId, int level) {
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
-        boss   = loader.loadBoss(bossId);
+        PlayerProgress.getInstance().applyToPlayer(player);
+        PlayerProgress progress = PlayerProgress.getInstance();
+        if (progress.getCurrentHp() != -1) {
+            player.setCurrentHp(progress.getCurrentHp());
+        }
+
+        boss = loader.loadBossAtLevel(bossId, level);
 
         playerMaxHp = player.getMaxHp();
         bossMaxHp   = boss.getMaxHp();
 
         engine = new CombatEngine(player, boss);
-
-        hideBlueOval();
-        setStart(player.getName(), boss.getName(), bossMaxHp);
+        setStart(player.getName(), boss.getName() + " Lv." + level, bossMaxHp);
         injectStatusLabels();
+
+        final double initialPlayerBarWidth = PLAYER_BAR_MAX * ((double) player.getCurrentHp() / playerMaxHp);
+        javafx.application.Platform.runLater(() -> playerHP.setWidth(initialPlayerBarWidth));
+
         wireAbilityButtons();
         wirePlaceholderButtons();
         updateCooldownUI();
 
         turnInformation.setText("");
         log("Combat started. Choose your action.");
+
+        if (GameMusicManager.FINAL_BOSS_ID.equals(bossId)) {
+            GameMusicManager.playFinalBoss();
+        } else {
+            GameMusicManager.playCombat();
+        }
     }
 
-    private void hideBlueOval() {
-        AnchorPane enemyPane = (AnchorPane) enemycharacterSprite.getParent();
-        enemyPane.getChildren().stream()
-                .filter(n -> n instanceof Ellipse)
-                .forEach(n -> n.setVisible(false));
+    public void startCombat(String bossId) {
+        StatsLoader loader = new StatsLoader();
+        player = loader.loadPlayer("Player");
+        PlayerProgress.getInstance().applyToPlayer(player);
+        PlayerProgress progress = PlayerProgress.getInstance();
+        if (progress.getCurrentHp() != -1) {
+            player.setCurrentHp(progress.getCurrentHp());
+        }
+
+        boss = loader.loadBoss(bossId);
+
+        playerMaxHp = player.getMaxHp();
+        bossMaxHp   = boss.getMaxHp();
+
+        engine = new CombatEngine(player, boss);
+
+        setStart(player.getName(), boss.getName(), bossMaxHp);
+        injectStatusLabels();
+
+        final double initialPlayerBarWidth = PLAYER_BAR_MAX * ((double) player.getCurrentHp() / playerMaxHp);
+        javafx.application.Platform.runLater(() -> playerHP.setWidth(initialPlayerBarWidth));
+
+        wireAbilityButtons();
+        wirePlaceholderButtons();
+        updateCooldownUI();
+
+        turnInformation.setText("");
+        log("Combat started. Choose your action.");
+
+        if (GameMusicManager.FINAL_BOSS_ID.equals(bossId)) {
+            GameMusicManager.playFinalBoss();
+        } else {
+            GameMusicManager.playCombat();
+        }
     }
 
     private void injectStatusLabels() {
         AnchorPane bossHpPane   = (AnchorPane) bossHP.getParent();
         AnchorPane playerHpPane = (AnchorPane) playerHP.getParent();
         AnchorPane enemyPane    = (AnchorPane) enemycharacterSprite.getParent();
-        
 
-        // clear old injected labels before adding new ones
-        if (bossStatusLabel != null) bossHpPane.getChildren().remove(bossStatusLabel);
+        if (bossStatusLabel != null)   bossHpPane.getChildren().remove(bossStatusLabel);
         if (playerStatusLabel != null) playerHpPane.getChildren().remove(playerStatusLabel);
-        if (playerHpLabel     != null) playerHpPane.getChildren().remove(playerHpLabel);        
+        if (playerHpLabel != null)     playerHpPane.getChildren().remove(playerHpLabel);
         enemyPane.getChildren().removeIf(n -> n instanceof Label);
 
         bossStatusLabel = new Label("");
@@ -121,13 +154,12 @@ public class CombatController {
         bossStatusLabel.setLayoutY(72);
         bossStatusLabel.setStyle("-fx-text-fill: #cc3300; -fx-font-size: 10px;");
 
-        // status and HP on separate Y positions so they never overlap
         playerStatusLabel = new Label("");
         playerStatusLabel.setLayoutX(4);
         playerStatusLabel.setLayoutY(1);
         playerStatusLabel.setStyle("-fx-text-fill: #cc3300; -fx-font-size: 11px;");
 
-        playerHpLabel = new Label(playerMaxHp + " / " + playerMaxHp);
+        playerHpLabel = new Label(player.getCurrentHp() + " / " + playerMaxHp);
         playerHpLabel.setLayoutX(4);
         playerHpLabel.setLayoutY(16);
         playerHpLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #111; -fx-font-weight: bold;");
@@ -194,7 +226,12 @@ public class CombatController {
             Button btn = itemButtons.get(i);
             addHoverScale(btn);
             addTooltip(btn, "Use " + label + ". Not implemented yet.");
-            btn.setOnAction(e -> { log("Used " + label + " (not implemented yet)."); goBack(); });
+            btn.setOnAction(e -> {
+                // ── SOUND: item used ──
+                GameMusicManager.playPickupSound();
+                log("Used " + label + " (not implemented yet).");
+                goBack();
+            });
         }
 
         List<Button> defenseButtons = pressDefense.getChildren().stream()
@@ -249,8 +286,6 @@ public class CombatController {
         }
     }
 
-    // ── PLAYER ATTACK FLOW ────────────────────────────────────────────
-
     private void handlePlayerAttack(int moveIndex) {
         if (!engine.isOngoing()) return;
         lockAllActions(true);
@@ -259,9 +294,17 @@ public class CombatController {
         PauseTransition waitThink = new PauseTransition(Duration.millis(800));
         waitThink.setOnFinished(e -> {
             TurnLog turnLog = engine.processTurnByIndex(moveIndex, null);
+
+            List<Move> moves = player.getMoves();
+            if (moveIndex < moves.size()) {
+                GameMusicManager.playMoveSound(moves.get(moveIndex).getName());
+            }
+
             AnchorPane bossPane = (AnchorPane) enemycharacterSprite.getParent();
 
             if (turnLog.getPlayerDamageDealt() > 0) {
+
+                GameMusicManager.playHitSound();
                 flashHit(enemycharacterSprite);
                 spawnDamageLabel("-" + turnLog.getPlayerDamageDealt(),
                         bossPane, Color.RED, 70, 90, 26);
@@ -272,7 +315,6 @@ public class CombatController {
                 tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
                 bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
 
-                // revert to mood sprite — safe here, executeBossTurn will override
                 updateBossSpriteMood();
 
                 PauseTransition waitBoss = new PauseTransition(Duration.millis(600));
@@ -284,10 +326,7 @@ public class CombatController {
         waitThink.play();
     }
 
-    // ── BOSS TURN EXECUTION ───────────────────────────────────────────
-
     private void executeBossTurn(TurnLog turnLog) {
-        // cancel thinking revert — we own the sprite from here
         if (thinkingRevertTimer != null) {
             thinkingRevertTimer.stop();
             thinkingRevertTimer = null;
@@ -300,12 +339,10 @@ public class CombatController {
         AnchorPane playerPane = (AnchorPane) playercharacterSprite.getParent();
         AnchorPane bossPane   = (AnchorPane) enemycharacterSprite.getParent();
 
-        // show ability sprite only if path is set — never fall back to mood sprite here
         if (abilityPath != null && !abilityPath.isEmpty()) {
             loadSpriteOnto(enemycharacterSprite, abilityPath);
         }
 
-        // boss defeated before acting
         if (turnLog.getBossMoveName() == null) {
             boss.clearAbilitySprite();
             updateBossSpriteMood();
@@ -327,18 +364,33 @@ public class CombatController {
             showCloneEffect(bossPane, turnLog);
 
         } else if ("heal".equals(hitStyle)) {
-            spawnDamageLabel("+80 HP", bossPane, Color.LIMEGREEN, 55, 80, 20);
-            PauseTransition healPause = new PauseTransition(Duration.millis(700));
-            healPause.setOnFinished(e -> {
-                tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
-                bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
-                boss.clearAbilitySprite();
-                updateBossSpriteMood();
-                finishTurnUpdate(turnLog);
+            final TurnLog log = turnLog;
+            int healAmount = 80;
+            final int finalHealAmount = healAmount;
+
+            int preHealHp = Math.max(0, log.getBossHpAfter() - finalHealAmount);
+            bossHP.setWidth(BOSS_BAR_MAX * ((double) preHealHp / bossMaxHp));
+            bossHPnumber.setText(preHealHp + " / " + bossMaxHp);
+
+            PauseTransition wait = new PauseTransition(Duration.millis(300));
+            wait.setOnFinished(e -> {
+                spawnDamageLabel("+" + finalHealAmount + " HP", bossPane, Color.LIMEGREEN, 55, 80, 20);
+                PauseTransition afterPopup = new PauseTransition(Duration.millis(400));
+                afterPopup.setOnFinished(ev -> {
+                    tweenHpBar(bossHP, log.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
+                    bossHPnumber.setText(log.getBossHpAfter() + " / " + bossMaxHp);
+                    boss.clearAbilitySprite();
+                    updateBossSpriteMood();
+                    finishTurnUpdate(log);
+                });
+                afterPopup.play();
             });
-            healPause.play();
+            wait.play();
 
         } else if (!hits.isEmpty()) {
+
+            GameMusicManager.playHitSound();
+
             if ("rapid".equals(hitStyle)) {
                 animateRapidHits(hits, playerPane, turnLog);
             } else {
@@ -356,7 +408,7 @@ public class CombatController {
                 hits.stream().mapToInt(Integer::intValue).sum();
         int[] displayHp = {Math.min(startHp, playerMaxHp)};
 
-        int delayPerHit = 120;
+        int delayPerHit = 50;
         Timeline rapid  = new Timeline();
 
         for (int i = 0; i < hits.size(); i++) {
@@ -379,7 +431,6 @@ public class CombatController {
 
         long totalMs = (long) hits.size() * delayPerHit + 500;
         rapid.getKeyFrames().add(new KeyFrame(Duration.millis(totalMs), ev -> {
-            // snap to exact final value
             tweenHpBar(playerHP, turnLog.getPlayerHpAfter(), playerMaxHp, PLAYER_BAR_MAX);
             if (playerHpLabel != null)
                 playerHpLabel.setText(turnLog.getPlayerHpAfter() + " / " + playerMaxHp);
@@ -413,6 +464,9 @@ public class CombatController {
     }
 
     private void showCloneEffect(AnchorPane bossPane, TurnLog turnLog) {
+
+        GameMusicManager.playMoveSound("clone");
+
         spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 25, 65, 16);
         spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 95, 80, 16);
         spawnDamageLabel("CLONE", bossPane, Color.PURPLE, 60, 50, 16);
@@ -428,8 +482,6 @@ public class CombatController {
         done.play();
     }
 
-    // ── SPRITE MANAGEMENT ─────────────────────────────────────────────
-
     private void showBossThinking() {
         String thinkPath = boss.getThinkingSprite();
         if (thinkPath != null && !thinkPath.isEmpty()) {
@@ -438,7 +490,6 @@ public class CombatController {
         thinkingRevertTimer = new PauseTransition(Duration.millis(600));
         thinkingRevertTimer.setOnFinished(e -> {
             thinkingRevertTimer = null;
-            // only revert if no ability sprite is active
             if (boss.getCurrentAbilitySprite().isEmpty()) {
                 updateBossSpriteMood();
             }
@@ -446,7 +497,6 @@ public class CombatController {
         thinkingRevertTimer.play();
     }
 
-    // loads any sprite path onto the ImageView, fills the parent pane
     private void loadSpriteOnto(ImageView view, String path) {
         if (path == null || path.isEmpty()) return;
         InputStream is = getClass().getResourceAsStream(path);
@@ -462,15 +512,12 @@ public class CombatController {
         AnchorPane.setBottomAnchor(view, 0.0);
     }
 
-    // always uses mood sprite — never uses ability sprite path
     private void updateBossSpriteMood() {
         loadSpriteOnto(enemycharacterSprite, boss.getCurrentSprite());
     }
 
-    // ── FLOATING DAMAGE LABEL ───────────────────────────────────
-
     private void spawnDamageLabel(String text, AnchorPane parent,
-                                   Color color, double x, double y, double size) {
+                                  Color color, double x, double y, double size) {
         Label lbl = new Label(text);
         lbl.setFont(Font.font("Arial Black", FontWeight.EXTRA_BOLD, size));
         lbl.setTextFill(color);
@@ -491,8 +538,6 @@ public class CombatController {
         pt.play();
     }
 
-    // ── TURN FINISH ───────────────────────────────────────────────────
-
     private void finishTurnUpdate(TurnLog turnLog) {
         guardUsedThisTurn = false;
         setTurnNr(turnLog.getRoundNumber());
@@ -509,17 +554,17 @@ public class CombatController {
             sb.append("You are stunned. Turn skipped.\n");
         } else if (turnLog.getItemUsed() != null) {
             sb.append("You used ").append(turnLog.getItemUsed())
-              .append(". Restored ").append(turnLog.getPlayerHpRestored()).append(" HP.\n");
+                    .append(". Restored ").append(turnLog.getPlayerHpRestored()).append(" HP.\n");
         } else if (turnLog.getPlayerMoveName() != null) {
             sb.append("You used ").append(turnLog.getPlayerMoveName())
-              .append(". Dealt ").append(turnLog.getPlayerDamageDealt()).append(" damage.\n");
+                    .append(". Dealt ").append(turnLog.getPlayerDamageDealt()).append(" damage.\n");
         }
 
         StatusEffect pe = player.getActiveEffect();
         StatusEffect be = boss.getActiveEffect();
         if (pe != null) sb.append("Status on you: ").append(pe.getLabel()).append("\n");
         if (be != null) sb.append("Status on ").append(boss.getName())
-                          .append(": ").append(be.getLabel()).append("\n");
+                .append(": ").append(be.getLabel()).append("\n");
 
         if ("STUNNED".equals(turnLog.getBossMoveName())) {
             sb.append(boss.getName()).append(" is stunned. Their turn skipped.\n");
@@ -529,23 +574,22 @@ public class CombatController {
             sb.append(boss.getName()).append(" repaired systems. Healed 80 HP.\n");
         } else if (turnLog.getBossMoveName() != null) {
             sb.append(boss.getName()).append(" used ").append(turnLog.getBossMoveName())
-              .append(". Dealt ").append(turnLog.getBossDamageDealt()).append(" damage.\n");
+                    .append(". Dealt ").append(turnLog.getBossDamageDealt()).append(" damage.\n");
         } else {
             sb.append(boss.getName()).append(" was defeated before acting.\n");
         }
 
         sb.append("Your HP: ").append(turnLog.getPlayerHpAfter())
-          .append(" / ").append(playerMaxHp)
-          .append("  |  Boss HP: ").append(turnLog.getBossHpAfter())
-          .append(" / ").append(bossMaxHp).append("\n");
+                .append(" / ").append(playerMaxHp)
+                .append("  |  Boss HP: ").append(turnLog.getBossHpAfter())
+                .append(" / ").append(bossMaxHp).append("\n");
 
         log(sb.toString());
 
         boolean combatOver =
                 turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN ||
-                turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE;
+                        turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE;
 
-        // only unlock buttons if combat is still going
         if (!combatOver) lockAllActions(false);
 
         if (turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN)
@@ -596,10 +640,10 @@ public class CombatController {
     private void tweenHpBar(Rectangle bar, int currentHp, int maxHp, double barMax) {
         double target = Math.max(0, barMax * ((double) currentHp / maxHp));
         new Timeline(
-            new KeyFrame(Duration.ZERO,
-                    new KeyValue(bar.widthProperty(), bar.getWidth())),
-            new KeyFrame(Duration.millis(400),
-                    new KeyValue(bar.widthProperty(), target, Interpolator.EASE_BOTH))
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(bar.widthProperty(), bar.getWidth())),
+                new KeyFrame(Duration.millis(400),
+                        new KeyValue(bar.widthProperty(), target, Interpolator.EASE_BOTH))
         ).play();
     }
 
@@ -630,10 +674,7 @@ public class CombatController {
         Tooltip.install(node, tip);
     }
 
-    // ── COMBAT END + SCENE TRANSITION ────────────────────────────────
-
     public void onCombatEnd(boolean playerWon) {
-        // stop any pending timers
         if (thinkingRevertTimer != null) {
             thinkingRevertTimer.stop();
             thinkingRevertTimer = null;
@@ -649,9 +690,22 @@ public class CombatController {
         if (bossIntentLabel   != null) bossIntentLabel.setText("");
 
         if (playerWon) {
-            log("Victory. " + boss.getName() + " defeated. Loading next area...");
+            PlayerProgress.getInstance().setCurrentHp(player.getCurrentHp());
+            PlayerProgress progress = PlayerProgress.getInstance();
+            log("Victory. " + boss.getName() + " defeated.");
+            GameScreen.getInstance().showVictoryScreen();
+            log("+" + boss.getXPReward() + " XP  |  +" + boss.getGoldReward() + " Gold");
+            log("Level: " + progress.getLevel() + "  |  XP: " + progress.getXp() + "/" + progress.getXpToNextLevel());
+            log("Loading next area...");
+
         } else {
+
+            GameMusicManager.stopMusic();
+            GameMusicManager.playGameOverSound();
+
             log("Defeated. " + player.getName() + " has fallen. Game over.");
+            GameScreen.getInstance().showGameOver();
+            PlayerProgress.getInstance().setCurrentHp(-1);
         }
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
@@ -659,43 +713,16 @@ public class CombatController {
             if (playerWon) {
                 loadNextArea();
             } else {
-                // player lost — handle game over here if needed
                 System.out.println("GAME OVER");
             }
         });
         delay.play();
     }
 
-    // loads the next map based on which boss was just defeated
-//    private void loadNextArea() {
-//    String bossId  = boss.getId();
-//    String nextMap = BOSS_NEXT_MAP.get(bossId);
-//
-//    if ("JohnMKati".equals(bossId)) {
-//        // Here you can set what happens after JohnMKati is defeated (load room etc)
-//        System.out.println("JohnMKati defeated — end of boss chain.");
-//        // for now just return to game without map change
-//        GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
-//        if (gs != null) gs.returnFromCombat();
-//        return;
-//    }
-//
-//    if (nextMap == null) {
-//        System.out.println("No next map defined for boss: " + bossId);
-//        return;
-//    }
-//
-//    com.dungeons.screens.GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
-//    if (gs != null) {
-//        gs.returnFromCombatWithMap(nextMap);
-//    } else {
-//        System.out.println("GameScreen instance not found.");
-//    }
-//}
     private void loadNextArea() {
         GameScreen gs = GameScreen.getInstance();
         if (gs != null) {
-            gs.returnFromCombat(); // ← this already calls markFightDone internally
+            gs.returnFromCombat();
         } else {
             System.out.println("GameScreen instance not found.");
         }
