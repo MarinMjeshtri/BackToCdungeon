@@ -16,7 +16,7 @@
         {
           "name": "Quick Strike",
           "desc": "A fast reliable hit. Deals 55 base damage. No special effects. Safe choice.",
-          "effects": { "damage": 55 },
+          "effects": { "damage": 999 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
