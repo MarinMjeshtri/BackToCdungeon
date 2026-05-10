@@ -23,7 +23,7 @@ public class PlayerProgress {
     // These must match the player's stats in Stats.json.
     // If you change the player's HP in Stats.json, change BASE_HP here too.
     // 'static final' means these are constants - one shared value, never changes at runtime.
-    private static final int BASE_HP  = 100; // player HP at level 1
+    private static final int BASE_HP  = 200; // player HP at level 1 *THIS MUST MATCH VALE IN JSON* IT doesnt cause a logic issue just a visual. Sorry
     private static final int BASE_ATK = 0;  // player ATK at level 1
     private static final int BASE_DEF = 8;   // player DEF at level 1
 
@@ -99,7 +99,7 @@ public class PlayerProgress {
 
 
     // --- addGold ---
-    // Adds gold to the total. Gold never goes down (no spending system yet).
+    // Adds gold to the total. Gold never goes down.
     public void addGold(int amount) { gold += amount; }
 
 
@@ -129,11 +129,14 @@ public class PlayerProgress {
         int atk = getScaledAtk();
         int def = getScaledDef();
 
-        player.setMaxHp(hp);       // update the max HP the engine uses
-        player.setAttack(atk);     // update ATK used in damage formula
-        player.setDefense(def);    // update DEF used in takeDamage formula
+        player.setMaxHp(hp);
+        player.setAttack(atk);
+        player.setDefense(def);
+        System.out.println("Level: " + level + " | scaledHp: " + getScaledHp() + " | current: " + player.getCurrentHp()); //debug
     }
-
+    private int oldMaxHp = -1; // tracks max HP before last level up
+    public int getOldMaxHp()          { return oldMaxHp; }
+    public void setOldMaxHp(int hp)   { this.oldMaxHp = hp; }
 
     // --- GETTERS ---
     // Read-only access to live state. There are no setters for level or XP on purpose -

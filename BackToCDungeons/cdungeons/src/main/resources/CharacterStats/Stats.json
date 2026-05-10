@@ -5,10 +5,10 @@
       "stats": {
         "atk": 25,
         "def": 8,
-        "hp": 100
+        "hp": 200
       },
       "sprites": {
-        "neutral": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
+        "neutral": "/Sprties_CombatUI/MainC.png",
         "angry": "",
         "defeated": ""
       },
