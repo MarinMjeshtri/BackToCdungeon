@@ -37,7 +37,7 @@ public class marinMainTesting extends Application {
 
             stage.setScene(scene);
 
-            GameMusicManager.playOpening();
+            GameMusicManager.playEnding();
 
         } catch (Exception e) {
             e.printStackTrace();
