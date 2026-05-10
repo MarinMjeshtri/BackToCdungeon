@@ -10,118 +10,104 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0a0a1a; -fx-min-height: 720; -fx-min-width: 1280;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.tutorialController">
+<Pane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #0a0a1a; -fx-min-height: 720; -fx-min-width: 1280;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.tutorialController">
 
     <children>
 
-        <!-- TITLE -->
-        <Label layoutX="0" layoutY="30.0" prefWidth="1280" style="-fx-font-size: 44px; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, #6666ff, 18, 0.8, 0, 0); -fx-alignment: center; -fx-text-alignment: center;" text="HOW TO PLAY" />
+        <Label layoutX="256.0" layoutY="30.0" prefWidth="800" style="-fx-font-size: 44px; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, #6666ff, 15, 0.7, 0, 0); -fx-alignment: center; -fx-text-alignment: center;" text="HOW TO PLAY">
+            <font><Font size="18.0" /></font>
+        </Label>
 
-        <!-- NARRATOR SECTION: Cin de Moni portrait + intro speech bubble -->
-        <HBox layoutX="60" layoutY="95" spacing="24" alignment="CENTER_LEFT">
-
-            <!-- Portrait frame -->
-            <VBox alignment="CENTER" spacing="6">
-                <Pane prefWidth="160" prefHeight="180" style="-fx-background-color: #12122a; -fx-border-color: #6655cc; -fx-border-width: 3; -fx-effect: dropshadow(gaussian, #5544bb, 18, 0.7, 0, 0);">
-                    <ImageView layoutX="4" layoutY="4" fitWidth="152" fitHeight="172" preserveRatio="true">
+        <HBox layoutX="60.0" layoutY="90.0" prefWidth="1160.0" prefHeight="155.0" spacing="20.0" style="-fx-background-color: #101030; -fx-border-color: #2222aa; -fx-border-width: 0 0 1 0; -fx-padding: 12;">
+            <VBox alignment="CENTER" spacing="4.0" prefWidth="130.0">
+                <Pane prefWidth="110.0" prefHeight="120.0" style="-fx-background-color: #12122a; -fx-border-color: #5533cc; -fx-border-width: 2;">
+                    <ImageView layoutX="3" layoutY="3" fitWidth="104" fitHeight="114" preserveRatio="true">
                         <image>
-                            <Image url="/sprites/DialougeSprites/SindiCharacterDialougeSprite-NBR.png" />
+                            <Image url="@/sprites/DialougeSprites/SindiCharacterDialougeSprite-NBR.png" />
                         </image>
                     </ImageView>
                 </Pane>
-                <Label prefWidth="160" style="-fx-text-fill: #bbaaff; -fx-font-size: 13px; -fx-font-style: italic; -fx-alignment: center;" text="Cin de Moni" />
-                <Label prefWidth="160" style="-fx-text-fill: #7766cc; -fx-font-size: 11px; -fx-alignment: center;" text="— your narrator —" />
+                <Label prefWidth="110" style="-fx-text-fill: #aa88ff; -fx-font-size: 12px; -fx-font-style: italic; -fx-alignment: center;" text="Cin de Moni" />
+                <Label prefWidth="110" style="-fx-text-fill: #6655aa; -fx-font-size: 10px; -fx-alignment: center;" text="— narrator —" />
             </VBox>
-
-            <!-- Speech bubble -->
-            <Pane prefWidth="940" prefHeight="150" style="-fx-background-color: #14143a; -fx-border-color: #5544bb; -fx-border-width: 2; -fx-background-radius: 10; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, #3333aa, 10, 0.5, 0, 0);">
-                <Label layoutX="20" layoutY="18" prefWidth="900" wrapText="true"
-                    style="-fx-text-fill: #ddd8ff; -fx-font-size: 14px; -fx-line-spacing: 4;"
-                    text="Ah, there you are. I am Cin de Moni — your narrator, your guide, and the only voice standing between you and an embarrassing early death. Listen carefully, because I will explain everything once, and the dungeon most certainly will not." />
+            <Pane prefWidth="980.0" prefHeight="130.0" style="-fx-background-color: #14143a; -fx-border-color: #5544bb; -fx-border-width: 2; -fx-background-radius: 8; -fx-border-radius: 8;">
+                <Label layoutX="16" layoutY="16" prefWidth="948" wrapText="true"
+                    style="-fx-text-fill: #ddd8ff; -fx-font-size: 13px; -fx-line-spacing: 4; -fx-font-style: italic;"
+                    text="&quot;Ah, there you are. I am Cin de Moni — your narrator, your guide, and the only voice standing between you and an embarrassing early death. Listen carefully, because I will explain everything once, and the dungeon most certainly will not.&quot;" />
             </Pane>
-
         </HBox>
 
-        <!-- MAIN SCROLL AREA -->
         <ScrollPane fx:id="tutorialScroll" fitToWidth="true" hbarPolicy="NEVER"
-            layoutX="60.0" layoutY="290.0" prefHeight="360.0" prefWidth="1160.0"
-            style="-fx-background: #0a0a1a; -fx-background-color: #0a0a1a; -fx-border-color: #4444aa; -fx-border-width: 2;" vbarPolicy="AS_NEEDED">
+            layoutX="60.0" layoutY="260.0" prefHeight="380.0" prefWidth="1160.0"
+            style="-fx-background: #0a0a1a; -fx-background-color: #0a0a1a; -fx-border-color: #4444aa; -fx-border-width: 2;"
+            vbarPolicy="AS_NEEDED">
             <content>
                 <VBox spacing="14" style="-fx-padding: 22; -fx-background-color: #0a0a1a;">
 
-                    <!-- GOAL -->
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🎯  GOAL" />
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 18px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="&#127919;  GOAL" />
                     <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
-                        text="Cin de Moni says:  &#34;Your objective is simple enough to explain, and brutally difficult to actually do. Explore the dungeon, defeat every boss you encounter, and survive long enough to face the final boss — SuperCoolSigma. Beat him, uncover the truth about the laboratory, and you win. Try not to die. I say try because... well. You will see.&#34;" />
+                        text="Cin de Moni:  &quot;Your objective is simple enough to explain, and brutally difficult to actually do. Explore the dungeon, defeat every boss, and survive long enough to face SuperCoolSigma. Beat him, uncover the truth about the laboratory, and you win. Try not to die. I say try because... well. You will see.&quot;" />
 
-                    <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────────────────────" />
+                    <Label style="-fx-text-fill: #333388;" text="__________________________________________________________" />
 
-                    <!-- MOVEMENT -->
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🕹️  MOVEMENT" />
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 18px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="&#128505;  MOVEMENT" />
                     <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
-                        text="Cin de Moni says:  &#34;Moving yourself through a dungeon. This, at least, is the easy part — though I have watched enough adventurers walk directly into walls to know I should not assume. W A S D or the ARROW KEYS will get you where you are going. Or trying to go. Whether you arrive intact is up to you.&#34;" />
+                        text="Cin de Moni:  &quot;Moving yourself through a dungeon. This, at least, is the easy part — though I have watched enough adventurers walk directly into walls to know I should not assume. W A S D or the ARROW KEYS will get you where you are going.&quot;" />
                     <Label prefWidth="1080" style="-fx-text-fill: #8888bb; -fx-font-size: 13px;" wrapText="true"
-                        text="  W / ↑  →  Move Up          S / ↓  →  Move Down          A / ←  →  Move Left          D / →  →  Move Right          ESC  →  Pause the game" />
+                        text="  W / up  Move Up     S / down  Move Down     A / left  Move Left     D / right  Move Right     ESC  Pause" />
 
-                    <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────────────────────" />
+                    <Label style="-fx-text-fill: #333388;" text="__________________________________________________________" />
 
-                    <!-- COMBAT -->
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="⚔️  COMBAT" />
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 18px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="&#9876;  COMBAT" />
                     <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
-                        text="Cin de Moni says:  &#34;Walk into a boss room, and combat begins — automatically, dramatically, and with no way to pretend you wandered in by accident. Combat is turn-based. You act. They act. You choose wisely or you do not. Choose: MOVE 1 or MOVE 2 to attack, ITEM to use something from your inventory, UTILITY for a special ability, or DEFEND to absorb less punishment. Think carefully. The bosses certainly will not be polite about it.&#34;" />
-
-                    <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────────────────────" />
-
-                    <!-- ITEMS -->
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🧪  ITEMS" />
-                    <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
-                        text="Cin de Moni says:  &#34;The dungeon, to its credit, does leave things lying about for you. Chests are scattered throughout — press E near one and you may find something useful inside. Items restore your health during combat. They are limited. Use them wisely. Or do not, and run out at the worst possible moment. I am a narrator, not your keeper.&#34;" />
-
-                    <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────────────────────" />
-
-                    <!-- SHOP -->
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🛒  SHOP" />
-                    <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
-                        text="Cin de Moni says:  &#34;Somewhere in this dungeon, a very tired Merchant is waiting for you. He has items. He has upgrades. He also has opinions, but those are free and arguably less useful. Press E to interact. Stock up before the difficult bosses. He will tell you things about the people trying to destroy you, and those things are worth hearing — even if the delivery is somewhat dramatic.&#34;" />
-
-                    <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────────────────────" />
-
-                    <!-- BOSSES -->
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="👾  BOSSES" />
-                    <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
-                        text="Cin de Moni says:  &#34;These are not random creatures. These are people. Or were. The laboratory changed them, and the dungeon keeps them. Learn their patterns — do not simply swing wildly and hope. That strategy has a poor track record down here.&#34;" />
+                        text="Cin de Moni:  &quot;Walk into a boss room and combat begins — automatically, dramatically, with no way to pretend you wandered in by accident. Combat is turn-based. You act. They act. Choose wisely each round.&quot;" />
                     <Label prefWidth="1080" style="-fx-text-fill: #8888bb; -fx-font-size: 13px;" wrapText="true"
-                        text="  JohnMKati       →  Clone abilities. He will multiply. Do not ask why.&#10;  CassieYarn      →  Walls. Turrets. Relentless enthusiasm. Keep moving.&#10;  FrekiRelah      →  Lightning. Silence. Both equally dangerous.&#10;  SuperCoolSigma  →  The final boss. Everything ends here." />
+                        text="  MOVE 1 / MOVE 2  Attack with your main abilities     ITEM  Use a healing item     UTILITY  Special ability     DEFEND  Reduce damage this round" />
 
-                    <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────────────────────" />
+                    <Label style="-fx-text-fill: #333388;" text="__________________________________________________________" />
 
-                    <!-- MUSIC -->
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🎵  MUSIC" />
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 18px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="&#129514;  ITEMS" />
                     <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
-                        text="Cin de Moni says:  &#34;The music knows things the walls do not say. Exploration, combat, the final boss, the ending — each has its own voice. Listen carefully. The story is not only in the words.&#34;" />
+                        text="Cin de Moni:  &quot;The dungeon leaves things lying about for you. Chests are scattered throughout — press E near one and you may find something useful inside. Items restore health in combat. They are limited. Use them wisely. Or do not, and run out at the worst possible moment. I am a narrator, not your keeper.&quot;" />
 
-                    <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────────────────────" />
+                    <Label style="-fx-text-fill: #333388;" text="__________________________________________________________" />
 
-                    <!-- TIPS -->
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="💡  TIPS FROM CIN DE MONI" />
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 18px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="&#128717;  SHOP" />
                     <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
-                        text="Cin de Moni says:  &#34;A few parting observations, offered freely and completely without condescension:&#34;" />
+                        text="Cin de Moni:  &quot;Somewhere in this dungeon, a very tired Merchant is waiting for you. He has items and upgrades. Press E to interact. Stock up before the difficult bosses. He will tell you things worth hearing — even if the delivery is somewhat dramatic.&quot;" />
+
+                    <Label style="-fx-text-fill: #333388;" text="__________________________________________________________" />
+
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 18px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="&#128126;  BOSSES" />
+                    <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
+                        text="Cin de Moni:  &quot;These are not random creatures. These were people. The laboratory changed them, and the dungeon keeps them. Learn their patterns — do not simply swing wildly and hope. That strategy has a poor track record down here.&quot;" />
                     <Label prefWidth="1080" style="-fx-text-fill: #8888bb; -fx-font-size: 13px;" wrapText="true"
-                        text="  • Save your healing items for the final boss — you will need them more than you think&#10;  • Utility abilities can completely change a fight — use them with intention&#10;  • Explore every room. The chests do not find themselves&#10;  • Talk to the Merchant. They are very tired but extremely informative&#10;  • Pay attention to the dialogues — they contain hints about the bosses' weaknesses&#10;  • If you die, you restart from the beginning. The dungeon does not forgive. Neither does I." />
+                        text="  JohnMKati      Clone abilities. He multiplies. Attack him while he monologues — it is the only way.&#10;  CassieYarn     Walls and Turrets. Relentless enthusiasm. Keep moving at all times.&#10;  FrekiRelah     Lightning strikes. Very few words. Both equally dangerous.&#10;  SuperCoolSigma The final boss. Everything ends here." />
 
-                    <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────────────────────" />
+                    <Label style="-fx-text-fill: #333388;" text="__________________________________________________________" />
 
-                    <Label prefWidth="1080" style="-fx-text-fill: #44ffaa; -fx-font-size: 15px; -fx-effect: dropshadow(gaussian,#44ffaa,8,0.5,0,0); -fx-padding: 10 0 10 0; -fx-font-style: italic;"
-                        text="Good luck, adventurer. — Cin de Moni" textAlignment="CENTER" wrapText="true" />
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 18px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="&#127925;  MUSIC" />
+                    <Label prefWidth="1080" style="-fx-text-fill: #aaaadd; -fx-font-size: 13px; -fx-font-style: italic;" wrapText="true"
+                        text="Cin de Moni:  &quot;The music knows things the walls do not say. Exploration, combat, the final boss, the ending — each has its own voice. Listen carefully. The story is not only in the words.&quot;" />
+
+                    <Label style="-fx-text-fill: #333388;" text="__________________________________________________________" />
+
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 18px; -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="&#128161;  TIPS FROM CIN DE MONI" />
+                    <Label prefWidth="1080" style="-fx-text-fill: #8888bb; -fx-font-size: 13px;" wrapText="true"
+                        text="  - Save healing items for the final boss — you will need them more than you think&#10;  - Utility abilities can completely change a fight — use them with intention&#10;  - Explore every room — the chests do not find themselves&#10;  - Talk to the Merchant — tired, but extremely informative&#10;  - Pay attention to the dialogues — they contain hints about boss weaknesses&#10;  - If you die, you restart from the beginning. The dungeon does not forgive. Neither do I." />
+
+                    <Label style="-fx-text-fill: #333388;" text="__________________________________________________________" />
+
+                    <Label prefWidth="1080" style="-fx-text-fill: #44ffaa; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian,#44ffaa,8,0.5,0,0); -fx-padding: 10 0 10 0; -fx-font-style: italic;"
+                        text="Good luck, adventurer.  — Cin de Moni" textAlignment="CENTER" wrapText="true" />
 
                 </VBox>
             </content>
         </ScrollPane>
 
-        <!-- BACK BUTTON -->
-        <Button layoutX="506.0" layoutY="668.0" onAction="#handleBack" prefHeight="42.0" prefWidth="268.0"
+        <Button layoutX="506.0" layoutY="655.0" onAction="#handleBack" prefHeight="46.0" prefWidth="268.0"
             style="-fx-background-color: #16213e; -fx-text-fill: white; -fx-border-color: #4444cc; -fx-border-width: 2; -fx-font-size: 14px; -fx-cursor: hand;"
-            text="← BACK" />
+            text="&lt;- BACK" />
 
     </children>
 </Pane>
