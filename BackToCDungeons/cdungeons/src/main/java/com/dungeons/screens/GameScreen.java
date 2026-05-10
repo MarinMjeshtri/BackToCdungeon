@@ -54,6 +54,7 @@ public class GameScreen {
     private static GameScreen instance;
     private gameoverScreen gameoverScreen;
     private uiOverlayScreen uiOverlaySkreen;
+    private uiOverlayController overlayController;
     private victoryScreen victoryScreen;
     private boolean triggerEyesActive = false;
 
@@ -103,6 +104,11 @@ public class GameScreen {
         this.stage = stage;
     }
 
+    //Getter for the overlay so that I can update the inventory
+    public uiOverlayController getOverlayController() {
+        return overlayController;
+    }
+
     public Parent getRoot() throws IOException {
 
         tilesetManager.loadAll();
@@ -137,6 +143,8 @@ public class GameScreen {
 
         uiOverlayController ctrl = uiOverlaySkreen.getLoader().getController();
         ctrl.setProgress(PlayerProgress.getInstance());
+        overlayController = ctrl; // add this
+
 
 
         // TRANSITION

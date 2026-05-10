@@ -34,28 +34,31 @@
                 </AnchorPane>
                 <AnchorPane layoutX="466.0" layoutY="620.0" prefHeight="71.0" prefWidth="347.0" style="-fx-background-color: gray;">
                     <children>
-                        <AnchorPane layoutX="22.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: lightgray;">
+                        <AnchorPane fx:id="slot1" layoutX="22.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: lightgray;">
                             <children>
                                 <Label layoutX="61.0" layoutY="5.0" text="1." />
-                                <Label layoutX="6.0" layoutY="29.0" text="ITEMNAME" />
-                            </children>
+                                <Label fx:id="slotItem1" layoutX="6.0" layoutY="29.0" text="" />
+                                <ImageView fx:id="slotImg1" fitHeight="52.0" fitWidth="52.0" layoutX="5.0" layoutY="2.0" preserveRatio="true" pickOnBounds="true" />                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="100.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: lightgray;">
+                        <AnchorPane fx:id="slot2" layoutX="100.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: lightgray;">
                             <children>
                                 <Label layoutX="61.0" layoutY="5.0" text="2." />
-                                <Label layoutX="6.0" layoutY="29.0" text="ITEMNAME" />
+                                <Label fx:id="slotItem2" layoutX="6.0" layoutY="29.0" text="" />
+                                <ImageView fx:id="slotImg2" fitHeight="52.0" fitWidth="52.0" layoutX="5.0" layoutY="2.0" preserveRatio="true" pickOnBounds="true" />
                             </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="178.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: lightgray;">
+                        <AnchorPane fx:id="slot3" layoutX="178.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: lightgray;">
                             <children>
                                 <Label layoutX="61.0" layoutY="5.0" text="3." />
-                                <Label layoutX="6.0" layoutY="29.0" text="ITEMNAME" />
+                                <Label fx:id="slotItem3" layoutX="6.0" layoutY="29.0" text="" />
+                                <ImageView fx:id="slotImg3" fitHeight="52.0" fitWidth="52.0" layoutX="5.0" layoutY="2.0" preserveRatio="true" pickOnBounds="true" />
                             </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="256.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: lightgray;">
+                        <AnchorPane fx:id="slot4" layoutX="256.0" layoutY="7.0" prefHeight="57.0" prefWidth="63.0" style="-fx-background-color: lightgray;">
                             <children>
-                                <Label layoutX="61.0" layoutY="5.0" text="3." />
-                                <Label layoutX="6.0" layoutY="29.0" text="ITEMNAME" />
+                                <Label layoutX="61.0" layoutY="5.0" text="4." />
+                                <Label fx:id="slotItem4" layoutX="6.0" layoutY="29.0" text="" />
+                                <ImageView fx:id="slotImg4" fitHeight="52.0" fitWidth="52.0" layoutX="5.0" layoutY="2.0" preserveRatio="true" pickOnBounds="true" />
                             </children>
                         </AnchorPane>
                     </children>

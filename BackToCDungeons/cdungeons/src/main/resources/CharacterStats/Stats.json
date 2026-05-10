@@ -3,9 +3,9 @@
 
     "Player": {
       "stats": {
-        "atk": 999,
+        "atk": 25,
         "def": 8,
-        "hp": 999
+        "hp": 100
       },
       "sprites": {
         "neutral": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
@@ -16,7 +16,7 @@
         {
           "name": "Quick Strike",
           "desc": "A fast reliable hit. Deals 55 base damage. No special effects. Safe choice.",
-          "effects": { "damage": 999 },
+          "effects": { "damage": 55 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
