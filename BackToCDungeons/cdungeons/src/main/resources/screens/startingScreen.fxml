@@ -12,46 +12,6 @@
 
     <children>
 
-<<<<<<< HEAD
-        <Label id="mainNAME" layoutX="110.0" layoutY="122.0" text="WELCOME TO LABDUNG" />
-
-        <Label id="gameVersion" layoutX="664.0" layoutY="580.0" text="SCHOOL PROJECT DEMO 0.0.1">
-            <font>
-                <Font size="9.0" />
-            </font>
-        </Label>
-
-        <AnchorPane layoutX="270.0" layoutY="190.0" prefHeight="360.0" prefWidth="261.0">
-            <children>
-
-                <!-- PLAY -->
-                <Button styleClass="nonGameSelector"
-                        layoutX="35.0" layoutY="14.0"
-                        onAction="#handleButton1"
-                        prefHeight="55.0" prefWidth="160.0"
-                        text="PLAY" />
-
-                <!-- TUTORIAL — new button right below PLAY -->
-                <Button styleClass="nonGameSelector"
-                        layoutX="35.0" layoutY="84.0"
-                        onAction="#handleTutorial"
-                        prefHeight="55.0" prefWidth="160.0"
-                        text="TUTORIAL" />
-
-                <!-- CREDITS -->
-                <Button styleClass="nonGameSelector"
-                        layoutX="35.0" layoutY="154.0"
-                        onAction="#handleButton2"
-                        prefHeight="55.0" prefWidth="160.0"
-                        text="CREIDTS" />
-
-                <!-- EXIT -->
-                <Button styleClass="nonGameSelector"
-                        layoutX="35.0" layoutY="224.0"
-                        onAction="#handleButton3"
-                        prefHeight="55.0" prefWidth="160.0"
-                        text="EXIT" />
-=======
         <AnchorPane
                 fx:id="startingScreenPane"
                 maxHeight="720.0" maxWidth="1280.0"
@@ -93,14 +53,14 @@
                                 styleClass="nonGameSelector"
                                 text="PLAY" />
 
-                        <!-- Tutorial Button  add onAction for functions or ask me-->
+                        <!-- Tutorial Button -->
                         <Button
                                 layoutY="35.0"
                                 prefWidth="160.0"
                                 styleClass="nonGameSelector"
                                 text="TUTORIAL" />
 
-                        <!-- Options Button  add onAction for functions or ask me -->
+                        <!-- Options Button -->
                         <Button
                                 layoutY="70.0"
                                 prefWidth="160.0"
@@ -120,12 +80,12 @@
                                 layoutY="140.0"
                                 onAction="#handleButton3"
                                 prefWidth="160.0"
-                                styleClass="nonGameSelector" text="EXIT" />
+                                styleClass="nonGameSelector"
+                                text="EXIT" />
 
                     </children>
 
                 </AnchorPane>
->>>>>>> e134caa1f11d0b969d6b1e0b152282853c0a1574
 
             </children>
         </AnchorPane>
