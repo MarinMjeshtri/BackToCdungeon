@@ -147,8 +147,12 @@ public class CombatController {
 
         bossMaxHp   = boss.getMaxHp();
         engine = new CombatEngine(player, boss);
+//Display
+        String displayName = boss.getId().startsWith("Mob")
+                ? boss.getName() + "    || Level " + boss.getMobLevel()
+                : boss.getName();
+        setStart(player.getName(), displayName, bossMaxHp);
 
-        setStart(player.getName(), boss.getName(), bossMaxHp);
         injectStatusLabels();
         System.out.println("playerMaxHp: " + playerMaxHp + " | currentHp: " + player.getCurrentHp()); //debug
         final double initialPlayerBarWidth = PLAYER_BAR_MAX * ((double) player.getCurrentHp() / playerMaxHp);
