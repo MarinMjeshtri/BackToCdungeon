@@ -1,12 +1,9 @@
 package com.dungeons.screens;
 
 //COMBAT
-import com.dungeons.Controllers.CombatController;
+import com.dungeons.Controllers.*;
 
 // DIALOGUE
-import com.dungeons.Controllers.DialogueBoxController;
-import com.dungeons.Controllers.roomScreenController;
-import com.dungeons.Controllers.uiOverlayController;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.animations.premadeAnimation;
 import com.dungeons.dialogueManager.DialogueManager;
@@ -372,9 +369,12 @@ public class GameScreen {
         }
     }
 
+    // CORRECT
     public void showVictoryScreen() {
         try {
             victoryScreen victory = new victoryScreen(this, stage);
+            victoryScreenController controller = victory.getLoader().getController();
+            controller.setMapManager(mapManager);
             stage.getScene().setRoot(victory.getRoot());
         } catch (Exception e) {
             e.printStackTrace();
