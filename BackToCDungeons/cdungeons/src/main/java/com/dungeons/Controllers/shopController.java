@@ -1,5 +1,7 @@
 package com.dungeons.Controllers;
 
+import com.dungeons.screens.GameScreen;
+import com.dungeons.shopItemsManager.PlayerInventory;
 import com.dungeons.shopItemsManager.Shop;
 import com.dungeons.shopItemsManager.ShopManager;
 
@@ -95,15 +97,28 @@ public class shopController {
         }
 
         PlayerProgress progress = PlayerProgress.getInstance();
+        PlayerInventory inventory = PlayerInventory.getInstance();
 
         if (progress.getGold() < selectedItem.price) {
             descLabel.setText("Not enough gold!");
             return;
         }
 
+
+
         progress.addGold(-selectedItem.price);
 
         // TODO: add to inventory
+
+        if (inventory.isFull()) {
+            descLabel.setText("Inventory is full!");
+            return;
+        }
+
+        inventory.addItem(selectedItem);
+
+        GameScreen.getInstance().getOverlayController().updateUI();
+
         // For now just confirm
         descLabel.setText("Purchased: " + selectedItem.displayName + " for " + selectedItem.price + " G");
 
