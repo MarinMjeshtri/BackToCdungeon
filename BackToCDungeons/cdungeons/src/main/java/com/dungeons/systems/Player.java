@@ -5,6 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
+import com.dungeons.MusicandSoundsCode.*;
+
 public class Player {
 
     private double x, y;
@@ -101,8 +103,13 @@ public class Player {
     }
 
     private void move(double dx, double dy) {
+        double prevX = x, prevY = y;
+
         if (!collides(x + dx, y)) x += dx;
         if (!collides(x, y + dy)) y += dy;
+
+        boolean actuallyMoved = (x != prevX || y != prevY);
+        GameMusicManager.tickWalkSound(actuallyMoved);
     }
 
     // ---------------- COLLISION ----------------
