@@ -53,7 +53,7 @@
                                 styleClass="nonGameSelector"
                                 text="PLAY" />
 
-                        <!-- Tutorial Button  add onAction for functions or ask me-->
+                        <!-- Tutorial Button -->
                         <Button
                                 layoutY="35.0"
                                 onAction="#handleButton3"
@@ -61,7 +61,7 @@
                                 styleClass="nonGameSelector"
                                 text="TUTORIAL" />
 
-                        <!-- Options Button  add onAction for functions or ask me -->
+                        <!-- Options Button -->
                         <Button
                                 layoutY="70.0"
                                 onAction="#handleButton5"
@@ -82,14 +82,14 @@
                                 layoutY="140.0"
                                 onAction="#handleButton4"
                                 prefWidth="160.0"
-                                styleClass="nonGameSelector" text="EXIT" />
+                                styleClass="nonGameSelector"
+                                text="EXIT" />
 
                     </children>
 
                 </AnchorPane>
 
             </children>
-
         </AnchorPane>
 
     </children>
