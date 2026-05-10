@@ -1,4 +1,4 @@
-//Logjika per items t lojtarit, merren nga stats.json 
+//Logjika per items t lojtarit,
 
 package com.dungeons.systems.CombatSystem;
 
