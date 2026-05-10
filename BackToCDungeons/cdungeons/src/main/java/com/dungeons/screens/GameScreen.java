@@ -168,7 +168,7 @@ public class GameScreen {
                     roomScreenController controller = transitionScreen.getLoader().getController();
                     controller.setMapManager(mapManager);
                     controller.updateScreen();
-                    premadeAnimation.showFor(transitionScreen.getRoot(), 2);
+                    premadeAnimation.showFor(transitionScreen.getRoot(), 1);
 
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
@@ -319,9 +319,7 @@ public class GameScreen {
         );
 
         roomScreenController controller = transitionScreen.getLoader().getController();
-        controller.setMapManager(mapManager);
-        controller.updateScreen();
-        premadeAnimation.showFor(transitionScreen.getRoot(), 2);
+        premadeAnimation.showFor(transitionScreen.getRoot(), 1);
 
 
         return gameRoot;
