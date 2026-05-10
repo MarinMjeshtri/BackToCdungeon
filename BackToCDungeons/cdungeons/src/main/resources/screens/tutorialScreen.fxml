@@ -5,141 +5,72 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane prefHeight="600.0" prefWidth="800.0"
-      style="-fx-background-color: #0a0a1a;"
-      xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.dungeons.Controllers.tutorialController">
+<Pane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #0a0a1a; -fx-min-height: 720; -fx-min-width: 1280;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.tutorialController">
 
     <children>
 
-        <Label layoutX="0" layoutY="20.0" prefWidth="800"
-               style="-fx-font-size: 38px; -fx-text-fill: white;
-                      -fx-effect: dropshadow(gaussian, #6666ff, 15, 0.7, 0, 0);
-                      -fx-alignment: center; -fx-text-alignment: center;"
-               text="HOW TO PLAY" />
+        <Label layoutX="256.0" layoutY="45.0" prefWidth="800" style="-fx-font-size: 48px; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, #6666ff, 15, 0.7, 0, 0); -fx-alignment: center; -fx-text-alignment: center;" text="HOW TO PLAY">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
 
-        <ScrollPane fx:id="tutorialScroll"
-                    layoutX="50" layoutY="82"
-                    prefWidth="700" prefHeight="452"
-                    hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" fitToWidth="true"
-                    style="-fx-background: #0a0a1a; -fx-background-color: #0a0a1a;
-                           -fx-border-color: #4444aa; -fx-border-width: 2;">
+        <ScrollPane fx:id="tutorialScroll" fitToWidth="true" hbarPolicy="NEVER" layoutX="264.0" layoutY="158.0" prefHeight="431.0" prefWidth="818.0" style="-fx-background: #0a0a1a; -fx-background-color: #0a0a1a;                            -fx-border-color: #4444aa; -fx-border-width: 2;" vbarPolicy="AS_NEEDED">
             <content>
                 <VBox spacing="16" style="-fx-padding: 22; -fx-background-color: #0a0a1a;">
-
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;
-                                  -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);"
-                           text="🎯  GOAL" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;"
-                           text="Explore the dungeon, defeat all the bosses, and survive long enough to face the final boss — SuperCoolSigma. Defeat him to uncover the truth about the laboratory and win the game." />
-
+      
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;                                   -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🎯  GOAL" />
+                    <Label prefWidth="640" style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;" text="Explore the dungeon, defeat all the bosses, and survive long enough to face the final boss — SuperCoolSigma. Defeat him to uncover the truth about the laboratory and win the game." wrapText="true" />
+      
                     <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────" />
-
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;
-                                  -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);"
-                           text="🕹️  MOVEMENT" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;"
-                           text="Use W A S D or the ARROW KEYS to move your character through the dungeon." />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;"
-                           text="W / ↑  →  Move Up          S / ↓  →  Move Down          A / ←  →  Move Left          D / →  →  Move Right" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;"
-                           text="ESC  →  Pause the game" />
-
+      
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;                                   -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🕹️  MOVEMENT" />
+                    <Label prefWidth="640" style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;" text="Use W A S D or the ARROW KEYS to move your character through the dungeon." wrapText="true" />
+                    <Label prefWidth="640" style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;" text="W / ↑  →  Move Up          S / ↓  →  Move Down          A / ←  →  Move Left          D / →  →  Move Right" wrapText="true" />
+                    <Label prefWidth="640" style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;" text="ESC  →  Pause the game" wrapText="true" />
+      
                     <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────" />
-
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;
-                                  -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);"
-                           text="⚔️  COMBAT" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;"
-                           text="When you walk into a boss room, combat begins automatically. Combat is turn-based — you and the boss take turns. Choose your action carefully each round." />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;"
-                           text="MOVE 1 / MOVE 2  →  Attack the boss using your two main abilities
-ITEM             →  Use a healing item from your inventory
-UTILITY          →  Use a special ability (clone, wall, turret and more)
-DEFEND           →  Reduce the damage you take this round" />
-
+      
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;                                   -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="⚔️  COMBAT" />
+                    <Label prefWidth="640" style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;" text="When you walk into a boss room, combat begins automatically. Combat is turn-based — you and the boss take turns. Choose your action carefully each round." wrapText="true" />
+                    <Label prefWidth="640" style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;" text="MOVE 1 / MOVE 2  →  Attack the boss using your two main abilities ITEM             →  Use a healing item from your inventory UTILITY          →  Use a special ability (clone, wall, turret and more) DEFEND           →  Reduce the damage you take this round" wrapText="true" />
+      
                     <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────" />
-
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;
-                                  -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);"
-                           text="🧪  ITEMS" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;"
-                           text="Find items in chests scattered around the dungeon. Press E near a chest to pick them up. Items restore your HP during combat. They are limited — use them wisely!" />
-
+      
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;                                   -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🧪  ITEMS" />
+                    <Label prefWidth="640" style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;" text="Find items in chests scattered around the dungeon. Press E near a chest to pick them up. Items restore your HP during combat. They are limited — use them wisely!" wrapText="true" />
+      
                     <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────" />
-
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;
-                                  -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);"
-                           text="🛒  SHOP" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;"
-                           text="Find the shop in the dungeon to buy items and upgrades. Press E to interact. Stock up before facing tough bosses." />
-
+      
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;                                   -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🛒  SHOP" />
+                    <Label prefWidth="640" style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;" text="Find the shop in the dungeon to buy items and upgrades. Press E to interact. Stock up before facing tough bosses." wrapText="true" />
+      
                     <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────" />
-
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;
-                                  -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);"
-                           text="👾  BOSSES" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;"
-                           text="Each boss has unique moves and abilities. Study their patterns and adapt your strategy." />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;"
-                           text="JohnMKati       →  Clone abilities — watch out for doubles
-CassieYarn      →  Wall and Turret attacks — keep moving
-FrekiRelah      →  Lightning strikes — unpredictable and fast
-SuperCoolSigma  →  The final boss. The ultimate challenge." />
-
+      
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;                                   -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="👾  BOSSES" />
+                    <Label prefWidth="640" style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;" text="Each boss has unique moves and abilities. Study their patterns and adapt your strategy." wrapText="true" />
+                    <Label prefWidth="640" style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;" text="JohnMKati       →  Clone abilities — watch out for doubles CassieYarn      →  Wall and Turret attacks — keep moving FrekiRelah      →  Lightning strikes — unpredictable and fast SuperCoolSigma  →  The final boss. The ultimate challenge." wrapText="true" />
+      
                     <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────" />
-
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;
-                                  -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);"
-                           text="🎵  MUSIC" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;"
-                           text="The music changes as you progress. Exploration, combat, final boss, and the ending each have their own track. Listen carefully — the music tells the story too." />
-
+      
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;                                   -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="🎵  MUSIC" />
+                    <Label prefWidth="640" style="-fx-text-fill: #c8c8ff; -fx-font-size: 14px;" text="The music changes as you progress. Exploration, combat, final boss, and the ending each have their own track. Listen carefully — the music tells the story too." wrapText="true" />
+      
                     <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────" />
-
-                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;
-                                  -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);"
-                           text="💡  TIPS" />
-                    <Label prefWidth="640" wrapText="true"
-                           style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;"
-                           text="• Save your healing items for the final boss — you will need them
-• Use utility abilities strategically — they can completely change a fight
-• Explore every room to find all chests and collect items
-• Talk to the Merchant — they have useful items and very useful information
-• Pay attention to the dialogues — they contain hints about the bosses' weaknesses
-• If you die, you restart from the beginning. Good luck." />
-
+      
+                    <Label style="-fx-text-fill: #6666ff; -fx-font-size: 19px;                                   -fx-effect: dropshadow(gaussian,#4444ff,6,0.5,0,0);" text="💡  TIPS" />
+                    <Label prefWidth="640" style="-fx-text-fill: #aaaacc; -fx-font-size: 13px;" text="• Save your healing items for the final boss — you will need them • Use utility abilities strategically — they can completely change a fight • Explore every room to find all chests and collect items • Talk to the Merchant — they have useful items and very useful information • Pay attention to the dialogues — they contain hints about the bosses' weaknesses • If you die, you restart from the beginning. Good luck." wrapText="true" />
+      
                     <Label style="-fx-text-fill: #4444aa;" text="──────────────────────────────────────" />
-
-                    <Label prefWidth="640" wrapText="true" textAlignment="CENTER"
-                           style="-fx-text-fill: #44ffaa; -fx-font-size: 15px;
-                                  -fx-effect: dropshadow(gaussian,#44ffaa,8,0.5,0,0);
-                                  -fx-padding: 10 0 10 0;"
-                           text="Good luck, adventurer. The dungeon awaits." />
-
+      
+                    <Label prefWidth="640" style="-fx-text-fill: #44ffaa; -fx-font-size: 15px;                                   -fx-effect: dropshadow(gaussian,#44ffaa,8,0.5,0,0);                                   -fx-padding: 10 0 10 0;" text="Good luck, adventurer. The dungeon awaits." textAlignment="CENTER" wrapText="true" />
+      
                 </VBox>
             </content>
         </ScrollPane>
 
-        <Button layoutX="320" layoutY="550"
-                prefWidth="160" prefHeight="38"
-                onAction="#handleBack"
-                style="-fx-background-color: #16213e; -fx-text-fill: white;
-                       -fx-border-color: #4444cc; -fx-border-width: 2;
-                       -fx-font-size: 14px; -fx-cursor: hand;"
-                text="← BACK" />
+                 <Button layoutX="522.0" layoutY="637.0" onAction="#handleBack" prefHeight="54.0" prefWidth="267.0" style="-fx-background-color: #16213e; -fx-text-fill: white;                        -fx-border-color: #4444cc; -fx-border-width: 2;                        -fx-font-size: 14px; -fx-cursor: hand;" text="← BACK" />
 
     </children>
 </Pane>
