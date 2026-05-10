@@ -63,6 +63,7 @@ public class Map {
         SEQUENCE.addAll(block3);
         SEQUENCE.add("ShopRoom");
         SEQUENCE.add("BossRoomJoni");
+        SEQUENCE.add("FinalRoom");
 
         startRoom = SEQUENCE.get(0);
 
@@ -241,14 +242,22 @@ public class Map {
                     for (int tx = tileX; tx < tileX + rectW; tx++)
                         interactZones.add(new InteractZone(tx, ty, "chest", nextObjId));
 
-            } else if (nameLower.equals("cassie_encounter")
+            } else if (nameLower.equals("triggereyes")) {
+            for (int ty = tileY; ty < tileY + rectH; ty++) {
+                for (int tx = tileX; tx < tileX + rectW; tx++) {
+                    interactZones.add(new InteractZone(tx, ty, "triggerEyes", nextObjId));
+                }
+            }
+        } else if (nameLower.equals("cassie_encounter")
                     || nameLower.equals("freki_encounter")
                     || nameLower.equals("merchant_enter")
                     || nameLower.equals("johnmkati_lab_reveal")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++)
                     for (int tx = tileX; tx < tileX + rectW; tx++)
                         interactZones.add(new InteractZone(tx, ty, "dialogue:" + name, nextObjId));
+
             }
+
 
             nextObjId++;
         }

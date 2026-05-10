@@ -4,7 +4,9 @@ import com.dungeons.screens.GameScreen;
 import com.dungeons.screens.creditsScreen;
 import com.dungeons.screens.areYouSureScreen;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
+import com.dungeons.screens.scaryScreen;
 
+import com.dungeons.screens.scaryScreen;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -54,7 +56,10 @@ public class OptionsNStartingController {
     //OPEN THE ARE U SURE OR WHATEVER I NAME IT
     @FXML
     private void handleButton3() throws IOException {
-        System.exit(0);
+        scaryScreen scary = new scaryScreen(null,stage );
+        Scene scene = new Scene(scary.getRoot());
+
+        stage.setScene(scene);
     }
 
     public void setStage(Stage stage) {

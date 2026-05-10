@@ -55,10 +55,12 @@ public class GameScreen {
     private gameoverScreen gameoverScreen;
     private uiOverlayScreen uiOverlaySkreen;
     private victoryScreen victoryScreen;
+    private boolean triggerEyesActive = false;
 
 
     private Parent shopNode;
     private Parent chestNode;
+    private Parent scaryNode;
 
     // ── CANVAS ─────────────────────────────────────────────
     private final Canvas canvas = new Canvas(1280, 720);
@@ -116,7 +118,7 @@ public class GameScreen {
         combatPane   = new Pane();
         escapePane   = new Pane();
 
-        for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
+        for (Pane p : new Pane[]{gamePane,combatPane, uiPane, secondUIPane, escapePane}) {
             p.setPrefSize(1280, 720);
             p.setPickOnBounds(false);
         }
@@ -145,7 +147,7 @@ public class GameScreen {
         this.transitionScreen = transaction;
 
         // ── STACK ALL PANES ────────────────────────────────
-        gameRoot = new StackPane(gamePane,uiOverlayPane, uiPane, secondUIPane, escapePane);
+        gameRoot = new StackPane(gamePane,combatPane,uiOverlayPane, uiPane, secondUIPane, escapePane);
         gameRoot.setPrefSize(1280, 720);
 
         // ── MAP MANAGER ────────────────────────────────────
@@ -172,6 +174,15 @@ public class GameScreen {
                 // interact trigger
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
+
+                    if (type.equals("triggerEyes")) {
+
+                        if (triggerEyesActive) return;
+
+                        triggerEyesActive = true;
+
+                        handleTriggerEyes();
+                    }
 
                     // ── FIGHT ─────────────────────────────
                     if (type.equals("fight")) {
@@ -215,6 +226,7 @@ public class GameScreen {
                         secondUIPane.setVisible(true);
                         this.itemPickupScreen = chest;
                     }
+
 
                     // ── CREDITS ───────────────────────────
                     if (type.equals("credits")) {
@@ -432,4 +444,17 @@ public class GameScreen {
             default:              return "CassieYarn";
         }
     }
+    private void handleTriggerEyes() {
+        try {
+            scaryScreen scary = new scaryScreen(this, stage);
+
+            scaryNode = scary.getRoot();
+            combatPane.getChildren().add(scaryNode);
+            combatPane.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
