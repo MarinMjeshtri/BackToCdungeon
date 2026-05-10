@@ -74,7 +74,6 @@ public class CombatController {
 
     @FXML
     public void initialize() {
-        startCombat("CassieYarn");
     }
 
     // -----------------------------------------------------------------------
@@ -85,20 +84,24 @@ public class CombatController {
     // Called by CombatEngineTest. Future: called by room system when detection is ready.
     // -----------------------------------------------------------------------
     public void startCombatAtLevel(String bossId, int level) {
+        System.out.println("startCombatAtLevel called");
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
-        PlayerProgress.getInstance().applyToPlayer(player); // apply level scaling
+        PlayerProgress.getInstance().applyToPlayer(player);
         PlayerProgress progress = PlayerProgress.getInstance();
         if (progress.getCurrentHp() != -1) {
-            player.setCurrentHp(progress.getCurrentHp()); // restore saved HP on top
+            int oldMax  = progress.getOldMaxHp(); // previous max before scaling
+            int savedHp = progress.getCurrentHp();
+            int newMax  = player.getMaxHp();
+            // scale the saved HP proportionally to the new max
+            int scaledCurrentHp = (int)((double) savedHp / oldMax * newMax);
+            player.setCurrentHp(Math.max(1, scaledCurrentHp));
         }
 
 
 
-        // When player stat scaling is ready, uncomment this one line.
-        // It pushes level-scaled HP/ATK/DEF from PlayerProgress into the player object
-        // so the engine uses the correctly leveled-up stats in combat.
-        // PlayerProgress.getInstance().applyToPlayer(player);
+        //Scaled
+        PlayerProgress.getInstance().applyToPlayer(player);
 
         // Load the enemy - mobs get scaled stats, named bosses get base Stats.json values.
         boss = loader.loadBossAtLevel(bossId, level);
@@ -123,30 +126,38 @@ public class CombatController {
     }
 
     public void startCombat(String bossId) {
+        System.out.println("startCombat called");
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
-        PlayerProgress.getInstance().applyToPlayer(player); // apply level scaling
+        System.out.println("After loadPlayer, before applyToPlayer: " + player.getCurrentHp());
+        PlayerProgress.getInstance().applyToPlayer(player);
         PlayerProgress progress = PlayerProgress.getInstance();
-        if (progress.getCurrentHp() != -1) {
-            player.setCurrentHp(progress.getCurrentHp()); // restore saved HP on top
+        if (progress.getCurrentHp() != -1 && progress.getOldMaxHp() != -1) {
+            int oldMax          = progress.getOldMaxHp();
+            int savedHp         = progress.getCurrentHp();
+            int newMax          = player.getMaxHp();
+            int scaledCurrentHp = (int)((double) savedHp / oldMax * newMax);
+            player.setCurrentHp(Math.max(1, scaledCurrentHp));
+        } else if (progress.getCurrentHp() != -1) {
+            // no old max saved yet, just restore directly
+            player.setCurrentHp(progress.getCurrentHp());
         }
-
+        playerMaxHp = player.getMaxHp();
         boss   = loader.loadBoss(bossId);
 
-        playerMaxHp = player.getMaxHp();
         bossMaxHp   = boss.getMaxHp();
-
         engine = new CombatEngine(player, boss);
 
         setStart(player.getName(), boss.getName(), bossMaxHp);
         injectStatusLabels();
-
+        System.out.println("playerMaxHp: " + playerMaxHp + " | currentHp: " + player.getCurrentHp()); //debug
         final double initialPlayerBarWidth = PLAYER_BAR_MAX * ((double) player.getCurrentHp() / playerMaxHp);
         javafx.application.Platform.runLater(() -> playerHP.setWidth(initialPlayerBarWidth));
 
         wireAbilityButtons();
         wirePlaceholderButtons();
         updateCooldownUI();
+
 
         turnInformation.setText("");
         log("Combat started. Choose your action.");
@@ -298,11 +309,12 @@ public class CombatController {
         }
     }
 
-    // ── PLAYER ATTACK FLOW ────────────────────────────────────────────
+    // -- PLAYER ATTACK FLOW --------------------------------------------
 
     private void handlePlayerAttack(int moveIndex) {
         if (!engine.isOngoing()) return;
         lockAllActions(true);
+        showPlayerAttackSprite(moveIndex);
         showBossThinking();
 
         PauseTransition waitThink = new PauseTransition(Duration.millis(800));
@@ -324,6 +336,8 @@ public class CombatController {
 
                 // revert to mood sprite — safe here, executeBossTurn will override
                 updateBossSpriteMood();
+                updatePlayerSpriteMood();
+
 
                 PauseTransition waitBoss = new PauseTransition(Duration.millis(600));
                 waitBoss.setOnFinished(evv -> executeBossTurn(turnLog));
@@ -334,7 +348,7 @@ public class CombatController {
         waitThink.play();
     }
 
-    // ── BOSS TURN EXECUTION ───────────────────────────────────────────
+    // -- BOSS TURN EXECUTION -------------------------------------------
 
     private void executeBossTurn(TurnLog turnLog) {
         if (thinkingRevertTimer != null) {
@@ -487,7 +501,7 @@ public class CombatController {
         done.play();
     }
 
-    // ── SPRITE MANAGEMENT ─────────────────────────────────────────────
+    // -- SPRITE MANAGEMENT ---------------------------------------------
 
     private void showBossThinking() {
         String thinkPath = boss.getThinkingSprite();
@@ -525,7 +539,19 @@ public class CombatController {
     private void updateBossSpriteMood() {
         loadSpriteOnto(enemycharacterSprite, boss.getCurrentSprite());
     }
-    // ── FLOATING DAMAGE LABEL ───────────────────────────────────
+    // -- FLOATING DAMAGE LABEL -----------------------------------
+
+    private void updatePlayerSpriteMood() {
+        if (player.isDefeated()) {
+            loadSpriteOnto(playercharacterSprite, player.getSpriteDefeated());
+        } else {
+            loadSpriteOnto(playercharacterSprite, player.getSpriteNeutral());
+        }
+    }
+
+    private void showPlayerAttackSprite(int moveIndex) {
+        loadSpriteOnto(playercharacterSprite, player.getSpriteAttack(moveIndex));
+    }
 
     private void spawnDamageLabel(String text, AnchorPane parent,
                                   Color color, double x, double y, double size) {
@@ -549,7 +575,7 @@ public class CombatController {
         pt.play();
     }
 
-    // ── TURN FINISH ───────────────────────────────────────────────────
+    // -- TURN FINISH ---------------------------------------------------
 
     private void finishTurnUpdate(TurnLog turnLog) {
         guardUsedThisTurn = false;
@@ -688,7 +714,7 @@ public class CombatController {
         Tooltip.install(node, tip);
     }
 
-    // ── COMBAT END + SCENE TRANSITION ────────────────────────────────
+    // -- COMBAT END + SCENE TRANSITION --------------------------------
 
     public void onCombatEnd(boolean playerWon) {
         // stop any pending timers
@@ -707,8 +733,11 @@ public class CombatController {
         if (bossIntentLabel   != null) bossIntentLabel.setText("");
 
         if (playerWon) {
-            //HP setter
+            PlayerProgress.getInstance().setOldMaxHp(player.getMaxHp());
             PlayerProgress.getInstance().setCurrentHp(player.getCurrentHp());
+            System.out.println("Saving HP: " + player.getCurrentHp() + "/" + player.getMaxHp());
+            //HP setter
+
             // Read the shared PlayerProgress singleton - rewards were already added
             // inside CombatEngine.grantRewards() the moment the boss HP hit 0.
             // These log lines just DISPLAY what was already awarded. Nothing is added here.
@@ -726,7 +755,7 @@ public class CombatController {
             GameScreen.getInstance().showGameOver();
             PlayerProgress.getInstance().setCurrentHp(-1);
         }
-
+        updatePlayerSpriteMood();
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(e -> {
             if (playerWon) {
@@ -781,6 +810,7 @@ public class CombatController {
         bossName.setText(bossNamee);
         bossHPnumber.setText(bossMaxHp + " / " + bossMaxHp);
         updateBossSpriteMood();
+        updatePlayerSpriteMood();
     }
 
     public void updateBossHP(int currentHp, int maxHp) {

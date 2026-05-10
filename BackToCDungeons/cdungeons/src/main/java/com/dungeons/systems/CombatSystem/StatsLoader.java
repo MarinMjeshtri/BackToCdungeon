@@ -48,6 +48,7 @@ public class StatsLoader {
     // Items are set to an empty list because the item system is not wired up yet.
     // -----------------------------------------------------------------------
     public Player loadPlayer(String characterName) {
+        System.out.println("loadPlayer called, getCurrentHp from progress: " + PlayerProgress.getInstance().getCurrentHp());
         String block      = extractCharacterBlock(characterName); // find the whole character section
         String statsBlock = extractBlock(block, "\"stats\"");     // find the stats sub-section
 
@@ -55,13 +56,22 @@ public class StatsLoader {
         player.setName(characterName);
         player.setMaxHp(extractInt(statsBlock, "hp"));       // read hp value from stats block
         //player.setCurrentHp(extractInt(statsBlock, "hp"));   // current HP = max HP at start
-        int savedHp = PlayerProgress.getInstance().getCurrentHp();
-        player.setCurrentHp(savedHp != -1 ? savedHp : extractInt(statsBlock, "hp"));
+        player.setCurrentHp(extractInt(statsBlock, "hp"));
 
         player.setAttack(extractInt(statsBlock, "atk"));     // read atk value
         player.setDefense(extractInt(statsBlock, "def"));    // read def value
         player.setMoves(parseAbilities(block));              // parse all abilities
         player.setItems(new ArrayList<>());                  // empty list - items not yet implemented
+        //spirtes for plaayer images
+        String playerSpritesBlock = extractBlock(block, "\"sprites\"");
+        if (!playerSpritesBlock.equals("{}")) {
+            player.setSpriteNeutral(extractString(playerSpritesBlock, "neutral"));
+            player.setSpriteDefeated(extractString(playerSpritesBlock, "defeated"));
+            player.setSpriteAttack1(extractString(playerSpritesBlock, "attack1"));
+            player.setSpriteAttack2(extractString(playerSpritesBlock, "attack2"));
+            player.setSpriteAttack3(extractString(playerSpritesBlock, "attack3"));
+            player.setSpriteAttack4(extractString(playerSpritesBlock, "attack4"));
+        }
         return player;
     }
 
