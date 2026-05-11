@@ -2,18 +2,151 @@
   "dialogues": {
 
     "opening": {
-      "character": "NARRATOR",
+      "character": "Cin.de Moni",
       "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "For many years, one of the most important laboratories in the world stood at the heart of human discovery. Scientists called it the crown jewel of modern research. The press called it a miracle. Everyone else just called it... the Lab.",
         "Until the day everyone now calls... The Explosion.",
         "No one knows what truly happened. The official reports were sealed within hours. Witnesses disappeared. Files were wiped. What is known is this: not a single person who entered that laboratory ever came back out.",
         "The world moved on. People forgot. Or pretended to. The kind of forgetting that feels deliberate.",
-        "You are living an ordinary life. A quiet one. A job you don't love. A flat you don't hate. Tuesday afternoons that feel exactly like Monday mornings.",
+        "You are living an ordinary life. A quiet one. A job you do not love. A flat you do not hate. Tuesday afternoons that feel exactly like Monday mornings.",
         "Until one day, by complete accident, your hand brushes against a strange object. Small. Cold. Humming faintly, like it has been waiting.",
         "And in an instant — memories flood in. Memories that are not yours. A corridor. White walls. Screaming. A door sealing shut.",
         "Or... are they yours?",
         "The truth is waiting in the dungeon. Whether you are ready for it... is another question entirely."
+      ]
+    },
+
+    "cin_map_start": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "Ah, you made it this far. Good. I was starting to worry.",
+        "This dungeon has many rooms. Some are dangerous. Some are very dangerous. One has a shop, which I personally find the most dangerous of all because you will spend everything and regret it immediately.",
+        "My advice? Explore carefully. Not every door is a fight. Some are opportunities. Some are traps. Some are both.",
+        "Oh, and keep an eye on your HP. You only have one life down here. Well. You know what I mean.",
+        "Good luck. I will be watching. As always."
+      ]
+    },
+
+    "cin_before_cassie": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "CassieYarn is ahead. She is loud, enthusiastic, and genuinely terrifying.",
+        "She fights with walls and turrets. The walls block your movement. The turrets shoot at you from a distance. Together they are a nightmare.",
+        "My advice: do not stand still. Ever. If you stop moving she will pin you into a corner and you will regret every decision that led you to this dungeon.",
+        "She is also surprisingly fast for someone who says ya yaaa that often. Do not underestimate her.",
+        "You have got this. Probably."
+      ]
+    },
+
+    "cin_after_cassie": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "Oh! You beat Cassie! I genuinely did not expect that.",
+        "She is going to be upset for at least a week. She takes these things very personally.",
+        "Deeper in you will find FrekiRelah. He is the opposite of Cassie in every way. Quiet. Calm. Absolutely devastating.",
+        "He fights with lightning. Fast, unpredictable, hits multiple times in one turn.",
+        "The best strategy is to use your defensive moves and not let him build momentum. Once he starts a chain of strikes it is very hard to stop him.",
+        "Also — do not try to talk to him. He says NIHAAAA and that is it. I have tried for years."
+      ]
+    },
+
+    "cin_before_freki": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "FrekiRelah is just ahead. I want you to know something before you go in.",
+        "He was there the night of The Explosion. He saw what happened. He has never told anyone.",
+        "I do not know if that makes him dangerous or just sad. Probably both.",
+        "He will hit hard and he will hit fast. Use your guard ability if you have it. Do not let him chain his lightning attacks.",
+        "And if he says something cryptic after you beat him... pay attention. He does not speak often. When he does it matters."
+      ]
+    },
+
+    "cin_after_freki": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "You beat FrekiRelah. That is... that is actually impressive.",
+        "Did he say something to you before he went down? He usually does. At the end.",
+        "If he told you something about the laboratory — about you — do not dismiss it.",
+        "JohnMKati is the last one between you and the truth. He is the most dangerous not because he is the strongest but because he genuinely believes he is doing the right thing.",
+        "The worst enemies are always the ones who think they are the heroes of the story.",
+        "Be ready. And be careful."
+      ]
+    },
+
+    "cin_shop_enter": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "Oh good, you found the shop. The merchant here is an interesting person.",
+        "He knows more about this dungeon than he lets on. Much more.",
+        "Buy what you need. Healing items are the priority if your HP is low. You will need everything you can carry for the boss fights ahead.",
+        "And if he starts talking about chairs — just nod and smile. There was an incident. Do not ask about it.",
+        "Actually, do ask about it. It is a very entertaining story."
+      ]
+    },
+
+    "cin_chest_found": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "A chest! How exciting.",
+        "In dungeons, chests are usually one of three things: genuinely useful items, a trap, or a monster pretending to be a chest.",
+        "In this dungeon they are just useful items. I checked.",
+        "Take everything. You will need it."
+      ]
+    },
+
+    "cin_healing_room": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "A healing room. Finally something nice in this dungeon.",
+        "Rest here. Restore your HP. You have earned it.",
+        "The bosses ahead are going to hit harder than what you have faced so far. Walk in at full health if you can.",
+        "I will be here. Well. Not literally here. But you know what I mean."
+      ]
+    },
+
+    "cin_mob_room": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "A mob room. Not a boss, just a standard enemy.",
+        "Do not get overconfident. Mobs can still hurt you if you are careless.",
+        "Use this fight to practice your moves and build your rhythm for the boss fights ahead.",
+        "And try to conserve your items. You will thank me later."
+      ]
+    },
+
+    "cin_before_johnmkati": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "JohnMKati is ahead. This is it.",
+        "Everything you have done in this dungeon has been leading to this room.",
+        "He uses clone abilities. He creates copies of himself that can attack independently. Do not let them overwhelm you — focus on the real one.",
+        "He will talk a lot during the fight. Do not listen. Do not engage. Just attack.",
+        "I know that sounds rude. But trust me. I once listened to him for forty minutes about color theory and I still cannot look at a blue wall without getting anxious.",
+        "You have come so far. Do not stop now."
+      ]
+    },
+
+    "cin_final_room": {
+      "character": "Cin.de Moni",
+      "sprite": "SindiCharacterDialougeSprite-NBR.png",
+      "lines": [
+        "This is the laboratory.",
+        "I have been here before. Once. A long time ago.",
+        "It looks exactly the same as the night of The Explosion. That is not normal. Things should change. Things should decay. This room has been waiting.",
+        "Whatever you find here — whatever you remember — know this: you came back. Not everyone does.",
+        "I will stop talking now. This part is yours.",
+        "Good luck. I mean it."
       ]
     },
 
@@ -226,7 +359,7 @@
     },
 
     "track2_narrator_enter": {
-      "character": "NARRATOR",
+      "character": "Cin.de Moni",
       "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "The air here is different. Heavier. Like breathing through grief.",
@@ -252,12 +385,14 @@
         "The Explosion did not come from outside. It did not come from a machine malfunction or a chemical reaction.",
         "It came from inside.",
         "It came from you.",
-        "And somewhere deep down... you already knew."
+        "And somewhere deep down... you already knew.",
+        "We cannot let them escape the laboratory. Not this time. Not again.",
+        "Nobody leaves. Not until this ends."
       ]
     },
 
     "track2_narrator_reveal": {
-      "character": "NARRATOR",
+      "character": "Cin.de Moni",
       "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "The world goes quiet.",
@@ -270,7 +405,7 @@
     },
 
     "final_track_narrator": {
-      "character": "NARRATOR",
+      "character": "Cin.de Moni",
       "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "The road to the laboratory is long.",
@@ -286,7 +421,7 @@
     },
 
     "final_track_ruins": {
-      "character": "NARRATOR",
+      "character": "Cin.de Moni",
       "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "This is it.",
@@ -381,8 +516,23 @@
       ]
     },
 
+    "final_boss_pre_fight": {
+      "character": "FINAL_BOSS",
+      "sprite": "JoniCharacterDialougeSprite-Angry.png",
+      "lines": [
+        "You reached the laboratory. I did not think you would.",
+        "None of them ever do. They get lost. They get scared. They turn back.",
+        "But you kept going. Even when you should have stopped.",
+        "I know what you are looking for. I know what you remember. And I know what you have not remembered yet.",
+        "We cannot let you leave. Not with what you know. Not with what you are.",
+        "We cannot let them escape the laboratory.",
+        "Not this time.",
+        "Not ever."
+      ]
+    },
+
     "final_choice_narrator": {
-      "character": "NARRATOR",
+      "character": "Cin.de Moni",
       "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "Two paths stand before you. Not doors. Not corridors.",
@@ -395,7 +545,7 @@
     },
 
     "ending_true": {
-      "character": "NARRATOR",
+      "character": "Cin.de Moni",
       "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "They stand still for a long moment.",
@@ -415,7 +565,7 @@
     },
 
     "ending_narrator_final": {
-      "character": "NARRATOR",
+      "character": "Cin.de Moni",
       "sprite": "SindiCharacterDialougeSprite-NBR.png",
       "lines": [
         "The dungeon is quiet now.",
@@ -427,7 +577,10 @@
         "Back where you started. Ordinary life. Quiet flat. Tuesday afternoons.",
         "But different.",
         "The kind of different that does not need explaining.",
-        "The kind that just... is."
+        "The kind that just... is.",
+        "This has been Cin.de Moni. Thank you for playing.",
+        "Try not to think about it too much.",
+        "I know you will anyway."
       ]
     }
 

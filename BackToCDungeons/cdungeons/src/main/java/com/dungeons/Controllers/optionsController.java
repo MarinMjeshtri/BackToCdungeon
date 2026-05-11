@@ -3,6 +3,8 @@ package com.dungeons.Controllers;
 // Rename this class to OptionsController if you want to follow Java naming conventions.
 
 import com.dungeons.MusicandSoundsCode.*;
+import com.dungeons.marinMainTesting;
+import com.dungeons.screens.optionsMenu;
 import com.dungeons.systems.CombatSystem.*;
 
 import javafx.fxml.FXML;
@@ -11,86 +13,58 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class optionsController implements Initializable {
 
-    // =========================
-    // FXML COMPONENTS
-    // =========================
+    @FXML private Slider volumeSlider;
+    @FXML private CheckBox disableMusic;
+    @FXML private CheckBox disableSfx;
+    @FXML private CheckBox becomeOp;
+    @FXML private ToggleGroup resolutionGroup;
+    @FXML private RadioButton resNormal;
+    @FXML private RadioButton resZoomed;
+    @FXML private RadioButton resFullscreen;
 
-    @FXML
-    private Slider volumeSlider;
-
-    @FXML
-    private CheckBox disableMusic;
-
-    @FXML
-    private CheckBox disableSfx;
-
-    @FXML
-    private CheckBox becomeOp;
-
-    @FXML
-    private ToggleGroup resolutionGroup;
-
-    @FXML
-    private RadioButton resNormal;
-
-    @FXML
-    private RadioButton resZoomed;
-
-    @FXML
-    private RadioButton resFullscreen;
-
-    // =========================
-    // INITIALIZATION
-    // =========================
+    @FXML private StackPane optionsMenu;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // Default volume
         volumeSlider.setValue(50);
 
-        // Default resolution
         resNormal.setSelected(true);
 
-        // Volume listener
         volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Volume changed: " + newValue.intValue());
+            GameMusicManager.setMusicVolume(newValue.doubleValue()/100.0);
         });
 
-        // Disable music checkbox
         disableMusic.setOnAction(event -> {
             if (disableMusic.isSelected()) {
-                System.out.println("Music disabled");
+                AudioManager.toggleMusic();
             } else {
-                System.out.println("Music enabled");
+                AudioManager.toggleMusic();
+                GameMusicManager.playOpening();
             }
         });
 
-        // Disable SFX checkbox
         disableSfx.setOnAction(event -> {
             if (disableSfx.isSelected()) {
-                System.out.println("SFX disabled");
+                AudioManager.toggleSfx();
             } else {
-                System.out.println("SFX enabled");
+                AudioManager.toggleSfx();
             }
         });
 
-        // Become OP checkbox
         becomeOp.setOnAction(event -> {
-            if (becomeOp.isSelected()) {
-                System.out.println("Player is now OVERPOWERED");
-            } else {
-                System.out.println("OP mode disabled");
-            }
+            StatsLoader.opMode = becomeOp.isSelected();
+            System.out.println("OP mode: " + StatsLoader.opMode);
         });
 
-        // Resolution selection listener
         resolutionGroup.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
 
             if (newToggle == resNormal) {
@@ -105,11 +79,14 @@ public class optionsController implements Initializable {
                 System.out.println("Resolution: FULLSCREEN");
             }
         });
+
     }
 
-    // =========================
-    // OPTIONAL GETTERS
-    // =========================
+    @FXML public void returnToMain(){
+        Stage stage = (Stage) optionsMenu.getScene().getWindow();
+        marinMainTesting.loadStartingScreen(stage);
+    }
+
 
     public double getVolume() {
         return volumeSlider.getValue();
