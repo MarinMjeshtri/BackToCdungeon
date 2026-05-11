@@ -252,11 +252,14 @@ public class CombatEngine {
 
             if ("clone".equals(bossMove.getHitStyle())) {
                 // Clone move: restore HP proportionally, set isCloned flag
+                int healAmt = 80;
+                boss.applyHeal(healAmt);
                 boss.applyClone();
 
             } else if ("heal".equals(bossMove.getHitStyle())) {
                 // Heal move: restore a flat 80 HP
                 // To change the heal amount, change the number here.
+
                 int healAmt = 80;
                 boss.applyHeal(healAmt);
 
