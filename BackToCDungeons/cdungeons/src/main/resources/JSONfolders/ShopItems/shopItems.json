@@ -13,7 +13,7 @@
       "price": 5,
       "displayName": "Big Health Potion",
       "desc": "A powerful healing potion that restores a big amount of health.",
-      "image": "/sprites/shopItems/smallHealthPotion.png",
+      "image": "/sprites/shopItems/bigHealthPotion.png",
       "effects": {
         "heal": 120
       }
