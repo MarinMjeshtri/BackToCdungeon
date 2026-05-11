@@ -96,8 +96,24 @@
                                     <Label prefWidth="180" style="-fx-text-fill: #1a1a2e; -fx-font-size: 10px;" text="Built with IntelliJ IDEA" wrapText="true" />
                                     <Label prefWidth="180" style="-fx-text-fill: #1a1a2e; -fx-font-size: 10px;" text="Maps created with Tiled" wrapText="true" />
                                     <Label style="-fx-text-fill: #111f2d;" text="────────────" />
-                                    <Label prefWidth="180" style="-fx-text-fill: #1a1a2e; -fx-font-size: 13px; -fx-font-weight: bold;" text="MARIN MJESHTRI (MR BALLS)Screens &amp; UI ControllersItem SystemEntry Point &amp; PackagingScreen Loaders:starting, pause, combat, shopitemPickup, dialogue, creditsconfirm, gameoverControllers:options/start, pause, shopchest, quitResources:screens (FXML), spritesfonts, tiles, items---KLEDI ALLAMANI (FREAKI RELAH)World &amp; Map SystemPlayer SystemGame Loop &amp; CameraWorld:interact, transition zonestileset, renderer, managerGameScreen:update, cameracombat return---SINDI LEKA (THIN DE. MONI)Audio SystemMusic &amp; Sound EffectsStory AssetsAudio:AudioManagerGameMusicManagerResources:music, soundsdialogues, enemies---JON TOSKA (JOHN M. KATI)Dialogue SystemCharacter StatsDialogue IntegrationSystems:dialogue, data, managerData:dialogue.jsoncharacters.jsonGameScreen:dialogue flowinteraction lock" wrapText="true" />
-                                    <Label prefWidth="180" style="-fx-text-fill: #1a1a2e; -fx-font-size: 13px; -fx-font-weight: bold;" text="Thank you for playing!" wrapText="true" />
+                                    <Label text="MARIN MJESHTRI (MR BALLS)" style="-fx-text-fill: #1a1a2e; -fx-font-size: 12px; -fx-font-weight: bold;" />
+
+                                    <Label text="Screens UI Controllers" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+                                    <Label text="Item System" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+                                    <Label text="Entry Point Packaging" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+
+                                    <Label text="Screen Loaders:" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px; -fx-font-weight: bold;" />
+                                    <Label text="starting, pause, combat, shop" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+                                    <Label text="itemPickup, dialogue, credits" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+                                    <Label text="confirm, gameover" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+
+                                    <Label text="Controllers:" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px; -fx-font-weight: bold;" />
+                                    <Label text="options/start, pause, shop" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+                                    <Label text="chest, quit" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+
+                                    <Label text="Resources:" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px; -fx-font-weight: bold;" />
+                                    <Label text="screens (FXML), sprites" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />
+                                    <Label text="fonts, tiles, items" style="-fx-text-fill: #1a1a2e; -fx-font-size: 11px;" />                                    <Label prefWidth="180" style="-fx-text-fill: #1a1a2e; -fx-font-size: 13px; -fx-font-weight: bold;" text="Thank you for playing!" wrapText="true" />
                                 </VBox>
                             </content>
                         </ScrollPane>
