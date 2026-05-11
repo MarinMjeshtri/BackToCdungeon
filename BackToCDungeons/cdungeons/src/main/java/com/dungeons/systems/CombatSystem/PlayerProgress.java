@@ -31,8 +31,8 @@ public class PlayerProgress {
     // --- STAT GROWTH PER LEVEL ---
     // How much each stat grows every time the player gains a level.
     // Raise these to make leveling feel more powerful. Lower to make it subtle.
-    private static final int HP_PER_LEVEL  = 20; // +20 HP each level
-    private static final int ATK_PER_LEVEL = 2;  // +2 ATK each level
+    private static final int HP_PER_LEVEL  = 25; // +20 HP each level
+    private static final int ATK_PER_LEVEL = 3;  // +2 ATK each level
     private static final int DEF_PER_LEVEL = 1;  // +1 DEF each level
 
 
