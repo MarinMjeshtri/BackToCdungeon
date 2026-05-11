@@ -1,11 +1,16 @@
 package com.dungeons.Controllers;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.util.Duration;
 
 import java.util.List;
 
@@ -50,4 +55,6 @@ public class skewiSkweenController {
         Image img = new Image(getClass().getResourceAsStream("/sprites/door.png"));
         characterImage.setImage(img);
     }
+
 }
+

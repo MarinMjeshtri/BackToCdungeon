@@ -228,13 +228,14 @@ public class Map {
                         for (int tx = tileX; tx < tileX + rectW; tx++)
                             transitions.add(new TransitionZone(tx, ty, target, SPAWN_AFTER_SHOP_X, SPAWN_AFTER_SHOP_Y));
                 }
-
+            } else if (nameLower.equals("triggerend")) {
+                for (int ty = tileY; ty < tileY + rectH; ty++) {
+                    for (int tx = tileX; tx < tileX + rectW; tx++) {
+                        interactZones.add(new InteractZone(tx, ty, "triggerEnd", nextObjId));
+                    }
+                }
             } else if (nameLower.equals("transitionshoproom")) {
-                for (int ty = tileY; ty < tileY + rectH; ty++)
-                    for (int tx = tileX; tx < tileX + rectW; tx++)
-                        transitions.add(new TransitionZone(tx, ty, "ShopRoom", -1, -1));
-
-            } else if (nameLower.equals("transitionchestroom")) {
+                // ... continue other checks else if (nameLower.equals("transitionchestroom")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++)
                     for (int tx = tileX; tx < tileX + rectW; tx++)
                         transitions.add(new TransitionZone(tx, ty, "ChestRoom", -1, -1));
