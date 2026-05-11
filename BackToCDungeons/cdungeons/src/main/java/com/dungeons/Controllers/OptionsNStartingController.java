@@ -1,10 +1,9 @@
 package com.dungeons.Controllers;
 
-import com.dungeons.screens.GameScreen;
-import com.dungeons.screens.creditsScreen;
-import com.dungeons.screens.areYouSureScreen;
+import com.dungeons.screens.*;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
 
+import com.dungeons.screens.scaryScreen;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -25,20 +24,24 @@ public class OptionsNStartingController {
     }
     @FXML
     private void handleButton1() throws IOException {
-
-        GameScreen gameScreen = new GameScreen();
-        gameScreen.setStage(stage);
-        Scene scene = new Scene(gameScreen.getRoot());
-
-
-        Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/MarinVonGayNjega.ttf"), 10);
-        scene.getStylesheets().add(
-                getClass().getResource("/sprites/style.css").toExternalForm()
-        );
-
+//
+//        GameScreen gameScreen = new GameScreen();
+//        gameScreen.setStage(stage);
+//        Scene scene = new Scene(gameScreen.getRoot());
+//
+//
+//        Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/MarinVonGayNjega.ttf"), 10);
+//        scene.getStylesheets().add(
+//                getClass().getResource("/sprites/style.css").toExternalForm()
+//        );
+//
+//        stage.setScene(scene);
+//        gameScreen.startLoop();
+//        GameMusicManager.playOpening();
+        introScreen skween = new introScreen();
+        Scene scene = new Scene(skween.getRoot());
         stage.setScene(scene);
-        gameScreen.startLoop();
-        GameMusicManager.playOpening();
+
 
     }
 
@@ -51,10 +54,34 @@ public class OptionsNStartingController {
         stage.setScene(scene);
     }
 
-    //OPEN THE ARE U SURE OR WHATEVER I NAME IT
+//    //OPEN THE ARE U SURE OR WHATEVER I NAME IT
+//    @FXML
+//    private void handleButton3() throws IOException {
+//        scaryScreen scary = new scaryScreen(null,stage );
+//        Scene scene = new Scene(scary.getRoot());
+//
+//        stage.setScene(scene);
+//    }
+
     @FXML
     private void handleButton3() throws IOException {
+        tutorialScreen tutorial = new tutorialScreen(null,stage );
+        Scene scene = new Scene(tutorial.getRoot());
+
+        stage.setScene(scene);
+    }
+
+    @FXML
+    private void handleButton4(){
         System.exit(0);
+    }
+
+    @FXML
+    private void handleButton5() throws IOException {
+        optionsMenu options = new optionsMenu(null,stage );
+        Scene scene = new Scene(options.getRoot());
+
+        stage.setScene(scene);
     }
 
     public void setStage(Stage stage) {

@@ -56,10 +56,12 @@ public class GameScreen {
     private uiOverlayScreen uiOverlaySkreen;
     private uiOverlayController overlayController;
     private victoryScreen victoryScreen;
+    private boolean triggerEyesActive = false;
 
 
     private Parent shopNode;
     private Parent chestNode;
+    private Parent scaryNode;
 
     // ── CANVAS ─────────────────────────────────────────────
     private final Canvas canvas = new Canvas(1280, 720);
@@ -122,7 +124,7 @@ public class GameScreen {
         combatPane   = new Pane();
         escapePane   = new Pane();
 
-        for (Pane p : new Pane[]{gamePane, uiPane, secondUIPane, combatPane, escapePane}) {
+        for (Pane p : new Pane[]{gamePane,combatPane, uiPane, secondUIPane, escapePane}) {
             p.setPrefSize(1280, 720);
             p.setPickOnBounds(false);
         }
@@ -153,7 +155,7 @@ public class GameScreen {
         this.transitionScreen = transaction;
 
         // ── STACK ALL PANES ────────────────────────────────
-        gameRoot = new StackPane(gamePane,uiOverlayPane, uiPane, secondUIPane, escapePane);
+        gameRoot = new StackPane(gamePane,combatPane,uiOverlayPane, uiPane, secondUIPane, escapePane);
         gameRoot.setPrefSize(1280, 720);
 
         // ── MAP MANAGER ────────────────────────────────────
@@ -166,7 +168,7 @@ public class GameScreen {
                     roomScreenController controller = transitionScreen.getLoader().getController();
                     controller.setMapManager(mapManager);
                     controller.updateScreen();
-                    premadeAnimation.showFor(transitionScreen.getRoot(), 2);
+                    premadeAnimation.showFor(transitionScreen.getRoot(), 1);
 
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
                     player.setMap(newMap);
@@ -180,6 +182,17 @@ public class GameScreen {
                 // interact trigger
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
+
+
+
+                    if (type.equals("triggerEyes")) {
+
+                        if (triggerEyesActive) return;
+
+                        triggerEyesActive = true;
+
+                        handleTriggerEyes();
+                    }
 
                     // ── FIGHT ─────────────────────────────
                     if (type.equals("fight")) {
@@ -223,6 +236,7 @@ public class GameScreen {
                         secondUIPane.setVisible(true);
                         this.itemPickupScreen = chest;
                     }
+
 
                     // ── CREDITS ───────────────────────────
                     if (type.equals("credits")) {
@@ -305,9 +319,7 @@ public class GameScreen {
         );
 
         roomScreenController controller = transitionScreen.getLoader().getController();
-        controller.setMapManager(mapManager);
-        controller.updateScreen();
-        premadeAnimation.showFor(transitionScreen.getRoot(), 2);
+        premadeAnimation.showFor(transitionScreen.getRoot(), 1);
 
 
         return gameRoot;
@@ -438,6 +450,37 @@ public class GameScreen {
             case "MobRoom4":      return "Mob1";
             case "MobRoom5":      return "Mob1";
             default:              return "CassieYarn";
+            //crasy okay
         }
     }
+
+    private void handleTriggerEyes() {
+        try {
+            scaryScreen scary = new scaryScreen(this, stage);
+            scaryNode = scary.getRoot();
+            combatPane.getChildren().add(scaryNode);
+
+            // second canvas just for player, sits on top of scaryScreen
+            Canvas playerOverlay = new Canvas(1280, 720);
+            playerOverlay.setMouseTransparent(true);
+            combatPane.getChildren().add(playerOverlay);
+            GraphicsContext pgc = playerOverlay.getGraphicsContext2D();
+
+            new AnimationTimer() {
+                public void handle(long now) {
+                    pgc.clearRect(0, 0, 1280, 720);
+                    pgc.save();
+                    pgc.translate(-cameraX, -cameraY);
+                    player.render(pgc);
+                    pgc.restore();
+                }
+            }.start();
+
+            combatPane.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

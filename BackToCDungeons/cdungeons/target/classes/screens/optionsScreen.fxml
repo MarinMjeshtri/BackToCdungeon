@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-min-width: 1280; -fx-min-height: 720; -fx-background-color: #111f2d;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.optionsController">
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-min-height: 720; -fx-min-width: 1280;">
+            <children>
+
+                <!-- TITLE -->
+                <AnchorPane layoutX="340.0" layoutY="30.0" prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #111f2d; -fx-border-color: #e9f0ff; -fx-border-width: 0 0 3 0;">
+                    <children>
+                        <Label layoutX="14.0" layoutY="6.0" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-font-size: 26px;" text="OPTIONS" />
+                    </children>
+                </AnchorPane>
+
+                <!-- VOLUME -->
+                <AnchorPane layoutX="340.0" layoutY="100.0" prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+                    <children>
+                        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #111f2d;">
+                            <children>
+                                <Label layoutX="14.0" layoutY="18.0" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-font-size: 14px;" text="LOWER VOLUME" />
+                            </children>
+                        </AnchorPane>
+                        <Slider fx:id="volumeSlider" layoutX="270.0" layoutY="15.0" prefHeight="30.0" prefWidth="300.0" />
+                    </children>
+                </AnchorPane>
+
+                <!-- DISABLE MUSIC -->
+                <AnchorPane layoutX="340.0" layoutY="175.0" prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+                    <children>
+                        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #111f2d;">
+                            <children>
+                                <Label layoutX="14.0" layoutY="18.0" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-font-size: 14px;" text="DISABLE MUSIC" />
+                            </children>
+                        </AnchorPane>
+                        <CheckBox fx:id="disableMusic" layoutX="280.0" layoutY="18.0" mnemonicParsing="false" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" text="DISABLE" />
+                    </children>
+                </AnchorPane>
+
+                <!-- DISABLE SFX -->
+                <AnchorPane layoutX="340.0" layoutY="250.0" prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+                    <children>
+                        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #111f2d;">
+                            <children>
+                                <Label layoutX="14.0" layoutY="18.0" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-font-size: 14px;" text="DISABLE SFX" />
+                            </children>
+                        </AnchorPane>
+                        <CheckBox fx:id="disableSfx" layoutX="280.0" layoutY="18.0" mnemonicParsing="false" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" text="DISABLE SFX" />
+                    </children>
+                </AnchorPane>
+
+                <!-- BECOME OP -->
+                <AnchorPane layoutX="340.0" layoutY="325.0" prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+                    <children>
+                        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #111f2d;">
+                            <children>
+                                <Label layoutX="14.0" layoutY="18.0" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-font-size: 14px;" text="BECOME OVERPOWERED" />
+                            </children>
+                        </AnchorPane>
+                        <CheckBox fx:id="becomeOp" layoutX="280.0" layoutY="18.0" mnemonicParsing="false" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" text="BECOME OP" />
+                    </children>
+                </AnchorPane>
+
+                <!-- RESOLUTION -->
+                <AnchorPane layoutX="340.0" layoutY="400.0" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: #e9f0ff; -fx-border-color: #111f2d; -fx-border-width: 3;">
+                    <children>
+                        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="100.0" prefWidth="250.0" style="-fx-background-color: #111f2d;">
+                            <children>
+                                <Label layoutX="14.0" layoutY="35.0" style="-fx-text-fill: #e9f0ff; -fx-font-weight: bold; -fx-font-size: 14px;" text="RESOLUTION" />
+                            </children>
+                        </AnchorPane>
+                        <fx:define>
+                            <ToggleGroup fx:id="resolutionGroup" />
+                        </fx:define>
+                        <RadioButton fx:id="resNormal" layoutX="270.0" layoutY="15.0" mnemonicParsing="false" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" text="NORMAL">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="resolutionGroup" />
+                     </toggleGroup></RadioButton>
+                        <RadioButton fx:id="resZoomed" layoutX="270.0" layoutY="43.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="74.0" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" text="ZOOMED" toggleGroup="$resolutionGroup" />
+                        <RadioButton fx:id="resFullscreen" layoutX="270.0" layoutY="72.0" mnemonicParsing="false" style="-fx-text-fill: #1a1a2e; -fx-font-weight: bold;" text="FULLSCREEN" toggleGroup="$resolutionGroup" />
+                    </children>
+                </AnchorPane>
+
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>
