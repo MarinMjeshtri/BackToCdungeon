@@ -18,6 +18,7 @@ public class TilesetManager {
         load("spriteSheet_tiledLiquids_16x16.png", "liquids");
         load("drCassieYarnSprite.png", "cassie");
         load("drFrekiRelahSprite.png", "freki");
+        load("joniSprite.png", "joni");
         load("north.png", "north");
         load("south-west.png", "south-west");
         load("west.png", "west");

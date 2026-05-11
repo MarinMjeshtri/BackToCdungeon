@@ -301,6 +301,7 @@ public class Map {
         if (source.contains("west"))         return "west";
         if (source.contains("south"))        return "south";
         if (source.contains("blackTile"))    return "blackTile";
+        if (source.contains("joni"))         return "joni";
         return "floor";
     }
 
