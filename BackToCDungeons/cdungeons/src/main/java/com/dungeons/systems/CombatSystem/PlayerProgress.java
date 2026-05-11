@@ -49,7 +49,7 @@ public class PlayerProgress {
     private static final double XP_EXPONENT = 1.1;
 
     // Hard cap on level. Player cannot go above this no matter how much XP they gain.
-    private static final int MAX_LEVEL = 20;
+    private static final int MAX_LEVEL = 30;
 
 
     // --- LIVE STATE (these change as the player plays) ---
