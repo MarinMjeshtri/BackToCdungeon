@@ -1,6 +1,7 @@
 package com.dungeons.Controllers;
 
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
+import com.dungeons.chatGptTesting;
 import com.dungeons.screens.GameScreen;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -80,21 +81,24 @@ public class introController {
         launched = true;
     }
 
+    // In introController.java
+
     private void launchGame() {
         try {
+            // Get the stage once
             Stage stage = (Stage) rootPane.getScene().getWindow();
 
             GameScreen gameScreen = new GameScreen();
             gameScreen.setStage(stage);
 
+            // Load the font (Only do this once globally if possible, but fine here)
             Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/MarinVonGayNjega.ttf"), 10);
 
-            Scene scene = new Scene(gameScreen.getRoot());
-            scene.getStylesheets().add(
-                    getClass().getResource("/sprites/style.css").toExternalForm()
-            );
+            // 3. THE CLEAN SWITCH
+            // We call our fixed switchTo. No need to setFullScreen(true) again!
+            chatGptTesting.switchTo(gameScreen.getRoot());
 
-            stage.setScene(scene);
+            // Start the game logic
             gameScreen.startLoop();
             GameMusicManager.playGameplay();
 

@@ -403,9 +403,17 @@ public class GameScreen {
 
     public void startLoop() {
         if (loop != null) loop.stop();
+
+        // FORCE FOCUS HERE
+        Platform.runLater(() -> {
+            canvas.setFocusTraversable(true);
+            canvas.requestFocus();
+        });
+
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+
                 try {
                     update();
                 } catch (Exception e) {

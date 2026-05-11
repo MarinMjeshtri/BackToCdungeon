@@ -1,5 +1,6 @@
 package com.dungeons.Controllers;
 
+import com.dungeons.chatGptTesting;
 import com.dungeons.screens.*;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
 
@@ -24,34 +25,15 @@ public class OptionsNStartingController {
     }
     @FXML
     private void handleButton1() throws IOException {
-//
-//        GameScreen gameScreen = new GameScreen();
-//        gameScreen.setStage(stage);
-//        Scene scene = new Scene(gameScreen.getRoot());
-//
-//
-//        Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/MarinVonGayNjega.ttf"), 10);
-//        scene.getStylesheets().add(
-//                getClass().getResource("/sprites/style.css").toExternalForm()
-//        );
-//
-//        stage.setScene(scene);
-//        gameScreen.startLoop();
-//        GameMusicManager.playOpening();
-        introScreen skween = new introScreen();
-        Scene scene = new Scene(skween.getRoot());
-        stage.setScene(scene);
-
-
+        introScreen screen = new introScreen();
+        chatGptTesting.switchTo(screen.getRoot());
     }
 
     //OPEN THE CREDITS
     @FXML
     private void handleButton2() throws IOException {
         creditsScreen credits = new creditsScreen(null, stage);
-        Scene scene = new Scene(credits.getRoot());
-
-        stage.setScene(scene);
+        chatGptTesting.switchTo(credits.getRoot());
     }
 
 //    //OPEN THE ARE U SURE OR WHATEVER I NAME IT
@@ -66,9 +48,7 @@ public class OptionsNStartingController {
     @FXML
     private void handleButton3() throws IOException {
         tutorialScreen tutorial = new tutorialScreen(null,stage );
-        Scene scene = new Scene(tutorial.getRoot());
-
-        stage.setScene(scene);
+        chatGptTesting.switchTo(tutorial.getRoot());
     }
 
     @FXML
@@ -79,9 +59,7 @@ public class OptionsNStartingController {
     @FXML
     private void handleButton5() throws IOException {
         optionsMenu options = new optionsMenu(null,stage );
-        Scene scene = new Scene(options.getRoot());
-
-        stage.setScene(scene);
+        chatGptTesting.switchTo(options.getRoot());
     }
 
     public void setStage(Stage stage) {
