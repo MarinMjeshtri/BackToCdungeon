@@ -13,6 +13,7 @@ import java.util.List;
 // It reads the entire file as a plain text string and searches it using the
 // private helper methods at the bottom.
 public class StatsLoader {
+    public static boolean opMode = false;
 
     // Path to Stats.json inside the project's resources folder.
     // The leading "/" means it searches from the root of the resources directory.
@@ -48,7 +49,6 @@ public class StatsLoader {
     // Items are set to an empty list because the item system is not wired up yet.
     // -----------------------------------------------------------------------
     public Player loadPlayer(String characterName) {
-        System.out.println("loadPlayer called, getCurrentHp from progress: " + PlayerProgress.getInstance().getCurrentHp());
         String block      = extractCharacterBlock(characterName); // find the whole character section
         String statsBlock = extractBlock(block, "\"stats\"");     // find the stats sub-section
 
@@ -56,21 +56,19 @@ public class StatsLoader {
         player.setName(characterName);
         player.setMaxHp(extractInt(statsBlock, "hp"));       // read hp value from stats block
         //player.setCurrentHp(extractInt(statsBlock, "hp"));   // current HP = max HP at start
-        player.setCurrentHp(extractInt(statsBlock, "hp"));
+        int savedHp = PlayerProgress.getInstance().getCurrentHp();
+        player.setCurrentHp(savedHp != -1 ? savedHp : extractInt(statsBlock, "hp"));
 
         player.setAttack(extractInt(statsBlock, "atk"));     // read atk value
         player.setDefense(extractInt(statsBlock, "def"));    // read def value
         player.setMoves(parseAbilities(block));              // parse all abilities
         player.setItems(new ArrayList<>());                  // empty list - items not yet implemented
-        //spirtes for plaayer images
-        String playerSpritesBlock = extractBlock(block, "\"sprites\"");
-        if (!playerSpritesBlock.equals("{}")) {
-            player.setSpriteNeutral(extractString(playerSpritesBlock, "neutral"));
-            player.setSpriteDefeated(extractString(playerSpritesBlock, "defeated"));
-            player.setSpriteAttack1(extractString(playerSpritesBlock, "attack1"));
-            player.setSpriteAttack2(extractString(playerSpritesBlock, "attack2"));
-            player.setSpriteAttack3(extractString(playerSpritesBlock, "attack3"));
-            player.setSpriteAttack4(extractString(playerSpritesBlock, "attack4"));
+
+        if (opMode) {
+            player.setMaxHp(9999);
+            player.setCurrentHp(9999);
+            player.setAttack(999);
+            player.setDefense(999);
         }
         return player;
     }
