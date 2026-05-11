@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #000000; -fx-min-height: 720; -fx-min-width: 1280;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.introController">
+<Pane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #000000; -fx-min-height: 720; -fx-min-width: 1280;" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.introController">
 
     <children>
 
@@ -119,7 +119,7 @@
         </VBox>
 
         <!-- Fade overlay -->
-        <Pane fx:id="fadeOverlay" mouseTransparent="true" opacity="0" prefHeight="600" prefWidth="800"
+        <Pane fx:id="fadeOverlay" mouseTransparent="true" opacity="0" prefHeight="720" prefWidth="1280"
               style="-fx-background-color: black;" />
 
         <!-- SKIP button -->

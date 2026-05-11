@@ -178,6 +178,16 @@
       ]
     },
 
+    "final_before_shoot": {
+      "character": "JohnMKati",
+      "sprite": "JoniCharacterDialougeSprite-Talk.png",
+      "lines": [
+        "Such a shame, I have to put an end to such a handsome face!",
+        "But we can't let an animal escape its enclousre",
+        "Can we now?"
+      ]
+    },
+
     "merchant_enter": {
       "character": "MERCHANT",
       "sprite": "MarinCharacterDialougeSprite-Talk.png",

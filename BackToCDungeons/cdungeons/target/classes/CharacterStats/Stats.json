@@ -192,7 +192,7 @@
         {
           "name": "Twin Combo",
           "desc": "Both clones attack in sequence. 3 hits of 28 damage each.",
-          "effects": { "damage": 28, "hits": 40 },
+          "effects": { "damage": 28, "hits": 100 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -203,7 +203,7 @@
         {
           "name": "Feminist Literature",
           "desc": "Reads an unbearable text. 5 slow hits of 15 damage. 35% chance to stun for 1 turn.",
-          "effects": { "damage": 15, "hits": 30 },
+          "effects": { "damage": 15, "hits": 100 },
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
@@ -214,7 +214,7 @@
         {
           "name": "Iron Fist",
           "desc": "One massive punch for 100 damage. 35% chance to stun you for 1 turn.",
-          "effects": { "damage": 100 },
+          "effects": { "damage": 150 },
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
