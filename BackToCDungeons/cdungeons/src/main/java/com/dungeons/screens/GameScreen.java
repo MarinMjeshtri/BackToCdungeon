@@ -3,6 +3,9 @@ package com.dungeons.screens;
 //COMBAT
 import com.dungeons.Controllers.*;
 
+//Inventory for 1234
+import com.dungeons.shopItemsManager.PlayerInventory;
+
 // DIALOGUE
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.animations.premadeAnimation;
@@ -93,6 +96,17 @@ public class GameScreen {
     private Parent activeDialogueNode = null;
     private int lastDialogueTileX = -1;
     private int lastDialogueTileY = -1;
+
+
+    // Called when player presses 1-4 while walking.
+    // Heal items restore HP. ATK items print a message and are not consumed.
+    // After use, HUD overlay is updated to reflect the empty slot.
+    private void useWalkingItem(int slotIndex) {
+        String result = PlayerInventory.getInstance().useItemOutsideCombat(slotIndex);
+        System.out.println("[Item] " + result);
+        // update HUD so the slot goes blank if item was consumed
+        if (overlayController != null) overlayController.updateUI();
+    }
 
     public GameScreen() {
         instance = this;
@@ -297,6 +311,12 @@ public class GameScreen {
         canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 togglePause();
+
+            } else if (e.getCode() == KeyCode.DIGIT1) { useWalkingItem(0); }
+                else if (e.getCode() == KeyCode.DIGIT2) { useWalkingItem(1); }
+                else if (e.getCode() == KeyCode.DIGIT3) { useWalkingItem(2); }
+                else if (e.getCode() == KeyCode.DIGIT4) { useWalkingItem(3);
+
             } else if (e.getCode() == KeyCode.E) {
                 if (shopNode != null && !shopNode.isVisible() && mapManager.isCurrentMap("ShopRoom")) {
                     shopNode.setVisible(true);

@@ -51,13 +51,15 @@ public class uiOverlayController {
         currXP.setText(String.valueOf("CURR XP "  +progress.getXpToNextLevel()));
         totalGold.setText(String.valueOf(progress.getGold()));
 
-        if(progress.getCurrentHp() < progress.getLevel()) {
-            double ratio = (double) progress.getCurrentHp() / progress.getScaledHp();
-            healthBar.setWidth(334 * ratio);
-        }
+        int displayHp = progress.getCurrentHp() == -1
+                ? progress.getScaledHp()
+                : progress.getCurrentHp();
+        currHP.setText("CURR. HP " + displayHp);
+        double ratio = (double) displayHp / progress.getScaledHp();
+        healthBar.setWidth(334 * ratio);
 
         double ratio1 = (double) progress.getXp() / progress.getXpToNextLevel();
-        healthBar.setWidth(334 * ratio1);
+        xpBar.setWidth(334 * ratio1);  //not healthbar cutie pattotie
 
         PlayerInventory inventory = PlayerInventory.getInstance();
         Label[] slotLabels = {slotItem1, slotItem2, slotItem3, slotItem4};

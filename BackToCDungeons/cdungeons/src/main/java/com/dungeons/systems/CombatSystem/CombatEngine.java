@@ -158,14 +158,20 @@ public class CombatEngine {
             playerMoveName = "STUNNED"; // label used in TurnLog
             player.tickEffect();        // count down stun duration
 
-            // Case B: player chose to use an item (moveIndex is -1, itemId is set)
+            // Case B: player used an item directly (moveIndex -2 = item handled externally)
+            // The item effect was already applied by CombatController.handleItemUse()
+            // before this method was called. We just skip the player attack phase
+            // and let the boss act normally this turn.
+
+
+            // Case C: player chose to use an item via the old engine path (moveIndex -1, itemId set)
         } else if (moveIndex == -1 && itemId != null) {
             Item item = findItem(itemId);
             if (item == null || !item.isAvailable()) {
-                itemUsedName = itemId + " (unavailable)"; // item not found or out of uses
+                itemUsedName = itemId + " (unavailable)";
             } else {
                 itemUsedName     = item.getName();
-                playerHpRestored = player.useItem(itemId); // use item, returns HP restored
+                playerHpRestored = player.useItem(itemId);
             }
 
             // Case C: player used a move (normal attack)
@@ -475,6 +481,7 @@ public class CombatEngine {
         int xp   = boss.getXPReward();   // get XP from RewardTable (via BossLoader)
         int gold = boss.getGoldReward(); // get gold from RewardTable (via BossLoader)
         PlayerProgress progress = PlayerProgress.getInstance(); // get the shared singleton
+        progress.setCurrentHp(player.getCurrentHp()); // sync HP before level up calculation
         boolean leveledUp = progress.addXP(xp);   // add XP, returns true if level-up happened
         progress.addGold(gold);                    // add gold (no level-up logic needed)
         System.out.println("Rewards: +" + xp + " XP, +" + gold + " Gold");

@@ -64,6 +64,16 @@ public class StatsLoader {
         player.setMoves(parseAbilities(block));              // parse all abilities
         player.setItems(new ArrayList<>());                  // empty list - items not yet implemented
 
+        String playerSpritesBlock = extractBlock(block, "\"sprites\"");
+        if (!playerSpritesBlock.equals("{}")) {
+            player.setSpriteNeutral(extractString(playerSpritesBlock, "neutral"));
+            player.setSpriteDefeated(extractString(playerSpritesBlock, "defeated"));
+            player.setSpriteAttack1(extractString(playerSpritesBlock, "attack1"));
+            player.setSpriteAttack2(extractString(playerSpritesBlock, "attack2"));
+            player.setSpriteAttack3(extractString(playerSpritesBlock, "attack3"));
+            player.setSpriteAttack4(extractString(playerSpritesBlock, "attack4"));
+        }
+
         if (opMode) {
             player.setMaxHp(9999);
             player.setCurrentHp(9999);

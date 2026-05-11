@@ -76,12 +76,17 @@ public class PlayerProgress {
         // Loop: keep leveling up as long as xp is enough and level is below cap.
         // The loop handles the rare case where a single reward pushes multiple levels.
         while (level < MAX_LEVEL && xp >= xpToNextLevel()) {
-            xp -= xpToNextLevel(); // remove the XP cost for this level-up
-            level++;               // go up one level
-            leveledUp = true;
+            xp -= xpToNextLevel();
             if (currentHp != -1) {
-                currentHp += HP_PER_LEVEL;
+                int oldMax  = getScaledHp(); // max before level up
+                int missing = oldMax - currentHp; // HP missing before level up
+                level++;
+                int newMax  = getScaledHp(); // max after level up
+                currentHp = Math.max(1, newMax - missing); // preserve missing HP
+            } else {
+                level++;
             }
+            leveledUp = true;
         }
 
         return leveledUp; // true if at least one level-up happened
