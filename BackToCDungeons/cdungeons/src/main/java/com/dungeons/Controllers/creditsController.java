@@ -1,8 +1,10 @@
 package com.dungeons.Controllers;
 
 //Importing main area
+import com.dungeons.chatGptTesting;
 import com.dungeons.marinMainTesting;
 
+import com.dungeons.screens.startingScreen;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -30,7 +32,9 @@ public class creditsController {
 
     @FXML
     private void handleExit() {
-        Stage stage = (Stage) creditScroll.getScene().getWindow();
-        marinMainTesting.loadStartingScreen(stage);
+        startingScreen screen = new startingScreen();
+        OptionsNStartingController controller = screen.getLoader().getController();
+        controller.setStage(chatGptTesting.getStage());
+        chatGptTesting.switchTo(screen.getRoot());
     }
 }

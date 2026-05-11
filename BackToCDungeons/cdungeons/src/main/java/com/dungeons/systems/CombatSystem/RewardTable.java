@@ -18,9 +18,9 @@ public class RewardTable {
     // 'default' handles any boss ID not listed - safe fallback of 100 XP.
     public static int getBossXP(String bossId) {
         switch (bossId) {
-            case "CassieYarn":  return 120;  // first boss - 120 XP
-            case "FreakyRelah": return 200;  // second boss - 200 XP
-            case "JohnMKati":   return 320;  // final boss - 320 XP
+            case "CassieYarn":  return 50;  // first boss - 120 XP
+            case "FreakyRelah": return 100;  // second boss - 200 XP
+            case "JohnMKati":   return 150;  // final boss - 320 XP
             default:            return 100;  // unknown boss - safe fallback
         }
     }
@@ -28,9 +28,9 @@ public class RewardTable {
     // Returns gold rewarded for defeating a named boss.
     public static int getBossGold(String bossId) {
         switch (bossId) {
-            case "CassieYarn":  return 30;   // first boss - 30 gold
-            case "FreakyRelah": return 55;   // second boss - 55 gold
-            case "JohnMKati":   return 90;   // final boss - 90 gold
+            case "CassieYarn":  return 10;   // first boss - 30 gold
+            case "FreakyRelah": return 15;   // second boss - 55 gold
+            case "JohnMKati":   return 20;   // final boss - 90 gold
             default:            return 25;   // unknown boss - safe fallback
         }
     }
@@ -57,8 +57,8 @@ public class RewardTable {
     // To raise the floor (level 1 reward): raise XP_MOB_BASE or GOLD_MOB_BASE.
     // -----------------------------------------------------------------------
 
-    private static final int XP_MOB_BASE       = 20; // XP for a level 1 mob
-    private static final int XP_MOB_PER_LEVEL  = 5;  // extra XP added per level above 1
+    private static final int XP_MOB_BASE       = 6; // XP for a level 1 mob
+    private static final int XP_MOB_PER_LEVEL  = 2;  // extra XP added per level above 1
 
     private static final int GOLD_MOB_BASE      = 1;  // gold for a level 1 mob (base value is 1)
     private static final int GOLD_MOB_PER_LEVEL = 1;  // extra gold added per level above 1

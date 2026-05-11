@@ -19,10 +19,10 @@ public class Player extends Combatant {
         return -1;
     }
 //debug
-    public void setCurrentHp(int currentHp) {
-        System.out.println("setCurrentHp called with: " + currentHp);
-        this.currentHp = currentHp;
-    }
+ //   public void setCurrentHp(int currentHp) {
+   //     System.out.println("setCurrentHp called with: " + currentHp);
+   //     this.currentHp = currentHp;
+   // }
 
     //for the images
     public boolean hasItems() {

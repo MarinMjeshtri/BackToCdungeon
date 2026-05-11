@@ -1,6 +1,7 @@
 package com.dungeons.Controllers;
 
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
+import com.dungeons.chatGptTesting;
 import com.dungeons.screens.GameScreen;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -8,6 +9,8 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -16,19 +19,29 @@ import javafx.util.Duration;
 
 public class introController {
 
-    @FXML private VBox  storyContainer;
-    @FXML private Pane  fadeOverlay;
-    @FXML private Pane  rootPane;
+    @FXML private VBox     storyContainer;
+    @FXML private Pane     fadeOverlay;
+    @FXML private Pane     rootPane;
+    @FXML private ImageView sindiPortrait;
 
     private static final double SCROLL_SECONDS = 50.0;
-
-    private static final double FADE_SECONDS = 2.5;
+    private static final double FADE_SECONDS   = 2.5;
 
     private Timeline scrollTimeline;
     private boolean  launched = false;
 
     @FXML
     public void initialize() {
+
+        // Load Cin de Moni portrait
+        try {
+            String path = "/sprites/DialougeSprites/SindiCharacterDialougeSprite-NBR.png";
+            Image image = new Image(getClass().getResource(path).toExternalForm());
+            sindiPortrait.setImage(image);
+            System.out.println("Sindi portrait loaded in intro screen!");
+        } catch (Exception e) {
+            System.out.println("Could not load Sindi portrait: " + e.getMessage());
+        }
 
         GameMusicManager.playIntro();
 
@@ -43,7 +56,7 @@ public class introController {
 
         double endY = -(storyContainer.getPrefHeight() > 0
                 ? storyContainer.getPrefHeight()
-                : 3200); // safe fallback
+                : 3200);
 
         scrollTimeline = new Timeline(
                 new KeyFrame(Duration.ZERO,
@@ -71,7 +84,7 @@ public class introController {
     private void handleSkip() {
         if (launched) return;
         if (scrollTimeline != null) scrollTimeline.stop();
-        // Short fast fade when skipping
+
         FadeTransition fade = new FadeTransition(Duration.seconds(0.8), fadeOverlay);
         fade.setFromValue(0.0);
         fade.setToValue(1.0);
@@ -80,21 +93,24 @@ public class introController {
         launched = true;
     }
 
+    // In introController.java
+
     private void launchGame() {
         try {
+            // Get the stage once
             Stage stage = (Stage) rootPane.getScene().getWindow();
 
             GameScreen gameScreen = new GameScreen();
             gameScreen.setStage(stage);
 
+            // Load the font (Only do this once globally if possible, but fine here)
             Font.loadFont(getClass().getResourceAsStream("/OpenType-TT/MarinVonGayNjega.ttf"), 10);
 
-            Scene scene = new Scene(gameScreen.getRoot());
-            scene.getStylesheets().add(
-                    getClass().getResource("/sprites/style.css").toExternalForm()
-            );
+            // 3. THE CLEAN SWITCH
+            // We call our fixed switchTo. No need to setFullScreen(true) again!
+            chatGptTesting.switchTo(gameScreen.getRoot());
 
-            stage.setScene(scene);
+            // Start the game logic
             gameScreen.startLoop();
             GameMusicManager.playGameplay();
 

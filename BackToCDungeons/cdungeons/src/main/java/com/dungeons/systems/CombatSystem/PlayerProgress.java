@@ -31,8 +31,8 @@ public class PlayerProgress {
     // --- STAT GROWTH PER LEVEL ---
     // How much each stat grows every time the player gains a level.
     // Raise these to make leveling feel more powerful. Lower to make it subtle.
-    private static final int HP_PER_LEVEL  = 20; // +20 HP each level
-    private static final int ATK_PER_LEVEL = 2;  // +2 ATK each level
+    private static final int HP_PER_LEVEL  = 25; // +20 HP each level
+    private static final int ATK_PER_LEVEL = 3;  // +2 ATK each level
     private static final int DEF_PER_LEVEL = 1;  // +1 DEF each level
 
 
@@ -49,7 +49,7 @@ public class PlayerProgress {
     private static final double XP_EXPONENT = 1.1;
 
     // Hard cap on level. Player cannot go above this no matter how much XP they gain.
-    private static final int MAX_LEVEL = 20;
+    private static final int MAX_LEVEL = 30;
 
 
     // --- LIVE STATE (these change as the player plays) ---
@@ -76,12 +76,17 @@ public class PlayerProgress {
         // Loop: keep leveling up as long as xp is enough and level is below cap.
         // The loop handles the rare case where a single reward pushes multiple levels.
         while (level < MAX_LEVEL && xp >= xpToNextLevel()) {
-            xp -= xpToNextLevel(); // remove the XP cost for this level-up
-            level++;               // go up one level
-            leveledUp = true;
+            xp -= xpToNextLevel();
             if (currentHp != -1) {
-                currentHp += HP_PER_LEVEL;
+                int oldMax  = getScaledHp(); // max before level up
+                int missing = oldMax - currentHp; // HP missing before level up
+                level++;
+                int newMax  = getScaledHp(); // max after level up
+                currentHp = Math.max(1, newMax - missing); // preserve missing HP
+            } else {
+                level++;
             }
+            leveledUp = true;
         }
 
         return leveledUp; // true if at least one level-up happened
