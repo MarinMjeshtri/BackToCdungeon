@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #0a0a1a; -fx-min-height: 720; -fx-min-width: 1280;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.tutorialController">
+<Pane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #0a0a1a; -fx-min-height: 720; -fx-min-width: 1280;" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dungeons.Controllers.tutorialController">
 
     <children>
 
