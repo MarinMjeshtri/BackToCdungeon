@@ -19,6 +19,8 @@ import javafx.util.Duration;
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.dungeons.shopItemsManager.PlayerInventory;
+import com.dungeons.shopItemsManager.Shop;
 
 public class CombatController {
 
@@ -60,15 +62,94 @@ public class CombatController {
     private Button counterBtn;
 
     private boolean guardUsedThisTurn = false;
+    private int pendingAtkRestore = -1; // -1 means no ATK boost pending
 
     private PauseTransition thinkingRevertTimer = null;
 
     @FXML
     public void initialize() {
-        startCombat("CassieYarn");
     }
 
+    private void updatePlayerSpriteMood() {
+        if (player.isDefeated()) {
+            loadSpriteOnto(playercharacterSprite, player.getSpriteDefeated());
+        } else {
+            loadSpriteOnto(playercharacterSprite, player.getSpriteNeutral());
+        }
+    }
+    private void refreshItemButtons(List<Button> buttons) {
+        PlayerInventory inventory = PlayerInventory.getInstance();
+        for (int i = 0; i < buttons.size(); i++) {
+            Button btn = buttons.get(i);
+            Shop item  = inventory.getSlot(i);
+            if (item != null) {
+                btn.setText(item.displayName);
+                btn.setDisable(false);
+                btn.setOpacity(1.0);
+                addTooltip(btn, item.desc);
+            } else {
+                btn.setText("Empty");
+                btn.setDisable(true);
+                btn.setOpacity(0.4);
+            }
+        }
+    }
+
+    private void handleItemUse(int slotIndex, List<Button> itemButtons) {
+        if (!engine.isOngoing()) return;
+
+        // save original ATK in case ATK potion is used - restored after turn
+        int originalAtk = player.getAttack();
+
+        PlayerInventory.CombatItemResult result =
+                PlayerInventory.getInstance().useItemInCombat(slotIndex, player);
+
+        switch (result) {
+            case EMPTY:
+                log("Slot " + (slotIndex + 1) + " is empty.");
+                return; // no turn consumed
+
+            case NO_EFFECT:
+                log("Cannot use that item right now.");
+                return; // no turn consumed
+
+            case HEALED:
+                int newHp = player.getCurrentHp();
+                tweenHpBar(playerHP, newHp, playerMaxHp, PLAYER_BAR_MAX);
+                if (playerHpLabel != null)
+                    playerHpLabel.setText(newHp + " / " + playerMaxHp);
+                log("Used healing item. Restored HP. Now at " + newHp + "/" + playerMaxHp + ".");
+                break;
+
+            case ATK_BOOST:
+                log("Used ATK potion. Attack boosted this turn by x"
+                        + PlayerInventory.ATK_BOOST_MULTIPLIER + ".");
+                break;
+        }
+
+        // refresh item buttons to show Empty after use
+        refreshItemButtons(itemButtons);
+
+        // update HUD overlay so inventory slot goes blank
+        com.dungeons.screens.GameScreen gs = com.dungeons.screens.GameScreen.getInstance();
+        if (gs != null && gs.getOverlayController() != null) {
+            gs.getOverlayController().updateUI();
+        }
+
+        // process the turn - moveIndex -2 means item was handled externally
+        lockAllActions(true);
+        // item is free - does not consume a turn
+
+        pendingAtkRestore = originalAtk;
+        goBack();
+    }
+    private void showPlayerAttackSprite(int moveIndex) {
+        loadSpriteOnto(playercharacterSprite, player.getSpriteAttack(moveIndex));
+    }
     public void startCombatAtLevel(String bossId, int level) {
+        if (playerHP != null) playerHP.setWidth(PLAYER_BAR_MAX);
+        if (bossHP != null) bossHP.setWidth(BOSS_BAR_MAX);
+
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
         PlayerProgress.getInstance().applyToPlayer(player);
@@ -77,22 +158,22 @@ public class CombatController {
             player.setCurrentHp(progress.getCurrentHp());
         }
 
-        boss = loader.loadBossAtLevel(bossId, level);
-
         playerMaxHp = player.getMaxHp();
+        boss        = loader.loadBossAtLevel(bossId, level);
         bossMaxHp   = boss.getMaxHp();
+        engine      = new CombatEngine(player, boss);
 
-        engine = new CombatEngine(player, boss);
-        setStart(player.getName(), boss.getName() + " Lv." + level, bossMaxHp);
+        String displayName = boss.getId().startsWith("Mob")
+                ? boss.getName() + " Lv." + boss.getMobLevel()
+                : boss.getName();
+        setStart(player.getName(), displayName, bossMaxHp);
         injectStatusLabels();
 
-        final double initialPlayerBarWidth = PLAYER_BAR_MAX * ((double) player.getCurrentHp() / playerMaxHp);
-        javafx.application.Platform.runLater(() -> playerHP.setWidth(initialPlayerBarWidth));
+        playerHP.setWidth(PLAYER_BAR_MAX * ((double) player.getCurrentHp() / playerMaxHp));
 
         wireAbilityButtons();
         wirePlaceholderButtons();
         updateCooldownUI();
-
         turnInformation.setText("");
         log("Combat started. Choose your action.");
 
@@ -104,6 +185,9 @@ public class CombatController {
     }
 
     public void startCombat(String bossId) {
+        if (playerHP != null) playerHP.setWidth(PLAYER_BAR_MAX);
+        if (bossHP != null) bossHP.setWidth(BOSS_BAR_MAX);
+
         StatsLoader loader = new StatsLoader();
         player = loader.loadPlayer("Player");
         PlayerProgress.getInstance().applyToPlayer(player);
@@ -112,23 +196,22 @@ public class CombatController {
             player.setCurrentHp(progress.getCurrentHp());
         }
 
-        boss = loader.loadBoss(bossId);
-
         playerMaxHp = player.getMaxHp();
+        boss        = loader.loadBoss(bossId);
         bossMaxHp   = boss.getMaxHp();
+        engine      = new CombatEngine(player, boss);
 
-        engine = new CombatEngine(player, boss);
-
-        setStart(player.getName(), boss.getName(), bossMaxHp);
+        String displayName = boss.getId().startsWith("Mob")
+                ? boss.getName() + " Lv." + boss.getMobLevel()
+                : boss.getName();
+        setStart(player.getName(), displayName, bossMaxHp);
         injectStatusLabels();
 
-        final double initialPlayerBarWidth = PLAYER_BAR_MAX * ((double) player.getCurrentHp() / playerMaxHp);
-        javafx.application.Platform.runLater(() -> playerHP.setWidth(initialPlayerBarWidth));
+        playerHP.setWidth(PLAYER_BAR_MAX * ((double) player.getCurrentHp() / playerMaxHp));
 
         wireAbilityButtons();
         wirePlaceholderButtons();
         updateCooldownUI();
-
         turnInformation.setText("");
         log("Combat started. Choose your action.");
 
@@ -220,18 +303,12 @@ public class CombatController {
                 .map(n -> (Button) n)
                 .collect(Collectors.toList());
 
-        String[] itemLabels = {"item1", "item2", "item3", "item4"};
+        refreshItemButtons(itemButtons);
         for (int i = 0; i < itemButtons.size(); i++) {
-            String label = itemLabels[i];
             Button btn = itemButtons.get(i);
             addHoverScale(btn);
-            addTooltip(btn, "Use " + label + ". Not implemented yet.");
-            btn.setOnAction(e -> {
-                // ── SOUND: item used ──
-                GameMusicManager.playPickupSound();
-                log("Used " + label + " (not implemented yet).");
-                goBack();
-            });
+            final int slotIndex = i;
+            btn.setOnAction(e -> handleItemUse(slotIndex, itemButtons));
         }
 
         List<Button> defenseButtons = pressDefense.getChildren().stream()
@@ -289,6 +366,7 @@ public class CombatController {
     private void handlePlayerAttack(int moveIndex) {
         if (!engine.isOngoing()) return;
         lockAllActions(true);
+        showPlayerAttackSprite(moveIndex);
         showBossThinking();
 
         PauseTransition waitThink = new PauseTransition(Duration.millis(800));
@@ -298,6 +376,11 @@ public class CombatController {
             List<Move> moves = player.getMoves();
             if (moveIndex < moves.size()) {
                 GameMusicManager.playMoveSound(moves.get(moveIndex).getName());
+                // restore ATK boost from item if one was used this turn
+                if (pendingAtkRestore != -1) {
+                    player.setAttack(pendingAtkRestore);
+                    pendingAtkRestore = -1;
+                }
             }
 
             AnchorPane bossPane = (AnchorPane) enemycharacterSprite.getParent();
@@ -316,6 +399,7 @@ public class CombatController {
                 bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
 
                 updateBossSpriteMood();
+                updatePlayerSpriteMood();
 
                 PauseTransition waitBoss = new PauseTransition(Duration.millis(600));
                 waitBoss.setOnFinished(evv -> executeBossTurn(turnLog));
@@ -592,6 +676,7 @@ public class CombatController {
 
         if (!combatOver) lockAllActions(false);
 
+
         if (turnLog.getResultAfterRound() == CombatResult.PLAYER_WIN)
             onCombatEnd(true);
         else if (turnLog.getResultAfterRound() == CombatResult.PLAYER_LOSE)
@@ -681,6 +766,8 @@ public class CombatController {
         }
 
         lockAllActions(true);
+        updatePlayerSpriteMood();
+
         boss.clearAbilitySprite();
 
         if (player.getActiveEffect() != null) player.applyEffect(null);
@@ -690,7 +777,12 @@ public class CombatController {
         if (bossIntentLabel   != null) bossIntentLabel.setText("");
 
         if (playerWon) {
-            PlayerProgress.getInstance().setCurrentHp(player.getCurrentHp());
+            PlayerProgress.getInstance().setOldMaxHp(player.getMaxHp());
+            // do NOT overwrite currentHp here - addXP() already updated it correctly during grantRewards()
+            // only sync if no level up happened (currentHp in progress is still -1 or from previous fight)
+            if (PlayerProgress.getInstance().getCurrentHp() == -1) {
+                PlayerProgress.getInstance().setCurrentHp(player.getCurrentHp());
+            }
             PlayerProgress progress = PlayerProgress.getInstance();
             log("Victory. " + boss.getName() + " defeated.");
             GameScreen.getInstance().showVictoryScreen();
@@ -709,6 +801,7 @@ public class CombatController {
         }
 
         PauseTransition delay = new PauseTransition(Duration.seconds(0));
+        updatePlayerSpriteMood();
         delay.setOnFinished(e -> {
             if (playerWon) {
                 loadNextArea();
@@ -735,6 +828,7 @@ public class CombatController {
         bossName.setText(bossNamee);
         bossHPnumber.setText(bossMaxHp + " / " + bossMaxHp);
         updateBossSpriteMood();
+        updatePlayerSpriteMood();
     }
 
     public void updateBossHP(int currentHp, int maxHp) {
