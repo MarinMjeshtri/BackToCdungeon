@@ -3,8 +3,10 @@ package com.dungeons.Controllers;
 // Rename this class to OptionsController if you want to follow Java naming conventions.
 
 import com.dungeons.MusicandSoundsCode.*;
+import com.dungeons.chatGptTesting;
 import com.dungeons.marinMainTesting;
 import com.dungeons.screens.optionsMenu;
+import com.dungeons.screens.startingScreen;
 import com.dungeons.systems.CombatSystem.*;
 
 import javafx.fxml.FXML;
@@ -16,6 +18,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -82,9 +85,13 @@ public class optionsController implements Initializable {
 
     }
 
-    @FXML public void returnToMain(){
-        Stage stage = (Stage) optionsMenu.getScene().getWindow();
-        marinMainTesting.loadStartingScreen(stage);
+    @FXML
+    public void returnToMain() {
+        startingScreen screen = new startingScreen();
+        OptionsNStartingController controller = screen.getLoader().getController();
+        controller.setStage(chatGptTesting.getStage());
+        chatGptTesting.switchTo(screen.getRoot());
+
     }
 
 

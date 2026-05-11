@@ -20,16 +20,21 @@ import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -199,7 +204,9 @@ public class GameScreen {
                 // interact trigger
                 (type, tileX, tileY) -> {
                     System.out.println("Triggered: " + type + " at " + tileX + ", " + tileY);
-
+                    if (type.equals("triggerEnd")) {
+                        triggerFinalBossScene();
+                    }
 
 
                     if (type.equals("triggerEyes")) {
@@ -403,9 +410,17 @@ public class GameScreen {
 
     public void startLoop() {
         if (loop != null) loop.stop();
+
+        // FORCE FOCUS HERE
+        Platform.runLater(() -> {
+            canvas.setFocusTraversable(true);
+            canvas.requestFocus();
+        });
+
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+
                 try {
                     update();
                 } catch (Exception e) {
@@ -530,4 +545,41 @@ public class GameScreen {
         }
     }
 
+    private boolean bossSpawned = false;
+
+    private void triggerFinalBossScene() {
+        if (bossSpawned) return; // Prevent multiple spawns
+        bossSpawned = true;
+
+        // 1. Create the Scientist ImageView on the fly
+        ImageView scientist = new ImageView();
+        try {
+            Image img = new Image(getClass().getResourceAsStream("/sprites/characters/drFrekiRelahSprite.png"));
+            scientist.setImage(img);
+        } catch (Exception e) {
+            System.err.println("Could not find sprite!");
+        }
+
+        // 2. Initial Setup
+        scientist.setPreserveRatio(true);
+        scientist.setFitHeight(128); // Adjust to your preferred size
+
+        // Start position: Off-screen right (assuming 1280 width)
+        scientist.setTranslateX(0);
+        scientist.setTranslateY(300);
+        scientist.setSmooth(false);
+
+        // 3. Add to your existing pane WITHOUT clearing it
+        // This places the scientist ON TOP of the eye videos
+        escapePane.getChildren().add(scientist);
+        scientist.toFront();
+
+        // 4. The 5-Second Smooth Walk
+        TranslateTransition walk = new TranslateTransition(Duration.seconds(5), scientist);
+        walk.setToX(400); // Target center-ish position
+        walk.setInterpolator(Interpolator.LINEAR); // Smooth, steady movement
+
+        walk.setOnFinished(e -> System.out.println("Scientist in position."));
+        walk.play();
+    }
 }

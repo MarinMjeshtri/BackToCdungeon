@@ -1,6 +1,8 @@
 package com.dungeons.Controllers;
 
+import com.dungeons.chatGptTesting;
 import com.dungeons.marinMainTesting;
+import com.dungeons.screens.startingScreen;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -55,8 +57,10 @@ public class quitController {
 
     @FXML
     public void closeEntirely(){
-        Stage stage = (Stage) closePane.getScene().getWindow();
-        marinMainTesting.loadStartingScreen(stage);
+        startingScreen screen = new startingScreen();
+        OptionsNStartingController controller = screen.getLoader().getController();
+        controller.setStage(chatGptTesting.getStage());
+        chatGptTesting.switchTo(screen.getRoot());
     }
 
     @FXML

@@ -16,10 +16,17 @@ public class tutorialScreen {
                     getClass().getResource("/screens/tutorialScreen.fxml")
             );
 
+            if (loader.getLocation() == null) {
+                System.err.println("ERROR: tutorialScreen.fxml not found at /screens/tutorialScreen.fxml");
+                throw new IOException("tutorialScreen.fxml not found");
+            }
+
             root = loader.load();
 
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load shopScreen.fxml", e);
+        } catch (Exception e) {
+            System.err.println("ERROR loading tutorialScreen.fxml: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to load tutorialScreen.fxml", e);
         }
     }
 
