@@ -15,8 +15,8 @@
       "abilities": [
         {
           "name": "Quick Strike",
-          "desc": "A fast reliable hit. Deals 55 base damage. No special effects. Safe choice.",
-          "effects": { "damage": 999 },
+          "desc": "A fast reliable hit. Deals 70 base damage. No special effects. Safe choice.",
+          "effects": { "damage": 70 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -26,8 +26,8 @@
         },
         {
           "name": "Shock Jab",
-          "desc": "An electrified punch dealing 70 damage. 30% chance to apply DOT, burning the boss for 12 damage per turn for 2 turns.",
-          "effects": { "damage": 70 },
+          "desc": "An electrified punch dealing 60 damage. 30% chance to apply DOT, burning the boss for 12 damage per turn for 2 turns.",
+          "effects": { "damage": 60 },
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.3,
@@ -37,8 +37,8 @@
         },
         {
           "name": "Armor Break",
-          "desc": "Deals 60 damage and has a 40% chance to halve the boss damage output for 1 turn.",
-          "effects": { "damage": 60 },
+          "desc": "Deals 55 damage and has a 40% chance to halve the boss damage output for 1 turn.",
+          "effects": { "damage": 55 },
           "statusEffect": "halfDmg",
           "duration": 1,
           "chance": 0.4,
@@ -64,7 +64,7 @@
       "stats": {
         "atk": 20,
         "def": 6,
-        "hp": 520
+        "hp": 600
       },
       "sprites": {
         "neutral": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
@@ -76,7 +76,7 @@
         {
           "name": "Turret Volley",
           "desc": "Fires 6 rapid turret shots. Each bullet hits separately for 8 damage.",
-          "effects": { "damage": 21, "hits": 30 },
+          "effects": { "damage": 48, "hits": 50 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -87,7 +87,7 @@
         {
           "name": "Wall Slam",
           "desc": "Sends the armored WALL crashing in. All damage at once.",
-          "effects": { "damage": 70 },
+          "effects": { "damage": 80 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -97,8 +97,8 @@
         },
         {
           "name": "Repair Surge",
-          "desc": "Repairs her systems. Restores 80 HP.",
-          "effects": { "damage": 0, "heal": 80 },
+          "desc": "Repairs his systems. Restores 80 HP.",
+          "effects": { "damage": 0, "heal": 100 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -109,7 +109,7 @@
         {
           "name": "System Overload",
           "desc": "Overloads all lab systems. Heavy burst with 35% chance to apply DOT for 2 turns.",
-          "effects": { "damage": 90 },
+          "effects": { "damage": 120 },
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.35,
@@ -124,7 +124,7 @@
       "stats": {
         "atk": 22,
         "def": 10,
-        "hp": 580
+        "hp": 800
       },
       "sprites": {
         "neutral":  "/Sprties_CombatUI/FreakyRelah/Neutral.png",
@@ -135,8 +135,8 @@
       "abilities": [
         {
           "name": "Lightning Storm",
-          "desc": "Rapid lightning strikes hitting 20 times for 1 damage each. 45% chance to apply DOT for 2 turns.",
-          "effects": { "damage": 1, "hits": 20 },
+          "desc": "Rapid lightning strikes hitting 20 times for 2 damage each. 45% chance to apply DOT for 2 turns.",
+          "effects": { "damage": 2, "hits": 80 },
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.45,
@@ -147,7 +147,7 @@
         {
           "name": "Tesla Cage",
           "desc": "Traps you in an electric cage. Deals 50 damage with 40% chance to stun for 1 turn.",
-          "effects": { "damage": 50},
+          "effects": { "damage": 100},
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.4,
@@ -158,7 +158,7 @@
         {
           "name": "Capacitor Discharge",
           "desc": "Charges up then unleashes a massive electric burst. All damage at once.",
-          "effects": { "damage": 60 },
+          "effects": { "damage": 120 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -169,7 +169,7 @@
         {
           "name": "Static Field",
           "desc": "Surrounds himself with static. Deals 50 damage and 50% chance to halve your damage for 2 turns.",
-          "effects": { "damage": 50 },
+          "effects": { "damage": 90 },
           "statusEffect": "halfDmg",
           "duration": 2,
           "chance": 0.5,
@@ -181,7 +181,7 @@
     },
 
     "JohnMKati": {
-      "stats": { "atk": 28, "def": 12, "hp": 450 },
+      "stats": { "atk": 28, "def": 12, "hp": 1000 },
       "sprites": {
         "neutral":  "/Sprties_CombatUI/JonMkati/Neutral.jpeg",
         "angry":    "/Sprties_CombatUI/JonMkati/Angry.jpeg",
@@ -192,7 +192,7 @@
         {
           "name": "Twin Combo",
           "desc": "Both clones attack in sequence. 3 hits of 28 damage each.",
-          "effects": { "damage": 28, "hits": 20 },
+          "effects": { "damage": 28, "hits": 40 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -203,7 +203,7 @@
         {
           "name": "Feminist Literature",
           "desc": "Reads an unbearable text. 5 slow hits of 15 damage. 35% chance to stun for 1 turn.",
-          "effects": { "damage": 15, "hits": 20 },
+          "effects": { "damage": 15, "hits": 30 },
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
@@ -213,8 +213,8 @@
         },
         {
           "name": "Iron Fist",
-          "desc": "One massive punch for 80 damage. 70% chance to stun you for 1 turn.",
-          "effects": { "damage": 80 },
+          "desc": "One massive punch for 100 damage. 35% chance to stun you for 1 turn.",
+          "effects": { "damage": 100 },
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
@@ -294,7 +294,7 @@
   ]
 },
    "Mob2": {
-  "stats": { "atk": 12, "def": 5, "hp": 130 },
+  "stats": { "atk": 12, "def": 5, "hp": 120 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
     "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
@@ -305,7 +305,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 30 },
+      "effects": { "damage": 40 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
@@ -316,6 +316,29 @@
   ]
 },     
 "Mob3": {
+  "stats": { "atk": 12, "def": 5, "hp": 130 },
+  "sprites": {
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "thinking": "",
+    "defeated": "",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 50 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "",
+      "hitStyle": "single",
+      "cooldown": 0
+    }
+  ]
+},   
+   "Mob4": {
   "stats": { "atk": 12, "def": 5, "hp": 150 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
@@ -328,30 +351,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 35 },
-      "statusEffect": null,
-      "duration": 0,
-      "chance": 0.0,
-      "abilitySprite": "",
-      "hitStyle": "single",
-      "cooldown": 0
-    }
-  ]
-},   
-   "Mob4": {
-  "stats": { "atk": 12, "def": 5, "hp": 200 },
-  "sprites": {
-    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
-    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
-    "thinking": "",
-    "defeated": "",
-    "cloned":   ""
-  },
-  "abilities": [
-    {
-      "name": "Scratch",
-      "desc": "A weak scratch.",
-      "effects": { "damage": 35 },
+      "effects": { "damage": 60 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
@@ -362,7 +362,7 @@
   ]
 },   
    "Mob5": {
-  "stats": { "atk": 12, "def": 5, "hp": 250 },
+  "stats": { "atk": 12, "def": 5, "hp": 170 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
     "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
@@ -374,7 +374,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 40 },
+      "effects": { "damage": 70 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
