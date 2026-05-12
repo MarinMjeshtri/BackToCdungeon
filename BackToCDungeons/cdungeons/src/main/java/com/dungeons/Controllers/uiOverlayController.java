@@ -35,7 +35,7 @@ public class uiOverlayController {
 @FXML ImageView slotImg2;
 @FXML ImageView slotImg3;
 @FXML ImageView slotImg4;
-
+@FXML ImageView character;
     private PlayerProgress progress;
 
     public void setProgress(PlayerProgress progress) {
@@ -66,6 +66,21 @@ public class uiOverlayController {
         for (int i = 0; i < 4; i++) {
             Shop item = inventory.getSlot(i);
             slotLabels[i].setText(item != null ? item.displayName : "");
+
+            double hpPercent = (double) progress.getCurrentHp() / progress.getScaledHp();
+
+            if (hpPercent > 0.75) {
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonHealthy.jpeg")));
+            } else if (hpPercent > 0.50) { // Changed from 5 to 0.50
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonLilDMG.jpeg")));
+            } else if (hpPercent > 0.25) {
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonKindaDMG.jpeg")));
+            } else if (hpPercent > 0.01) {
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonDying.jpeg")));
+            }
+            else
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonHealthy.jpeg")));
+
         }
 
         ImageView[] slotImages = {slotImg1, slotImg2, slotImg3, slotImg4};

@@ -1,13 +1,11 @@
 package com.dungeons.Controllers;
 
-import com.dungeons.chatGptTesting;
-import com.dungeons.marinMainTesting;
+import com.dungeons.theAlmagamation;
 import com.dungeons.screens.startingScreen;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 public class tutorialController {
 
@@ -30,7 +28,7 @@ public class tutorialController {
     private void handleBack() {
         startingScreen screen = new startingScreen();
         OptionsNStartingController controller = screen.getLoader().getController();
-        controller.setStage(chatGptTesting.getStage());
-        chatGptTesting.switchTo(screen.getRoot());
+        controller.setStage(theAlmagamation.getStage());
+        theAlmagamation.switchTo(screen.getRoot());
     }
 }

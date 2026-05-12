@@ -1,8 +1,7 @@
 package com.dungeons.Controllers;
 
 //Importing main area
-import com.dungeons.chatGptTesting;
-import com.dungeons.marinMainTesting;
+import com.dungeons.theAlmagamation;
 
 import com.dungeons.screens.startingScreen;
 import javafx.animation.KeyFrame;
@@ -10,7 +9,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class creditsController {
@@ -34,7 +32,7 @@ public class creditsController {
     private void handleExit() {
         startingScreen screen = new startingScreen();
         OptionsNStartingController controller = screen.getLoader().getController();
-        controller.setStage(chatGptTesting.getStage());
-        chatGptTesting.switchTo(screen.getRoot());
+        controller.setStage(theAlmagamation.getStage());
+        theAlmagamation.switchTo(screen.getRoot());
     }
 }

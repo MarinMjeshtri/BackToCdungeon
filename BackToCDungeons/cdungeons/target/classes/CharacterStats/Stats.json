@@ -192,7 +192,7 @@
         {
           "name": "Twin Combo",
           "desc": "Both clones attack in sequence. 3 hits of 28 damage each.",
-          "effects": { "damage": 28, "hits": 20 },
+          "effects": { "damage": 28, "hits": 100 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -213,8 +213,8 @@
         },
         {
           "name": "Iron Fist",
-          "desc": "One massive punch for 80 damage. 70% chance to stun you for 1 turn.",
-          "effects": { "damage": 80 },
+          "desc": "One massive punch for 100 damage. 35% chance to stun you for 1 turn.",
+          "effects": { "damage": 150 },
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,

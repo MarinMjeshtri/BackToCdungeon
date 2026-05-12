@@ -11,6 +11,7 @@ import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.animations.premadeAnimation;
 import com.dungeons.dialogueManager.DialogueManager;
 
+
 //MAP
 import com.dungeons.systems.CombatSystem.PlayerProgress;
 import com.dungeons.systems.Player;
@@ -66,6 +67,9 @@ public class GameScreen {
     private uiOverlayController overlayController;
     private victoryScreen victoryScreen;
     private boolean triggerEyesActive = false;
+    // Near private DialogueBoxController activeDialogue = null;
+    private DialogueBoxController finalBossDialogueController;
+    private Parent finalBossDialogueNode;
 
 
     private Parent shopNode;
@@ -446,6 +450,21 @@ public class GameScreen {
         }
     }
 
+    public void showWinGame() {
+        try {
+            victoryQuestionScreen gameOver = new victoryQuestionScreen(this, stage);
+            Parent gameOverNode = gameOver.getRoot();
+
+            // add to escapePane on top of everything
+            escapePane.getChildren().add(gameOverNode);
+            escapePane.setVisible(true);
+            escapePane.setPickOnBounds(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     // CORRECT
     public void showVictoryScreen() {
         try {
@@ -539,6 +558,7 @@ public class GameScreen {
             }.start();
 
             combatPane.setVisible(true);
+            GameMusicManager.playEnding();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -548,38 +568,63 @@ public class GameScreen {
     private boolean bossSpawned = false;
 
     private void triggerFinalBossScene() {
-        if (bossSpawned) return; // Prevent multiple spawns
+        if (bossSpawned) return;
         bossSpawned = true;
 
-        // 1. Create the Scientist ImageView on the fly
+        // 1. Prepare the Dialogue UI ahead of time (Load the FXML)
+        try {
+            DialoguesScreen dialogueScreen = new DialoguesScreen();
+            finalBossDialogueController = dialogueScreen.getLoader().getController();
+            finalBossDialogueNode = dialogueScreen.getRoot();
+
+            finalBossDialogueController.setDialogueManager(dialogueManager);
+
+            // Add it to uiPane but keep it hidden for now
+            finalBossDialogueNode.setVisible(false);
+            uiPane.getChildren().add(finalBossDialogueNode);
+        } catch (IOException e) {
+            System.err.println("Failed to load Dialogue UI for boss scene");
+            e.printStackTrace();
+        }
+
+        // 2. Create the Scientist Sprite
         ImageView scientist = new ImageView();
         try {
             Image img = new Image(getClass().getResourceAsStream("/sprites/characters/drFrekiRelahSprite.png"));
             scientist.setImage(img);
         } catch (Exception e) {
-            System.err.println("Could not find sprite!");
+            System.err.println("Could not find scientist sprite!");
         }
 
-        // 2. Initial Setup
         scientist.setPreserveRatio(true);
-        scientist.setFitHeight(128); // Adjust to your preferred size
-
-        // Start position: Off-screen right (assuming 1280 width)
-        scientist.setTranslateX(0);
-        scientist.setTranslateY(300);
+        scientist.setFitHeight(128);
         scientist.setSmooth(false);
 
-        // 3. Add to your existing pane WITHOUT clearing it
-        // This places the scientist ON TOP of the eye videos
+        scientist.setTranslateX(-200);
+        scientist.setTranslateY(300);
+
         escapePane.getChildren().add(scientist);
         scientist.toFront();
 
-        // 4. The 5-Second Smooth Walk
         TranslateTransition walk = new TranslateTransition(Duration.seconds(5), scientist);
-        walk.setToX(400); // Target center-ish position
-        walk.setInterpolator(Interpolator.LINEAR); // Smooth, steady movement
+        walk.setToX(500);
+        walk.setInterpolator(Interpolator.LINEAR);
 
-        walk.setOnFinished(e -> System.out.println("Scientist in position."));
+        walk.setOnFinished(e -> {
+            System.out.println("Scientist in position. Opening dialogue...");
+
+            finalBossDialogueController.setOnFinished(() -> {
+                GameMusicManager.playHitSound();
+                finalBossDialogueNode.setVisible(false);
+                showWinGame();
+            });
+
+            // Show the UI and start the text
+            finalBossDialogueNode.setVisible(true);
+            finalBossDialogueNode.toFront();
+            finalBossDialogueController.startDialogue("final_before_shoot");
+        });
+
         walk.play();
     }
 }

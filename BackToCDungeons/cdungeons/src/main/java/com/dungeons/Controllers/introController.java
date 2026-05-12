@@ -1,14 +1,13 @@
 package com.dungeons.Controllers;
 
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
-import com.dungeons.chatGptTesting;
+import com.dungeons.theAlmagamation;
 import com.dungeons.screens.GameScreen;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -108,7 +107,7 @@ public class introController {
 
             // 3. THE CLEAN SWITCH
             // We call our fixed switchTo. No need to setFullScreen(true) again!
-            chatGptTesting.switchTo(gameScreen.getRoot());
+            theAlmagamation.switchTo(gameScreen.getRoot());
 
             // Start the game logic
             gameScreen.startLoop();
