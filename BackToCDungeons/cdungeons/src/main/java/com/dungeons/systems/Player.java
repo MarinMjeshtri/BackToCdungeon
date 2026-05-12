@@ -163,9 +163,6 @@ public class Player {
         double squish = 1 + 0.05 * Math.sin(System.currentTimeMillis() * 0.005);
         gc.drawImage(img, x, y, 128 * squish, 128 / squish);
 
-        // ── DEBUG: shows hitbox, remove when done ──
-        gc.setStroke(javafx.scene.paint.Color.RED);
-        gc.strokeRect(x + HITBOX_OFFSET_X, y + HITBOX_OFFSET_Y, SIZE * SCALE, SIZE * SCALE);
     }
 
     // ---------------- GETTERS ----------------

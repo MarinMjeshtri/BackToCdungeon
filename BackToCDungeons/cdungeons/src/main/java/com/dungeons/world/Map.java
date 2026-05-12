@@ -30,8 +30,8 @@ public class Map {
     public static int getRoomCounter() { return roomCounter; }
 
     private static final List<String> RANDOM_POOL = Arrays.asList(
-            "MobRoom1", "MobRoom2", "MobRoom3", "MobRoom4", "MobRoom5"
-            //"HealingRoom"
+            "MobRoom1", "MobRoom2", "MobRoom3", "MobRoom4", "MobRoom5",
+            "HealingRoom"
     );
 
     private static final int SPAWN_AFTER_CHEST_X = 15;
@@ -136,7 +136,6 @@ public class Map {
             width  = json.get("width").getAsInt();
             height = json.get("height").getAsInt();
 
-            // ← ONLY THIS BLOCK CHANGED
             JsonArray tilesets = json.getAsJsonArray("tilesets");
             for (JsonElement el : tilesets) {
                 JsonObject ts = el.getAsJsonObject();
@@ -154,7 +153,6 @@ public class Map {
                 String source = ts.get("source").getAsString();
                 tilesetRanges.put(firstgid, resolveTilesetKey(source));
             }
-            // ← EVERYTHING BELOW IS UNTOUCHED
 
             JsonArray jsonLayers = json.getAsJsonArray("layers");
             for (JsonElement el : jsonLayers) {
@@ -228,14 +226,13 @@ public class Map {
                         for (int tx = tileX; tx < tileX + rectW; tx++)
                             transitions.add(new TransitionZone(tx, ty, target, SPAWN_AFTER_SHOP_X, SPAWN_AFTER_SHOP_Y));
                 }
-            } else if (nameLower.equals("triggerend")) {
-                for (int ty = tileY; ty < tileY + rectH; ty++) {
-                    for (int tx = tileX; tx < tileX + rectW; tx++) {
-                        interactZones.add(new InteractZone(tx, ty, "triggerEnd", nextObjId));
-                    }
-                }
+
             } else if (nameLower.equals("transitionshoproom")) {
-                // ... continue other checks else if (nameLower.equals("transitionchestroom")) {
+                for (int ty = tileY; ty < tileY + rectH; ty++)
+                    for (int tx = tileX; tx < tileX + rectW; tx++)
+                        transitions.add(new TransitionZone(tx, ty, "ShopRoom", -1, -1));
+
+            } else if (nameLower.equals("transitionchestroom")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++)
                     for (int tx = tileX; tx < tileX + rectW; tx++)
                         transitions.add(new TransitionZone(tx, ty, "ChestRoom", -1, -1));
@@ -255,22 +252,29 @@ public class Map {
                     for (int tx = tileX; tx < tileX + rectW; tx++)
                         interactZones.add(new InteractZone(tx, ty, "chest", nextObjId));
 
+            } else if (nameLower.equals("healing")) {
+                for (int ty = tileY; ty < tileY + rectH; ty++)
+                    for (int tx = tileX; tx < tileX + rectW; tx++)
+                        interactZones.add(new InteractZone(tx, ty, "healing", nextObjId));
+
             } else if (nameLower.equals("triggereyes")) {
-            for (int ty = tileY; ty < tileY + rectH; ty++) {
-                for (int tx = tileX; tx < tileX + rectW; tx++) {
-                    interactZones.add(new InteractZone(tx, ty, "triggerEyes", nextObjId));
-                }
-            }
-        } else if (nameLower.equals("cassie_encounter")
+                for (int ty = tileY; ty < tileY + rectH; ty++)
+                    for (int tx = tileX; tx < tileX + rectW; tx++)
+                        interactZones.add(new InteractZone(tx, ty, "triggerEyes", nextObjId));
+
+            } else if (nameLower.equals("triggerend")) {
+                for (int ty = tileY; ty < tileY + rectH; ty++)
+                    for (int tx = tileX; tx < tileX + rectW; tx++)
+                        interactZones.add(new InteractZone(tx, ty, "triggerEnd", nextObjId));
+
+            } else if (nameLower.equals("cassie_encounter")
                     || nameLower.equals("freki_encounter")
                     || nameLower.equals("merchant_enter")
                     || nameLower.equals("johnmkati_lab_reveal")) {
                 for (int ty = tileY; ty < tileY + rectH; ty++)
                     for (int tx = tileX; tx < tileX + rectW; tx++)
                         interactZones.add(new InteractZone(tx, ty, "dialogue:" + name, nextObjId));
-
             }
-
 
             nextObjId++;
         }
@@ -300,7 +304,7 @@ public class Map {
         if (source.contains("southwest"))    return "south-west";
         if (source.contains("west"))         return "west";
         if (source.contains("south"))        return "south";
-        if (source.contains("blackTile"))    return "blackTile";
+        if (source.contains("blacktile"))    return "blackTile";
         if (source.contains("joni"))         return "joni";
         return "floor";
     }

@@ -54,7 +54,7 @@ public class PlayerInventory {
     // SMALL_HEAL_PERCENT = 0.10 means 10% of current HP restored.
     // BIG_HEAL_PERCENT   = 0.25 means 25% of current HP restored.
     private static final double SMALL_HEAL_PERCENT = 0.30;
-    private static final double BIG_HEAL_PERCENT   = 0.60;
+    public static final double BIG_HEAL_PERCENT   = 0.60;
 
     // Threshold to decide if a potion is "small" or "big" based on JSON heal value.
     // If heal value in JSON is <= SMALL_HEAL_THRESHOLD, treat as small. Otherwise big.

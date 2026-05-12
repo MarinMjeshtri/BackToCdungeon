@@ -262,6 +262,21 @@ public class GameScreen {
                         this.shopScreen = shop;
                     }
 
+                    if (type.equals("healing")) {
+                        PlayerProgress progress = PlayerProgress.getInstance();
+                        int currentHp = progress.getCurrentHp();
+                        int maxHp = progress.getScaledHp();
+
+                        if (currentHp < maxHp) {
+                            int healAmount = (int)(currentHp * PlayerInventory.BIG_HEAL_PERCENT);
+                            int newHp = Math.min(maxHp, currentHp + healAmount);
+                            progress.setCurrentHp(newHp);
+                            System.out.println("Healing room restored " + healAmount + " HP. HP: " + newHp + "/" + maxHp);
+                        } else {
+                            System.out.println("HP already full.");
+                        }
+                    }
+
                     // ── CHEST ─────────────────────────────
                     if (type.equals("chest")) {
                         itemPickupScreen chest = new itemPickupScreen(this, stage);

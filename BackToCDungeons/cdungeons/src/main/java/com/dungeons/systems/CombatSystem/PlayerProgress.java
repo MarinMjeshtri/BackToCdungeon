@@ -55,7 +55,7 @@ public class PlayerProgress {
     // --- LIVE STATE (these change as the player plays) ---
     private int level = 1;  // current player level, starts at 1
     private int xp    = 0;  // current XP within this level, starts at 0
-    private int gold  = 100;  // total gold collected, starts at 0
+    private int gold  = 0;  // total gold collected, starts at 0
     private int currentHp = -1; //If its the first run, player spawns full hp
 
     // Constructor is private - nobody can write 'new PlayerProgress()' from outside.
