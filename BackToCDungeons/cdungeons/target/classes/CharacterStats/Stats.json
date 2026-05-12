@@ -74,46 +74,46 @@
       },
       "abilities": [
         {
-          "name": "Turret Volley",
-          "desc": "Fires 6 rapid turret shots. Each bullet hits separately for 8 damage.",
+          "name": "Nailer",
+          "desc": "Fires a burst of steel screws in rapid succession.",
           "effects": { "damage": 48, "hits": 50 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/Cassie/Turret1.png",
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack1.png",
           "hitStyle": "rapid",
           "cooldown": 0
         },
         {
-          "name": "Wall Slam",
-          "desc": "Sends the armored WALL crashing in. All damage at once.",
+          "name": "Heavy Hammer",
+          "desc": "A massive overhead swing that crushes the target.",
           "effects": { "damage": 80 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/Cassie/Wall2.png",
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack2.png",
           "hitStyle": "single",
           "cooldown": 0
         },
         {
-          "name": "Repair Surge",
-          "desc": "Repairs his systems. Restores 80 HP.",
+          "name": "System Repair",
+          "desc": "Recalibrates gears and welds plates to restore health.",
           "effects": { "damage": 0, "heal": 100 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/Cassie/Healing3.png",
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack3.png",
           "hitStyle": "heal",
           "cooldown": 0
         },
         {
-          "name": "System Overload",
-          "desc": "Overloads all lab systems. Heavy burst with 35% chance to apply DOT for 2 turns.",
+          "name": "Driller",
+          "desc": "A deep piercing strike causing lasting internal damage.",
           "effects": { "damage": 120 },
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.35,
-          "abilitySprite": "/Sprties_CombatUI/Cassie/Outbrek4.png",
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack4.png",
           "hitStyle": "single",
           "cooldown": 0
         }
@@ -140,18 +140,18 @@
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.45,
-          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Pistols1.png",
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack1.png",
           "hitStyle": "rapid",
           "cooldown": 0
         },
         {
           "name": "Tesla Cage",
           "desc": "Traps you in an electric cage. Deals 50 damage with 40% chance to stun for 1 turn.",
-          "effects": { "damage": 100},
+          "effects": { "damage": 50},
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.4,
-          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Caged2.png",
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack2.png",
           "hitStyle": "single",
           "cooldown": 0
         },
@@ -162,18 +162,18 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/RPG3.png",
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack3.png",
           "hitStyle": "single",
           "cooldown": 0
         },
         {
-          "name": "Static Field",
+          "name": "Shockwave",
           "desc": "Surrounds himself with static. Deals 50 damage and 50% chance to halve your damage for 2 turns.",
           "effects": { "damage": 90 },
           "statusEffect": "halfDmg",
           "duration": 2,
           "chance": 0.5,
-          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Feild4.png",
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack4.png",
           "hitStyle": "single",
           "cooldown": 0
         }
@@ -196,7 +196,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Twin1.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack1.png",
           "hitStyle": "rapid",
           "cooldown": 0
         },
@@ -207,7 +207,7 @@
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Yaping2.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack2.png",
           "hitStyle": "rapid",
           "cooldown": 0
         },
@@ -218,7 +218,7 @@
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Fist3.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack3.png",
           "hitStyle": "single",
           "cooldown": 0
         },
@@ -229,7 +229,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Twining4.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack4.png",
           "hitStyle": "clone",
           "cooldown": 0
         }
@@ -294,7 +294,7 @@
   ]
 },
    "Mob2": {
-  "stats": { "atk": 12, "def": 5, "hp": 120 },
+  "stats": { "atk": 12, "def": 5, "hp": 130 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
     "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
@@ -305,7 +305,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 40 },
+      "effects": { "damage": 30 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
@@ -316,29 +316,6 @@
   ]
 },     
 "Mob3": {
-  "stats": { "atk": 12, "def": 5, "hp": 130 },
-  "sprites": {
-    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
-    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
-    "thinking": "",
-    "defeated": "",
-    "cloned":   ""
-  },
-  "abilities": [
-    {
-      "name": "Scratch",
-      "desc": "A weak scratch.",
-      "effects": { "damage": 50 },
-      "statusEffect": null,
-      "duration": 0,
-      "chance": 0.0,
-      "abilitySprite": "",
-      "hitStyle": "single",
-      "cooldown": 0
-    }
-  ]
-},   
-   "Mob4": {
   "stats": { "atk": 12, "def": 5, "hp": 150 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
@@ -351,7 +328,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 60 },
+      "effects": { "damage": 35 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
@@ -360,9 +337,9 @@
       "cooldown": 0
     }
   ]
-},   
-   "Mob5": {
-  "stats": { "atk": 12, "def": 5, "hp": 170 },
+},
+   "Mob4": {
+  "stats": { "atk": 12, "def": 5, "hp": 200 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
     "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
@@ -374,7 +351,30 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 70 },
+      "effects": { "damage": 35 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "",
+      "hitStyle": "single",
+      "cooldown": 0
+    }
+  ]
+},   
+   "Mob5": {
+  "stats": { "atk": 12, "def": 5, "hp": 250 },
+  "sprites": {
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "thinking": "",
+    "defeated": "",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 40 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
