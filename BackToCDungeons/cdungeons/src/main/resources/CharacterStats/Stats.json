@@ -196,7 +196,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Twin1.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack1.png",
           "hitStyle": "rapid",
           "cooldown": 0
         },

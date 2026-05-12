@@ -74,9 +74,9 @@
       },
       "abilities": [
         {
-          "name": "Turret Volley",
-          "desc": "Fires 6 rapid turret shots. Each bullet hits separately for 8 damage.",
-          "effects": { "damage": 21, "hits": 30 },
+          "name": "Nailer",
+          "desc": "Fires a burst of steel screws in rapid succession.",
+          "effects": { "damage": 48, "hits": 50 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -85,9 +85,9 @@
           "cooldown": 0
         },
         {
-          "name": "Wall Slam",
-          "desc": "Sends the armored WALL crashing in. All damage at once.",
-          "effects": { "damage": 70 },
+          "name": "Heavy Hammer",
+          "desc": "A massive overhead swing that crushes the target.",
+          "effects": { "damage": 80 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -96,9 +96,9 @@
           "cooldown": 0
         },
         {
-          "name": "Repair Surge",
-          "desc": "Repairs her systems. Restores 80 HP.",
-          "effects": { "damage": 0, "heal": 80 },
+          "name": "System Repair",
+          "desc": "Recalibrates gears and welds plates to restore health.",
+          "effects": { "damage": 0, "heal": 100 },
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
@@ -107,9 +107,9 @@
           "cooldown": 0
         },
         {
-          "name": "System Overload",
-          "desc": "Overloads all lab systems. Heavy burst with 35% chance to apply DOT for 2 turns.",
-          "effects": { "damage": 90 },
+          "name": "Driller",
+          "desc": "A deep piercing strike causing lasting internal damage.",
+          "effects": { "damage": 120 },
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.35,
@@ -203,7 +203,7 @@
         {
           "name": "Feminist Literature",
           "desc": "Reads an unbearable text. 5 slow hits of 15 damage. 35% chance to stun for 1 turn.",
-          "effects": { "damage": 15, "hits": 20 },
+          "effects": { "damage": 15, "hits": 100 },
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
@@ -337,7 +337,7 @@
       "cooldown": 0
     }
   ]
-},   
+},
    "Mob4": {
   "stats": { "atk": 12, "def": 5, "hp": 200 },
   "sprites": {
