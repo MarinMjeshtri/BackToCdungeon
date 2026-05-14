@@ -98,11 +98,14 @@ public class CombatController {
     private void handleItemUse(int slotIndex, List<Button> itemButtons) {
         if (!engine.isOngoing()) return;
 
+        PlayerInventory inventory = PlayerInventory.getInstance();
+        Shop itemBeforeUse = inventory.getSlot(slotIndex);
+
         // save original ATK in case ATK potion is used - restored after turn
         int originalAtk = player.getAttack();
 
         PlayerInventory.CombatItemResult result =
-                PlayerInventory.getInstance().useItemInCombat(slotIndex, player);
+                inventory.useItemInCombat(slotIndex, player);
 
         switch (result) {
             case EMPTY:
@@ -125,6 +128,32 @@ public class CombatController {
                 log("Used ATK potion. Attack boosted this turn by x"
                         + PlayerInventory.ATK_BOOST_MULTIPLIER + ".");
                 break;
+
+            case SHIELD:
+                int shieldAmount = getEffectInt(itemBeforeUse, "shield", 40);
+                int shieldTurns = getEffectInt(itemBeforeUse, "turns", 3);
+                engine.activateShield(shieldAmount, shieldTurns);
+                log("Shield Battery activated. Absorbs up to " + shieldAmount
+                        + " damage for " + shieldTurns + " turns.");
+                break;
+
+            case LIFESTEAL:
+                double lifestealPercent = getEffectDouble(itemBeforeUse, "lifesteal", 0.25);
+                int lifestealTurns = getEffectInt(itemBeforeUse, "turns", 3);
+                engine.activateLifesteal(lifestealPercent, lifestealTurns);
+                log("Leech Serum activated. You heal for "
+                        + (int)(lifestealPercent * 100)
+                        + "% of damage dealt for " + lifestealTurns + " turns.");
+                break;
+
+            case MIRROR:
+                double reflectPercent = getEffectDouble(itemBeforeUse, "reflect", 0.5);
+                int reflectTurns = getEffectInt(itemBeforeUse, "turns", 1);
+                engine.activateReflect(reflectPercent, reflectTurns);
+                log("Mirror Shard activated. Reflects "
+                        + (int)(reflectPercent * 100)
+                        + "% incoming attack damage for " + reflectTurns + " turn.");
+                break;
         }
 
         // refresh item buttons to show Empty after use
@@ -140,8 +169,22 @@ public class CombatController {
         lockAllActions(true);
         // item is free - does not consume a turn
 
-        pendingAtkRestore = originalAtk;
+        if (result == PlayerInventory.CombatItemResult.ATK_BOOST) {
+            pendingAtkRestore = originalAtk;
+        }
+        updateStatusLabels();
         goBack();
+    }
+
+    private int getEffectInt(Shop item, String key, int fallback) {
+        return (int)Math.round(getEffectDouble(item, key, fallback));
+    }
+
+    private double getEffectDouble(Shop item, String key, double fallback) {
+        if (item == null || item.effects == null || !item.effects.containsKey(key)) {
+            return fallback;
+        }
+        return item.effects.get(key);
     }
     private void showPlayerAttackSprite(int moveIndex) {
         loadSpriteOnto(playercharacterSprite, player.getSpriteAttack(moveIndex));
@@ -502,8 +545,13 @@ public class CombatController {
 
             KeyFrame kf = new KeyFrame(Duration.millis((long) i * delayPerHit), ev -> {
                 flashHit(playercharacterSprite);
-                spawnDamageLabel("-" + hitVal, playerPane,
-                        Color.ORANGERED, 50 + ox, oy, 20);
+                if (hitVal > 0) {
+                    spawnDamageLabel("-" + hitVal, playerPane,
+                            Color.ORANGERED, 50 + ox, oy, 20);
+                } else {
+                    spawnDamageLabel("BLOCK", playerPane,
+                            Color.CYAN, 35 + ox, oy, 16);
+                }
 
                 displayHp[0] = Math.max(0, displayHp[0] - hitVal);
                 tweenHpBar(playerHP, displayHp[0], playerMaxHp, PLAYER_BAR_MAX);
@@ -518,6 +566,8 @@ public class CombatController {
             tweenHpBar(playerHP, turnLog.getPlayerHpAfter(), playerMaxHp, PLAYER_BAR_MAX);
             if (playerHpLabel != null)
                 playerHpLabel.setText(turnLog.getPlayerHpAfter() + " / " + playerMaxHp);
+            tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
+            bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
             boss.clearAbilitySprite();
             updateBossSpriteMood();
             finishTurnUpdate(turnLog);
@@ -531,13 +581,19 @@ public class CombatController {
         PauseTransition pre = new PauseTransition(Duration.millis(400));
         pre.setOnFinished(e -> {
             flashHit(playercharacterSprite);
-            spawnDamageLabel("-" + totalDmg, playerPane, Color.RED, 55, 85, 30);
+            if (totalDmg > 0) {
+                spawnDamageLabel("-" + totalDmg, playerPane, Color.RED, 55, 85, 30);
+            } else {
+                spawnDamageLabel("BLOCK", playerPane, Color.CYAN, 35, 85, 24);
+            }
 
             PauseTransition post = new PauseTransition(Duration.millis(550));
             post.setOnFinished(ev -> {
                 tweenHpBar(playerHP, turnLog.getPlayerHpAfter(), playerMaxHp, PLAYER_BAR_MAX);
                 if (playerHpLabel != null)
                     playerHpLabel.setText(turnLog.getPlayerHpAfter() + " / " + playerMaxHp);
+                tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
+                bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
                 boss.clearAbilitySprite();
                 updateBossSpriteMood();
                 finishTurnUpdate(turnLog);
@@ -650,6 +706,22 @@ public class CombatController {
         if (be != null) sb.append("Status on ").append(boss.getName())
                 .append(": ").append(be.getLabel()).append("\n");
 
+        if (engine.getLastLifestealHeal() > 0) {
+            sb.append("Leech Serum restored ")
+                    .append(engine.getLastLifestealHeal())
+                    .append(" HP.\n");
+        }
+        if (engine.getLastShieldAbsorbed() > 0) {
+            sb.append("Shield Battery absorbed ")
+                    .append(engine.getLastShieldAbsorbed())
+                    .append(" damage.\n");
+        }
+        if (engine.getLastReflectedDamage() > 0) {
+            sb.append("Mirror Shard reflected ")
+                    .append(engine.getLastReflectedDamage())
+                    .append(" damage.\n");
+        }
+
         if ("STUNNED".equals(turnLog.getBossMoveName())) {
             sb.append(boss.getName()).append(" is stunned. Their turn skipped.\n");
         } else if ("clone".equals(engine.getLastBossMoveHitStyle())) {
@@ -716,8 +788,23 @@ public class CombatController {
     private void updateStatusLabels() {
         StatusEffect pe = player.getActiveEffect();
         StatusEffect be = boss.getActiveEffect();
-        if (playerStatusLabel != null)
-            playerStatusLabel.setText(pe != null ? pe.getLabel() : "");
+        if (playerStatusLabel != null) {
+            StringBuilder status = new StringBuilder();
+            if (pe != null) status.append(pe.getLabel());
+            if (engine.getShieldAbsorbLeft() > 0) {
+                if (status.length() > 0) status.append("\n");
+                status.append("Shield ").append(engine.getShieldAbsorbLeft());
+            }
+            if (engine.getLifestealTurnsLeft() > 0) {
+                if (status.length() > 0) status.append("\n");
+                status.append("Leech ").append(engine.getLifestealTurnsLeft()).append("T");
+            }
+            if (engine.getReflectTurnsLeft() > 0) {
+                if (status.length() > 0) status.append("\n");
+                status.append("Mirror ").append(engine.getReflectTurnsLeft()).append("T");
+            }
+            playerStatusLabel.setText(status.toString());
+        }
         if (bossStatusLabel != null)
             bossStatusLabel.setText(be != null ? be.getLabel() : "");
     }

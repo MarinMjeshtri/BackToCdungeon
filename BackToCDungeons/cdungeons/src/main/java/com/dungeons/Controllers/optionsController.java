@@ -31,6 +31,8 @@ public class optionsController implements Initializable {
 
     @FXML private StackPane optionsMenu;
 
+    private Runnable returnAction;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -83,11 +85,20 @@ public class optionsController implements Initializable {
 
     @FXML
     public void returnToMain() {
+        if (returnAction != null) {
+            returnAction.run();
+            return;
+        }
+
         startingScreen screen = new startingScreen();
         OptionsNStartingController controller = screen.getLoader().getController();
         controller.setStage(theAlmagamation.getStage());
         theAlmagamation.switchTo(screen.getRoot());
 
+    }
+
+    public void setReturnAction(Runnable returnAction) {
+        this.returnAction = returnAction;
     }
 
 

@@ -110,6 +110,12 @@ public class PlayerInventory {
             return "Cannot use " + item.displayName + " outside of combat.";
         }
 
+        if (item.effects.containsKey("shield") ||
+                item.effects.containsKey("lifesteal") ||
+                item.effects.containsKey("reflect")) {
+            return "Cannot use " + item.displayName + " outside of combat.";
+        }
+
         // --- FUTURE EFFECT TYPES ---
         // Add new effect branches here following the same pattern:
         // if (item.effects.containsKey("yourEffect")) { ... clearSlot(slotIndex); return "..."; }
@@ -143,6 +149,9 @@ public class PlayerInventory {
         EMPTY,       // slot was empty
         HEALED,      // heal item used successfully
         ATK_BOOST,   // atk potion used, boost applied for this turn
+        SHIELD,      // shield battery activated
+        LIFESTEAL,   // leech serum activated
+        MIRROR,      // mirror shard activated
         NO_EFFECT    // item had no recognized effect
     }
 
@@ -191,6 +200,21 @@ public class PlayerInventory {
 
             clearSlot(slotIndex);
             return CombatItemResult.ATK_BOOST;
+        }
+
+        if (item.effects.containsKey("shield")) {
+            clearSlot(slotIndex);
+            return CombatItemResult.SHIELD;
+        }
+
+        if (item.effects.containsKey("lifesteal")) {
+            clearSlot(slotIndex);
+            return CombatItemResult.LIFESTEAL;
+        }
+
+        if (item.effects.containsKey("reflect")) {
+            clearSlot(slotIndex);
+            return CombatItemResult.MIRROR;
         }
 
         // --- FUTURE EFFECT TYPES ---

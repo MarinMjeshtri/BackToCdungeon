@@ -399,6 +399,14 @@ public class GameScreen {
     // ── PAUSE ──────────────────────────────────────────────
 
     public void togglePause() {
+        if (pauseScreen.getRoot().isVisible()) {
+            PauseController controller = pauseScreen.getLoader().getController();
+            if (controller.closeOptionsIfOpen()) {
+                canvas.requestFocus();
+                return;
+            }
+        }
+
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
         escapePane.setPickOnBounds(nowPaused);
