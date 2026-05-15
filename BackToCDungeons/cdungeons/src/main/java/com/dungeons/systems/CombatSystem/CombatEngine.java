@@ -72,6 +72,7 @@ public class CombatEngine {
     private int reflectTurnsLeft = 0;
 
     private int lastShieldAbsorbed = 0;
+    private int lastLifestealAmount = 0;
     private int lastLifestealHeal = 0;
     private int lastReflectedDamage = 0;
 
@@ -131,6 +132,7 @@ public class CombatEngine {
         roundNumber++;           // count this as a new round
         lastBossHitList.clear(); // clear previous boss hit list
         lastShieldAbsorbed = 0;
+        lastLifestealAmount = 0;
         lastLifestealHeal = 0;
         lastReflectedDamage = 0;
         talkUsedThisTurn  = false;
@@ -219,6 +221,7 @@ public class CombatEngine {
 
             if (lifestealTurnsLeft > 0 && playerDamageDealt > 0) {
                 int healAmount = (int)Math.ceil(playerDamageDealt * lifestealPercent);
+                lastLifestealAmount = healAmount;
                 lastLifestealHeal = player.heal(healAmount);
                 playerHpRestored += lastLifestealHeal;
                 PlayerProgress.getInstance().setCurrentHp(player.getCurrentHp());
@@ -367,11 +370,6 @@ public class CombatEngine {
         for (int h = 0; h < bossMove.getHits(); h++) {
             int effective = Math.max(1, perHit - player.getDefense());
 
-            if (reflectTurnsLeft > 0 && reflectPercent > 0) {
-                int reflected = (int)Math.ceil(effective * reflectPercent);
-                lastReflectedDamage += boss.takeDamage(reflected);
-            }
-
             int absorbed = 0;
             if (shieldAbsorbLeft > 0) {
                 absorbed = Math.min(shieldAbsorbLeft, effective);
@@ -382,6 +380,12 @@ public class CombatEngine {
             int hit = Math.max(0, effective - absorbed);
             if (hit > 0) {
                 player.setCurrentHp(Math.max(0, player.getCurrentHp() - hit));
+            }
+
+            if (reflectTurnsLeft > 0 && reflectPercent > 0 && hit > 0) {
+                int reflected = (int)Math.ceil(hit * reflectPercent);
+                boss.setCurrentHp(Math.max(0, boss.getCurrentHp() - reflected));
+                lastReflectedDamage += reflected;
             }
 
             lastBossHitList.add(hit);
@@ -660,6 +664,7 @@ public class CombatEngine {
     public int getLifestealTurnsLeft()      { return lifestealTurnsLeft; }
     public int getReflectTurnsLeft()        { return reflectTurnsLeft; }
     public int getLastShieldAbsorbed()      { return lastShieldAbsorbed; }
+    public int getLastLifestealAmount()     { return lastLifestealAmount; }
     public int getLastLifestealHeal()       { return lastLifestealHeal; }
     public int getLastReflectedDamage()     { return lastReflectedDamage; }
 }

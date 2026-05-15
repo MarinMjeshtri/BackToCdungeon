@@ -8,6 +8,7 @@ import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -34,7 +35,9 @@ public class CombatController {
     @FXML private Label bossHPnumber;
     @FXML private Label playername;
     @FXML private Label turnNumber;
+    @FXML private Label turnLogTitle;
     @FXML private TextArea turnInformation;
+    @FXML private AnchorPane turnLogPanel;
 
     @FXML private Rectangle bossHP;
     @FXML private Rectangle playerHP;
@@ -54,6 +57,8 @@ public class CombatController {
 
     private Label playerStatusLabel;
     private Label bossStatusLabel;
+    private HBox playerStatusBadges;
+    private HBox bossStatusBadges;
     private Label bossIntentLabel;
     private Label playerHpLabel;
 
@@ -65,9 +70,47 @@ public class CombatController {
     private int pendingAtkRestore = -1; // -1 means no ATK boost pending
 
     private PauseTransition thinkingRevertTimer = null;
+    private Timeline turnLogPulse = null;
 
     @FXML
     public void initialize() {
+        setupTurnLog();
+    }
+
+    private void setupTurnLog() {
+        if (turnInformation != null) {
+            turnInformation.setWrapText(true);
+            turnInformation.setFocusTraversable(false);
+        }
+        if (turnLogTitle != null) {
+            FadeTransition blink = new FadeTransition(Duration.millis(1100), turnLogTitle);
+            blink.setFromValue(0.72);
+            blink.setToValue(1.0);
+            blink.setAutoReverse(true);
+            blink.setCycleCount(Animation.INDEFINITE);
+            blink.play();
+        }
+    }
+
+    private void pulseTurnLog() {
+        if (turnLogPanel == null) return;
+        if (turnLogPulse != null) turnLogPulse.stop();
+
+        turnLogPulse = new Timeline(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(turnLogPanel.scaleXProperty(), 1.0),
+                        new KeyValue(turnLogPanel.scaleYProperty(), 1.0),
+                        new KeyValue(turnLogPanel.opacityProperty(), 0.92)),
+                new KeyFrame(Duration.millis(120),
+                        new KeyValue(turnLogPanel.scaleXProperty(), 1.012),
+                        new KeyValue(turnLogPanel.scaleYProperty(), 1.012),
+                        new KeyValue(turnLogPanel.opacityProperty(), 1.0)),
+                new KeyFrame(Duration.millis(360),
+                        new KeyValue(turnLogPanel.scaleXProperty(), 1.0),
+                        new KeyValue(turnLogPanel.scaleYProperty(), 1.0),
+                        new KeyValue(turnLogPanel.opacityProperty(), 1.0))
+        );
+        turnLogPulse.playFromStart();
     }
 
     private void updatePlayerSpriteMood() {
@@ -101,8 +144,15 @@ public class CombatController {
         PlayerInventory inventory = PlayerInventory.getInstance();
         Shop itemBeforeUse = inventory.getSlot(slotIndex);
 
+        if (activateNewCombatItem(itemBeforeUse)) {
+            inventory.clearSlot(slotIndex);
+            finishItemUse(itemButtons);
+            return;
+        }
+
         // save original ATK in case ATK potion is used - restored after turn
         int originalAtk = player.getAttack();
+        int hpBeforeItem = player.getCurrentHp();
 
         PlayerInventory.CombatItemResult result =
                 inventory.useItemInCombat(slotIndex, player);
@@ -118,9 +168,12 @@ public class CombatController {
 
             case HEALED:
                 int newHp = player.getCurrentHp();
+                int restored = Math.max(0, newHp - hpBeforeItem);
                 tweenHpBar(playerHP, newHp, playerMaxHp, PLAYER_BAR_MAX);
                 if (playerHpLabel != null)
                     playerHpLabel.setText(newHp + " / " + playerMaxHp);
+                playHealEffect(playerHP, (AnchorPane) playercharacterSprite.getParent(),
+                        "+" + restored + " HP", 70, 88, 24);
                 log("Used healing item. Restored HP. Now at " + newHp + "/" + playerMaxHp + ".");
                 break;
 
@@ -133,29 +186,78 @@ public class CombatController {
                 int shieldAmount = getEffectInt(itemBeforeUse, "shield", 40);
                 int shieldTurns = getEffectInt(itemBeforeUse, "turns", 3);
                 engine.activateShield(shieldAmount, shieldTurns);
-                log("Shield Battery activated. Absorbs up to " + shieldAmount
-                        + " damage for " + shieldTurns + " turns.");
+                log("Shield Battery activated. For " + shieldTurns
+                        + " turns, up to " + shieldAmount
+                        + " incoming damage will be absorbed.");
                 break;
 
             case LIFESTEAL:
                 double lifestealPercent = getEffectDouble(itemBeforeUse, "lifesteal", 0.25);
                 int lifestealTurns = getEffectInt(itemBeforeUse, "turns", 3);
                 engine.activateLifesteal(lifestealPercent, lifestealTurns);
-                log("Leech Serum activated. You heal for "
+                log("Leech Serum activated. For " + lifestealTurns
+                        + " turns, "
                         + (int)(lifestealPercent * 100)
-                        + "% of damage dealt for " + lifestealTurns + " turns.");
+                        + "% of the damage you deal returns as healing.");
                 break;
 
             case MIRROR:
                 double reflectPercent = getEffectDouble(itemBeforeUse, "reflect", 0.5);
                 int reflectTurns = getEffectInt(itemBeforeUse, "turns", 1);
                 engine.activateReflect(reflectPercent, reflectTurns);
-                log("Mirror Shard activated. Reflects "
+                log("Mirror Shard activated. For " + reflectTurns
+                        + " turn, "
                         + (int)(reflectPercent * 100)
-                        + "% incoming attack damage for " + reflectTurns + " turn.");
+                        + "% of damage you take is reflected back to the enemy.");
                 break;
         }
 
+        finishItemUse(itemButtons);
+
+        if (result == PlayerInventory.CombatItemResult.ATK_BOOST) {
+            pendingAtkRestore = originalAtk;
+        }
+    }
+
+    private boolean activateNewCombatItem(Shop item) {
+        if (item == null || item.effects == null) return false;
+
+        if (item.effects.containsKey("shield")) {
+            int shieldAmount = getEffectInt(item, "shield", 40);
+            int shieldTurns = getEffectInt(item, "turns", 3);
+            engine.activateShield(shieldAmount, shieldTurns);
+            log("Shield Battery activated. For " + shieldTurns
+                    + " turns, up to " + shieldAmount
+                    + " incoming damage will be absorbed.");
+            return true;
+        }
+
+        if (item.effects.containsKey("lifesteal")) {
+            double lifestealPercent = getEffectDouble(item, "lifesteal", 0.25);
+            int lifestealTurns = getEffectInt(item, "turns", 3);
+            engine.activateLifesteal(lifestealPercent, lifestealTurns);
+            log("Leech Serum activated. For " + lifestealTurns
+                    + " turns, "
+                    + (int)(lifestealPercent * 100)
+                    + "% of the damage you deal returns as healing.");
+            return true;
+        }
+
+        if (item.effects.containsKey("reflect")) {
+            double reflectPercent = getEffectDouble(item, "reflect", 0.5);
+            int reflectTurns = getEffectInt(item, "turns", 1);
+            engine.activateReflect(reflectPercent, reflectTurns);
+            log("Mirror Shard activated. For " + reflectTurns
+                    + " turn, "
+                    + (int)(reflectPercent * 100)
+                    + "% of damage you take is reflected back to the enemy.");
+            return true;
+        }
+
+        return false;
+    }
+
+    private void finishItemUse(List<Button> itemButtons) {
         // refresh item buttons to show Empty after use
         refreshItemButtons(itemButtons);
 
@@ -169,9 +271,6 @@ public class CombatController {
         lockAllActions(true);
         // item is free - does not consume a turn
 
-        if (result == PlayerInventory.CombatItemResult.ATK_BOOST) {
-            pendingAtkRestore = originalAtk;
-        }
         updateStatusLabels();
         goBack();
     }
@@ -272,18 +371,25 @@ public class CombatController {
 
         if (bossStatusLabel != null)   bossHpPane.getChildren().remove(bossStatusLabel);
         if (playerStatusLabel != null) playerHpPane.getChildren().remove(playerStatusLabel);
+        if (bossStatusBadges != null) bossHpPane.getChildren().remove(bossStatusBadges);
+        if (playerStatusBadges != null) playerHpPane.getChildren().remove(playerStatusBadges);
         if (playerHpLabel != null)     playerHpPane.getChildren().remove(playerHpLabel);
         enemyPane.getChildren().removeIf(n -> n instanceof Label);
 
-        bossStatusLabel = new Label("");
-        bossStatusLabel.setLayoutX(14);
-        bossStatusLabel.setLayoutY(72);
-        bossStatusLabel.setStyle("-fx-text-fill: #cc3300; -fx-font-size: 10px;");
+        bossStatusLabel = null;
+        playerStatusLabel = null;
 
-        playerStatusLabel = new Label("");
-        playerStatusLabel.setLayoutX(4);
-        playerStatusLabel.setLayoutY(1);
-        playerStatusLabel.setStyle("-fx-text-fill: #cc3300; -fx-font-size: 11px;");
+        bossStatusBadges = new HBox(5);
+        bossStatusBadges.setLayoutX(14);
+        bossStatusBadges.setLayoutY(74);
+        bossStatusBadges.setMouseTransparent(true);
+        bossStatusBadges.setPickOnBounds(false);
+
+        playerStatusBadges = new HBox(5);
+        playerStatusBadges.setLayoutX(92);
+        playerStatusBadges.setLayoutY(1);
+        playerStatusBadges.setMouseTransparent(true);
+        playerStatusBadges.setPickOnBounds(false);
 
         playerHpLabel = new Label(player.getCurrentHp() + " / " + playerMaxHp);
         playerHpLabel.setLayoutX(4);
@@ -296,10 +402,11 @@ public class CombatController {
         bossIntentLabel.setStyle("-fx-text-fill: #222; -fx-font-size: 11px; " +
                 "-fx-background-color: rgba(255,255,255,0.8); -fx-padding: 2 5 2 5;");
 
-        bossHpPane.getChildren().add(bossStatusLabel);
-        playerHpPane.getChildren().add(playerStatusLabel);
+        bossHpPane.getChildren().add(bossStatusBadges);
+        playerHpPane.getChildren().add(playerStatusBadges);
         playerHpPane.getChildren().add(playerHpLabel);
         enemyPane.getChildren().add(bossIntentLabel);
+        updateStatusLabels();
     }
 
     private void wireAbilityButtons() {
@@ -432,14 +539,22 @@ public class CombatController {
 
                 GameMusicManager.playHitSound();
                 flashHit(enemycharacterSprite);
-                spawnDamageLabel("-" + turnLog.getPlayerDamageDealt(),
-                        bossPane, Color.RED, 70, 90, 26);
+                playDamageEffect(bossHP, bossPane,
+                        "-" + turnLog.getPlayerDamageDealt(), 70, 90, 26);
             }
 
             PauseTransition afterPlayerHit = new PauseTransition(Duration.millis(500));
             afterPlayerHit.setOnFinished(ev -> {
                 tweenHpBar(bossHP, turnLog.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
                 bossHPnumber.setText(turnLog.getBossHpAfter() + " / " + bossMaxHp);
+
+                if (engine.getLastLifestealHeal() > 0) {
+                    tweenHpBar(playerHP, player.getCurrentHp(), playerMaxHp, PLAYER_BAR_MAX);
+                    if (playerHpLabel != null)
+                        playerHpLabel.setText(player.getCurrentHp() + " / " + playerMaxHp);
+                    playHealEffect(playerHP, (AnchorPane) playercharacterSprite.getParent(),
+                            "+" + engine.getLastLifestealHeal() + " HP", 54, 88, 22);
+                }
 
                 updateBossSpriteMood();
                 updatePlayerSpriteMood();
@@ -501,7 +616,7 @@ public class CombatController {
 
             PauseTransition wait = new PauseTransition(Duration.millis(300));
             wait.setOnFinished(e -> {
-                spawnDamageLabel("+" + finalHealAmount + " HP", bossPane, Color.LIMEGREEN, 55, 80, 20);
+                playHealEffect(bossHP, bossPane, "+" + finalHealAmount + " HP", 55, 80, 20);
                 PauseTransition afterPopup = new PauseTransition(Duration.millis(400));
                 afterPopup.setOnFinished(ev -> {
                     tweenHpBar(bossHP, log.getBossHpAfter(), bossMaxHp, BOSS_BAR_MAX);
@@ -546,8 +661,8 @@ public class CombatController {
             KeyFrame kf = new KeyFrame(Duration.millis((long) i * delayPerHit), ev -> {
                 flashHit(playercharacterSprite);
                 if (hitVal > 0) {
-                    spawnDamageLabel("-" + hitVal, playerPane,
-                            Color.ORANGERED, 50 + ox, oy, 20);
+                    playDamageEffect(playerHP, playerPane,
+                            "-" + hitVal, 50 + ox, oy, 20);
                 } else {
                     spawnDamageLabel("BLOCK", playerPane,
                             Color.CYAN, 35 + ox, oy, 16);
@@ -582,7 +697,7 @@ public class CombatController {
         pre.setOnFinished(e -> {
             flashHit(playercharacterSprite);
             if (totalDmg > 0) {
-                spawnDamageLabel("-" + totalDmg, playerPane, Color.RED, 55, 85, 30);
+                playDamageEffect(playerHP, playerPane, "-" + totalDmg, 55, 85, 30);
             } else {
                 spawnDamageLabel("BLOCK", playerPane, Color.CYAN, 35, 85, 24);
             }
@@ -678,6 +793,54 @@ public class CombatController {
         pt.play();
     }
 
+    private void playHealEffect(Rectangle hpBar, AnchorPane parent,
+                                String text, double x, double y, double size) {
+        spawnDamageLabel(text, parent, Color.LIMEGREEN, x, y, size);
+
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.LIMEGREEN);
+        glow.setRadius(18);
+        glow.setSpread(0.35);
+        hpBar.setEffect(glow);
+
+        ScaleTransition grow = new ScaleTransition(Duration.millis(120), hpBar);
+        grow.setToY(1.18);
+
+        ScaleTransition settle = new ScaleTransition(Duration.millis(220), hpBar);
+        settle.setToY(1.0);
+
+        PauseTransition clearGlow = new PauseTransition(Duration.millis(520));
+        clearGlow.setOnFinished(e -> hpBar.setEffect(null));
+
+        SequentialTransition pulse = new SequentialTransition(grow, settle);
+        pulse.play();
+        clearGlow.play();
+    }
+
+    private void playDamageEffect(Rectangle hpBar, AnchorPane parent,
+                                  String text, double x, double y, double size) {
+        spawnDamageLabel(text, parent, Color.ORANGERED, x, y, size);
+
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.RED);
+        glow.setRadius(18);
+        glow.setSpread(0.38);
+        hpBar.setEffect(glow);
+
+        ScaleTransition hit = new ScaleTransition(Duration.millis(90), hpBar);
+        hit.setToY(0.82);
+
+        ScaleTransition settle = new ScaleTransition(Duration.millis(230), hpBar);
+        settle.setToY(1.0);
+
+        PauseTransition clearGlow = new PauseTransition(Duration.millis(520));
+        clearGlow.setOnFinished(e -> hpBar.setEffect(null));
+
+        SequentialTransition pulse = new SequentialTransition(hit, settle);
+        pulse.play();
+        clearGlow.play();
+    }
+
     private void finishTurnUpdate(TurnLog turnLog) {
         guardUsedThisTurn = false;
         setTurnNr(turnLog.getRoundNumber());
@@ -706,10 +869,17 @@ public class CombatController {
         if (be != null) sb.append("Status on ").append(boss.getName())
                 .append(": ").append(be.getLabel()).append("\n");
 
-        if (engine.getLastLifestealHeal() > 0) {
-            sb.append("Leech Serum restored ")
-                    .append(engine.getLastLifestealHeal())
-                    .append(" HP.\n");
+        if (engine.getLastLifestealAmount() > 0) {
+            sb.append("Leech Serum converted ")
+                    .append(engine.getLastLifestealAmount())
+                    .append(" HP from your damage");
+            if (engine.getLastLifestealHeal() > 0) {
+                sb.append(" and restored ")
+                        .append(engine.getLastLifestealHeal())
+                        .append(" HP.\n");
+            } else {
+                sb.append(", but your HP was already full.\n");
+            }
         }
         if (engine.getLastShieldAbsorbed() > 0) {
             sb.append("Shield Battery absorbed ")
@@ -788,25 +958,70 @@ public class CombatController {
     private void updateStatusLabels() {
         StatusEffect pe = player.getActiveEffect();
         StatusEffect be = boss.getActiveEffect();
-        if (playerStatusLabel != null) {
-            StringBuilder status = new StringBuilder();
-            if (pe != null) status.append(pe.getLabel());
+
+        if (playerStatusBadges != null) {
+            playerStatusBadges.getChildren().clear();
+            if (pe != null) {
+                playerStatusBadges.getChildren().add(createStatusBadge(pe.getLabel(), "#7c2d12", "#fed7aa"));
+            }
             if (engine.getShieldAbsorbLeft() > 0) {
-                if (status.length() > 0) status.append("\n");
-                status.append("Shield ").append(engine.getShieldAbsorbLeft());
+                playerStatusBadges.getChildren().add(createStatusBadge(
+                        "SHIELD " + engine.getShieldAbsorbLeft(),
+                        "#0e7490",
+                        "#cffafe"));
             }
             if (engine.getLifestealTurnsLeft() > 0) {
-                if (status.length() > 0) status.append("\n");
-                status.append("Leech ").append(engine.getLifestealTurnsLeft()).append("T");
+                playerStatusBadges.getChildren().add(createStatusBadge(
+                        "LEECH " + engine.getLifestealTurnsLeft() + "T",
+                        "#15803d",
+                        "#dcfce7"));
             }
             if (engine.getReflectTurnsLeft() > 0) {
-                if (status.length() > 0) status.append("\n");
-                status.append("Mirror ").append(engine.getReflectTurnsLeft()).append("T");
+                playerStatusBadges.getChildren().add(createStatusBadge(
+                        "MIRROR " + engine.getReflectTurnsLeft() + "T",
+                        "#5b21b6",
+                        "#ede9fe"));
             }
-            playerStatusLabel.setText(status.toString());
         }
-        if (bossStatusLabel != null)
-            bossStatusLabel.setText(be != null ? be.getLabel() : "");
+
+        if (bossStatusBadges != null) {
+            bossStatusBadges.getChildren().clear();
+            if (be != null) {
+                bossStatusBadges.getChildren().add(createStatusBadge(be.getLabel(), "#991b1b", "#fee2e2"));
+            }
+        }
+    }
+
+    private Label createStatusBadge(String text, String background, String textColor) {
+        Label badge = new Label(text);
+        badge.setMinHeight(18);
+        badge.setMaxHeight(18);
+        badge.setMouseTransparent(true);
+        badge.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+        badge.setTextFill(Color.web(textColor));
+        badge.setStyle(
+                "-fx-background-color: " + background + ";" +
+                "-fx-background-radius: 8;" +
+                "-fx-border-color: rgba(255,255,255,0.55);" +
+                "-fx-border-radius: 8;" +
+                "-fx-border-width: 1;" +
+                "-fx-padding: 2 7 2 7;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 5, 0.35, 0, 1);"
+        );
+
+        FadeTransition fade = new FadeTransition(Duration.millis(180), badge);
+        fade.setFromValue(0.0);
+        fade.setToValue(1.0);
+        fade.play();
+
+        ScaleTransition pop = new ScaleTransition(Duration.millis(160), badge);
+        pop.setFromX(0.88);
+        pop.setFromY(0.88);
+        pop.setToX(1.0);
+        pop.setToY(1.0);
+        pop.play();
+
+        return badge;
     }
 
     private void tweenHpBar(Rectangle bar, int currentHp, int maxHp, double barMax) {
@@ -861,6 +1076,8 @@ public class CombatController {
         if (boss.getActiveEffect()   != null) boss.applyEffect(null);
         if (playerStatusLabel != null) playerStatusLabel.setText("");
         if (bossStatusLabel   != null) bossStatusLabel.setText("");
+        if (playerStatusBadges != null) playerStatusBadges.getChildren().clear();
+        if (bossStatusBadges != null) bossStatusBadges.getChildren().clear();
         if (bossIntentLabel   != null) bossIntentLabel.setText("");
 
         if (playerWon) {
@@ -908,7 +1125,11 @@ public class CombatController {
         }
     }
 
-    private void log(String text) { turnInformation.appendText(text + "\n"); }
+    private void log(String text) {
+        turnInformation.appendText(text + "\n");
+        turnInformation.positionCaret(turnInformation.getLength());
+        pulseTurnLog();
+    }
 
     public void setStart(String playerNamee, String bossNamee, int bossMaxHp) {
         playername.setText(playerNamee);
