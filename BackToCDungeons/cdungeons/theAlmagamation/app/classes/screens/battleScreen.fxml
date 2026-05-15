@@ -65,11 +65,11 @@
               </AnchorPane>
       
               <!-- TURN LOG -->
-              <AnchorPane layoutX="14.0" layoutY="136.0" prefHeight="170.0" prefWidth="464.0" styleClass="panel">
+              <AnchorPane fx:id="turnLogPanel" id="turnLogPanel" layoutX="14.0" layoutY="136.0" prefHeight="170.0" prefWidth="464.0" styleClass="panel">
                   <children>
-                      <Label layoutX="42.0" layoutY="8.0" styleClass="label-title" text="TURNLOG" />
+                      <Label fx:id="turnLogTitle" id="turnLogTitle" layoutX="42.0" layoutY="8.0" styleClass="label-title" text="TURNLOG" />
                       <Label fx:id="turnNumber" layoutX="312.0" layoutY="1.0" prefHeight="30.0" prefWidth="79.0" styleClass="label-muted" text="TURN: 0" />
-                          <TextArea fx:id="turnInformation" editable="false" layoutX="42.0" layoutY="32.0" prefHeight="125.0" prefWidth="350.0" styleClass="text-area" text="TURN INFORMATION" />
+                          <TextArea fx:id="turnInformation" id="turnLogText" editable="false" layoutX="42.0" layoutY="32.0" prefHeight="125.0" prefWidth="350.0" styleClass="text-area" text="TURN INFORMATION" wrapText="true" />
                   </children>
               </AnchorPane>
       

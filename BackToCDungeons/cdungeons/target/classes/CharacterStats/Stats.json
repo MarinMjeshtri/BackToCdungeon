@@ -145,9 +145,9 @@
           "cooldown": 0
         },
         {
-          "name": "Tesla Cage",
-          "desc": "Traps you in an electric cage. Deals 50 damage with 40% chance to stun for 1 turn.",
-          "effects": { "damage": 50},
+          "name": "Nerve Shock",
+          "desc": "Overloads the target's nerves to freeze their movement.. Deals 100 damage with 40% chance to stun for 1 turn.",
+          "effects": { "damage": 100},
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.4,
@@ -294,7 +294,7 @@
   ]
 },
    "Mob2": {
-  "stats": { "atk": 12, "def": 5, "hp": 130 },
+  "stats": { "atk": 12, "def": 5, "hp": 120 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
     "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
@@ -305,7 +305,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 30 },
+      "effects": { "damage": 40 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
@@ -314,8 +314,31 @@
       "cooldown": 0
     }
   ]
-},     
+},
 "Mob3": {
+  "stats": { "atk": 12, "def": 5, "hp": 130 },
+  "sprites": {
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "thinking": "",
+    "defeated": "",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 50 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "",
+      "hitStyle": "single",
+      "cooldown": 0
+    }
+  ]
+},
+   "Mob4": {
   "stats": { "atk": 12, "def": 5, "hp": 150 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
@@ -328,7 +351,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 35 },
+      "effects": { "damage": 60 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
@@ -338,31 +361,8 @@
     }
   ]
 },
-   "Mob4": {
-  "stats": { "atk": 12, "def": 5, "hp": 200 },
-  "sprites": {
-    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
-    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
-    "thinking": "",
-    "defeated": "",
-    "cloned":   ""
-  },
-  "abilities": [
-    {
-      "name": "Scratch",
-      "desc": "A weak scratch.",
-      "effects": { "damage": 35 },
-      "statusEffect": null,
-      "duration": 0,
-      "chance": 0.0,
-      "abilitySprite": "",
-      "hitStyle": "single",
-      "cooldown": 0
-    }
-  ]
-},   
    "Mob5": {
-  "stats": { "atk": 12, "def": 5, "hp": 250 },
+  "stats": { "atk": 12, "def": 5, "hp": 170 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
     "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
@@ -374,7 +374,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 40 },
+      "effects": { "damage": 70 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
