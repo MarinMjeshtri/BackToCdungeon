@@ -85,4 +85,5 @@ com\dungeons\Controllers\tutorialController.class
 com\dungeons\world\TransitionZone.class
 com\dungeons\systems\items\Items$Stats.class
 com\dungeons\world\TilesetManager.class
+com\dungeons\systems\CombatSystem\StatusEffect$1.class
 com\dungeons\world\MapManager$InteractListener.class

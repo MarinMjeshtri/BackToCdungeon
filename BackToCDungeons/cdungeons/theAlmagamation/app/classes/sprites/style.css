@@ -237,3 +237,49 @@
     -fx-border-color: #7b8cc7;
 }
 
+#turnLogPanel {
+    -fx-background-color: linear-gradient(to bottom, #d8e2ff, #b6c2e4);
+    -fx-border-color: #6f8cff;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(16, 24, 60, 0.35), 12, 0.35, 0, 2);
+}
+
+#turnLogTitle {
+    -fx-text-fill: #1e2c6a;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.75), 2, 0.4, 0, 1);
+}
+
+#turnLogText {
+    -fx-background-color: #090d1f;
+    -fx-border-color: #7f96ff;
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-font-size: 12px;
+    -fx-text-fill: #d9e5ff;
+    -fx-highlight-fill: #4157b8;
+    -fx-highlight-text-fill: #ffffff;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.65), 8, 0.45, 0, 1);
+}
+
+#turnLogText .content {
+    -fx-background-color: linear-gradient(to bottom, #090d1f, #111a36);
+}
+
+#turnLogText .scroll-pane,
+#turnLogText .viewport {
+    -fx-background-color: transparent;
+}
+
+#turnLogText .scroll-bar:vertical {
+    -fx-background-color: #111a36;
+    -fx-pref-width: 8px;
+}
+
+#turnLogText .scroll-bar:vertical .thumb {
+    -fx-background-color: #7f96ff;
+    -fx-background-radius: 4px;
+}
+

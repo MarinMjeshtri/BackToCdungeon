@@ -21,8 +21,10 @@ import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -34,6 +36,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -54,6 +57,7 @@ public class GameScreen {
     private Pane actualCombatPane;
     private StackPane gameRoot;
     private roomTransitionScreen transitionScreen;
+    private Rectangle transitionFade;
 
     // ── SCREENS ────────────────────────────────────────────
     private shopScreen shopScreen;
@@ -180,8 +184,14 @@ public class GameScreen {
         transaction.getRoot().setPickOnBounds(false);
         this.transitionScreen = transaction;
 
+        transitionFade = new Rectangle(1280, 720, Color.BLACK);
+        transitionFade.setOpacity(0.0);
+        transitionFade.setVisible(false);
+        transitionFade.setMouseTransparent(true);
+        transitionFade.setManaged(false);
+
         // ── STACK ALL PANES ────────────────────────────────
-        gameRoot = new StackPane(gamePane,combatPane,uiOverlayPane, uiPane, secondUIPane,actualCombatPane, escapePane);
+        gameRoot = new StackPane(gamePane,combatPane,uiOverlayPane, uiPane, secondUIPane,actualCombatPane, escapePane, transitionFade);
         gameRoot.setPrefSize(1280, 720);
 
         // ── MAP MANAGER ────────────────────────────────────
@@ -194,6 +204,7 @@ public class GameScreen {
                     roomScreenController controller = transitionScreen.getLoader().getController();
                     controller.setMapManager(mapManager);
                     controller.updateScreen();
+                    playRoomTransitionFade();
                     premadeAnimation.showFor(transitionScreen.getRoot(), 1);
 
                     mapRenderer = new MapRenderer(newMap, tilesetManager);
@@ -365,6 +376,28 @@ public class GameScreen {
         return gameRoot;
     }
 
+    private void playRoomTransitionFade() {
+        if (transitionFade == null) return;
+
+        transitionFade.setVisible(true);
+        transitionFade.setOpacity(0.0);
+        transitionFade.toFront();
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(280), transitionFade);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(0.68);
+
+        PauseTransition hold = new PauseTransition(Duration.millis(110));
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(520), transitionFade);
+        fadeOut.setFromValue(0.68);
+        fadeOut.setToValue(0.0);
+
+        SequentialTransition fade = new SequentialTransition(fadeIn, hold, fadeOut);
+        fade.setOnFinished(e -> transitionFade.setVisible(false));
+        fade.playFromStart();
+    }
+
     // ── COMBAT RETURN ──────────────────────────────────────
 
     public void returnFromCombat() {
@@ -399,6 +432,14 @@ public class GameScreen {
     // ── PAUSE ──────────────────────────────────────────────
 
     public void togglePause() {
+        if (pauseScreen.getRoot().isVisible()) {
+            PauseController controller = pauseScreen.getLoader().getController();
+            if (controller.closeOptionsIfOpen()) {
+                canvas.requestFocus();
+                return;
+            }
+        }
+
         boolean nowPaused = !pauseScreen.getRoot().isVisible();
         pauseScreen.getRoot().setVisible(nowPaused);
         escapePane.setPickOnBounds(nowPaused);
