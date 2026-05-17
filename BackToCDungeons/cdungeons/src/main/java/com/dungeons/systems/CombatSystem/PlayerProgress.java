@@ -57,6 +57,8 @@ public class PlayerProgress {
     private int xp    = 0;  // current XP within this level, starts at 0
     private int gold  = 100;  // total gold collected, starts at 0
     private int currentHp = -1; //If its the first run, player spawns full hp
+    private int maxHpBonusPercent = 0;
+    private int attackDamageBonusPercent = 0;
 
     // Constructor is private - nobody can write 'new PlayerProgress()' from outside.
     // The only way to get this object is getInstance(). This enforces the singleton.
@@ -122,14 +124,43 @@ public class PlayerProgress {
     //   Level 5:  HP=500, ATK=33, DEF=12
     //   Level 10: HP=600, ATK=43, DEF=17
     //   Level 20: HP=800, ATK=63, DEF=27
-    public int getScaledHp()  { return BASE_HP  + (level - 1) * HP_PER_LEVEL;  }
+    public int getScaledHp()  { return applyPercent(BASE_HP + (level - 1) * HP_PER_LEVEL, maxHpBonusPercent); }
     public int getScaledAtk() { return BASE_ATK + (level - 1) * ATK_PER_LEVEL; }
     public int getScaledDef() { return BASE_DEF + (level - 1) * DEF_PER_LEVEL; }
+
+    private int applyPercent(int value, int percent) {
+        return (int)Math.round(value * (1.0 + percent / 100.0));
+    }
+
+    public void addMaxHpPercentBonus(int percent) {
+        int oldMax = getScaledHp();
+        maxHpBonusPercent += percent;
+        int newMax = getScaledHp();
+        int gained = Math.max(0, newMax - oldMax);
+        currentHp = currentHp == -1 ? newMax : currentHp + gained;
+    }
+
+    public void addAttackDamagePercentBonus(int percent) {
+        attackDamageBonusPercent += percent;
+    }
+
+    public int getMaxHpBonusPercent() { return maxHpBonusPercent; }
+    public int getAttackDamageBonusPercent() { return attackDamageBonusPercent; }
 
 
     // --- applyToPlayer ---
     // Applies the player's scaled level stats to the actual Player object used in combat.
     public void applyToPlayer(Player player) {
+        if (StatsLoader.opMode) {
+            player.setMaxHp(9999);
+            player.setCurrentHp(9999);
+            player.setAttack(999);
+            player.setDefense(999);
+            currentHp = 9999;
+            System.out.println("OP mode active | HP: 9999 | ATK: 999 | DEF: 999");
+            return;
+        }
+
         int hp  = getScaledHp();
         int atk = getScaledAtk();
         int def = getScaledDef();
@@ -137,6 +168,13 @@ public class PlayerProgress {
         player.setMaxHp(hp);
         player.setAttack(atk);
         player.setDefense(def);
+        if (attackDamageBonusPercent > 0 && player.getMoves() != null) {
+            for (Move move : player.getMoves()) {
+                if (move.getDamage() > 0) {
+                    move.setDamage(applyPercent(move.getDamage(), attackDamageBonusPercent));
+                }
+            }
+        }
         System.out.println("Level: " + level + " | scaledHp: " + getScaledHp() + " | current: " + player.getCurrentHp()); //debug
     }
     private int oldMaxHp = -1; // tracks max HP before last level up

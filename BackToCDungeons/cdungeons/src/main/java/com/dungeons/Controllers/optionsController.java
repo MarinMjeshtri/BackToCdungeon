@@ -39,6 +39,7 @@ public class optionsController implements Initializable {
         volumeSlider.setValue(50);
 
         resNormal.setSelected(true);
+        becomeOp.setSelected(StatsLoader.opMode);
 
         volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             GameMusicManager.setMusicVolume(newValue.doubleValue()/100.0);
@@ -63,6 +64,7 @@ public class optionsController implements Initializable {
 
         becomeOp.setOnAction(event -> {
             StatsLoader.opMode = becomeOp.isSelected();
+            PlayerProgress.getInstance().setCurrentHp(StatsLoader.opMode ? 9999 : -1);
             System.out.println("OP mode: " + StatsLoader.opMode);
         });
 

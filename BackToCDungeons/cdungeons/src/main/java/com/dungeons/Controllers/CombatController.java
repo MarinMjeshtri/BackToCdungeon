@@ -3,10 +3,12 @@ package com.dungeons.Controllers;
 import com.dungeons.MusicandSoundsCode.GameMusicManager;
 import com.dungeons.systems.CombatSystem.*;
 import com.dungeons.screens.GameScreen;
+import com.dungeons.screens.bossRewardScreen;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -18,10 +20,13 @@ import javafx.scene.text.*;
 import javafx.util.Duration;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.dungeons.shopItemsManager.PlayerInventory;
 import com.dungeons.shopItemsManager.Shop;
+import com.dungeons.shopItemsManager.ShopManager;
 
 public class CombatController {
 
@@ -1094,6 +1099,11 @@ public class CombatController {
             log("Level: " + progress.getLevel() + "  |  XP: " + progress.getXp() + "/" + progress.getXpToNextLevel());
             log("Loading next area...");
 
+            if (isBossBattle()) {
+                showBossRewardPopup();
+                return;
+            }
+
         } else {
 
             GameMusicManager.stopMusic();
@@ -1114,6 +1124,41 @@ public class CombatController {
             }
         });
         delay.play();
+    }
+
+    private boolean isBossBattle() {
+        return boss != null && boss.getId() != null && !boss.getId().startsWith("Mob");
+    }
+
+    private void showBossRewardPopup() {
+        try {
+            bossRewardScreen rewardScreen = new bossRewardScreen();
+            BossRewardController controller = rewardScreen.getLoader().getController();
+            controller.setup(generateBossRewards(), this::loadNextArea);
+
+            Parent sceneRoot = mainAnchor.getScene().getRoot();
+            if (sceneRoot instanceof Pane) {
+                ((Pane) sceneRoot).getChildren().add(rewardScreen.getRoot());
+            } else {
+                loadNextArea();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            loadNextArea();
+        }
+    }
+
+    private List<Shop> generateBossRewards() {
+        ShopManager manager = new ShopManager();
+        manager.load();
+
+        List<Shop> items = new ArrayList<>(manager.getAllItems());
+        Collections.shuffle(items);
+
+        if (items.size() > 2) {
+            return new ArrayList<>(items.subList(0, 2));
+        }
+        return items;
     }
 
     private void loadNextArea() {
