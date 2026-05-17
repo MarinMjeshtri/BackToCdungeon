@@ -275,11 +275,17 @@ public class GameScreen {
 
                     // ── CHEST ─────────────────────────────
                     if (type.equals("chest")) {
-                        itemPickupScreen chest = new itemPickupScreen(this, stage);
+                        utilityRewardScreen chest = new utilityRewardScreen();
+                        UtilityRewardController controller = chest.getLoader().getController();
                         chestNode = chest.getRoot();
+                        controller.setup(() -> {
+                            secondUIPane.getChildren().remove(chestNode);
+                            secondUIPane.setVisible(false);
+                            chestNode = null;
+                            canvas.requestFocus();
+                        });
                         secondUIPane.getChildren().add(chestNode);
                         secondUIPane.setVisible(true);
-                        this.itemPickupScreen = chest;
                     }
 
 
