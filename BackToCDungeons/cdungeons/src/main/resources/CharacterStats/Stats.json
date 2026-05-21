@@ -273,10 +273,10 @@
       "Mob1": {
   "stats": { "atk": 12, "def": 5, "hp": 100 },
   "sprites": {
-    "neutral": "/Sprties_CombatUI/Mob1/mobNeutral.png",
+    "neutral": "/Sprties_CombatUI/Mob1/mobNeutral200.png",
     "angry":   "",
     "thinking": "",
-    "defeated": "/Sprties_CombatUI/Mob1/mobDef.png",
+    "defeated": "/Sprties_CombatUI/Mob1/mobDef200.png",
     "cloned":   ""
   },
   "abilities": [
@@ -287,52 +287,53 @@
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
-      "abilitySprite": "/Sprties_CombatUI/Mob1/mobClaw.png",
+      "abilitySprite": "/Sprties_CombatUI/Mob1/mobClaw200.png",
       "hitStyle": "single",
       "cooldown": 0
     }
   ]
 },
    "Mob2": {
-  "stats": { "atk": 12, "def": 5, "hp": 120 },
+  "stats": { "atk": 12, "def": 5, "hp": 100 },
   "sprites": {
-    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
-    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "neutral": "/Sprties_CombatUI/Mob2/mobNeutral.png",
+    "angry":   "",
     "thinking": "",
-    "defeated": ""
-  },
-  "abilities": [
-    {
-      "name": "Scratch",
-      "desc": "A weak scratch.",
-      "effects": { "damage": 40 },
-      "statusEffect": null,
-      "duration": 0,
-      "chance": 0.0,
-      "abilitySprite": "",
-      "hitStyle": "single",
-      "cooldown": 0
-    }
-  ]
-},
-"Mob3": {
-  "stats": { "atk": 12, "def": 5, "hp": 130 },
-  "sprites": {
-    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
-    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
-    "thinking": "",
-    "defeated": "",
+    "defeated": "/Sprties_CombatUI/Mob2/mobDef.png",
     "cloned":   ""
   },
   "abilities": [
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 50 },
+      "effects": { "damage": 30 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
-      "abilitySprite": "",
+      "abilitySprite": "/Sprties_CombatUI/Mob2/mobClaw.png",
+      "hitStyle": "single",
+      "cooldown": 0
+    }
+  ]
+},
+"Mob3": {
+  "stats": { "atk": 12, "def": 5, "hp": 100 },
+  "sprites": {
+    "neutral": "/Sprties_CombatUI/Mob3/mobNeutral.png",
+    "angry":   "",
+    "thinking": "",
+    "defeated": "/Sprties_CombatUI/Mob3/mobDef.png",
+    "cloned":   ""
+  },
+  "abilities": [
+    {
+      "name": "Scratch",
+      "desc": "A weak scratch.",
+      "effects": { "damage": 30 },
+      "statusEffect": null,
+      "duration": 0,
+      "chance": 0.0,
+      "abilitySprite": "/Sprties_CombatUI/Mob3/mobClaw.png",
       "hitStyle": "single",
       "cooldown": 0
     }

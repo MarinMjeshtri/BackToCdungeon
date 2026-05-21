@@ -19,6 +19,7 @@ import com.dungeons.world.Map;
 import com.dungeons.world.MapManager;
 import com.dungeons.world.MapRenderer;
 import com.dungeons.world.TilesetManager;
+import com.dungeons.world.InteractZone;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
@@ -41,6 +42,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.*;
 
 public class GameScreen {
 
@@ -58,6 +60,14 @@ public class GameScreen {
     private StackPane gameRoot;
     private roomTransitionScreen transitionScreen;
     private Rectangle transitionFade;
+    private static final String[] MOB_SKINS = {"Mob1", "Mob2", "Mob3"};
+    private static final String MAP_MOB_LAYER = "Mob";
+    private static final String MAP_MOB_PATH = "/sprites/mapMobs/";
+    private static final Random MOB_RANDOM = new Random();
+    private static String lastMobSkin = "Mob1";
+    private final HashMap<String, String> mobSkinByZone = new HashMap<>();
+    private final HashMap<String, Image> mapMobImages = new HashMap<>();
+    private final ArrayList<MapMobMarker> currentMapMobs = new ArrayList<>();
 
     // ── SCREENS ────────────────────────────────────────────
     private shopScreen shopScreen;
@@ -214,6 +224,7 @@ public class GameScreen {
                             spawnY * TILE_SIZE * SCALE - Player.HITBOX_OFFSET_Y
                     );
                     System.out.println("Map changed! Spawn: " + spawnX + ", " + spawnY);
+                    setupMapMobs(newMap);
                 },
 
                 // interact trigger
@@ -369,6 +380,7 @@ public class GameScreen {
         mapManager.loadMap(Map.getStartRoom());
         Map currentMap = mapManager.getCurrentMap();
         mapRenderer = new MapRenderer(currentMap, tilesetManager);
+        setupMapMobs(currentMap);
         player.setMap(currentMap);
         player.setPosition(
                 currentMap.spawnX * TILE_SIZE * SCALE - Player.HITBOX_OFFSET_X,
@@ -558,6 +570,7 @@ public class GameScreen {
         gc.translate(-cameraX, -cameraY);
 
         mapRenderer.render(gc);
+        renderMapMobs(gc);
         player.render(gc);
 
         gc.restore();
@@ -572,13 +585,216 @@ public class GameScreen {
             case "k3jviBossroom": return "CassieYarn";
             case "RoomKledi":     return "FreakyRelah";
             case "BossRoomJoni":  return "JohnMKati";
-            case "MobRoom1":      return "Mob1";
-            case "MobRoom2":      return "Mob1";
-            case "MobRoom3":      return "Mob1";
-            case "MobRoom4":      return "Mob1";
-            case "MobRoom5":      return "Mob1";
+            case "MobRoom1":
+            case "MobRoom2":
+            case "MobRoom3":
+            case "MobRoom4":
+            case "MobRoom5":
+                return mobSkinForFight(fightTileX, fightTileY);
             default:              return "CassieYarn";
             //crasy okay
+        }
+    }
+
+    private String mobSkinForFight(int tileX, int tileY) {
+        Map map = mapManager.getCurrentMap();
+        int fightId = findFightId(map, tileX, tileY);
+        return fightId == -1 ? randomMobSkin() : skinForZone(map, fightId);
+    }
+
+    private String randomMobSkin() {
+        String skin;
+        do {
+            skin = MOB_SKINS[MOB_RANDOM.nextInt(MOB_SKINS.length)];
+        } while (skin.equals(lastMobSkin) && MOB_SKINS.length > 1);
+        lastMobSkin = skin;
+        return skin;
+    }
+
+    private void setupMapMobs(Map map) {
+        currentMapMobs.clear();
+        if (map == null) return;
+
+        int[] mobLayer = map.layers.get(MAP_MOB_LAYER);
+        if (mobLayer == null) return;
+
+        HashMap<Integer, FightBucket> buckets = new HashMap<>();
+        for (InteractZone zone : map.interactZones) {
+            if (!zone.type.equals("fight")) continue;
+            FightBucket bucket = buckets.computeIfAbsent(zone.id, FightBucket::new);
+            bucket.addFightTile(zone.x, zone.y);
+        }
+
+        for (int y = 0; y < map.height; y++) {
+            for (int x = 0; x < map.width; x++) {
+                int raw = mobLayer[y * map.width + x];
+                if (raw == 0) continue;
+
+                int fightId = nearestFightId(buckets, x, y);
+                Object[] resolved = map.resolveTile(raw);
+                if (fightId == -1 || resolved == null) continue;
+
+                int localId = (int) resolved[1];
+                int originX = x - localId % 3;
+                int originY = y - localId / 3;
+                buckets.get(fightId).addSpriteOrigin(originX, originY, (String) resolved[0]);
+            }
+        }
+
+        Arrays.fill(mobLayer, 0);
+        for (FightBucket bucket : buckets.values()) {
+            MapMobMarker marker = bucket.toMarker();
+            if (marker != null) {
+                currentMapMobs.add(marker);
+                skinForZone(map, marker.fightId);
+            }
+        }
+    }
+
+    private int nearestFightId(HashMap<Integer, FightBucket> buckets, int x, int y) {
+        int bestId = -1;
+        double bestDistance = Double.MAX_VALUE;
+        for (FightBucket bucket : buckets.values()) {
+            double dx = x - bucket.centerX();
+            double dy = y - bucket.centerY();
+            double distance = dx * dx + dy * dy;
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                bestId = bucket.id;
+            }
+        }
+        return bestId;
+    }
+
+    private void renderMapMobs(GraphicsContext gc) {
+        Map map = mapManager.getCurrentMap();
+        for (MapMobMarker mob : currentMapMobs) {
+            if (isFightDone(map, mob.fightId)) continue;
+            Image image = mapMobImage(skinForZone(map, mob.fightId), mob.direction);
+            if (image == null) continue;
+
+            gc.drawImage(
+                    image,
+                    mob.x * TILE_SIZE * SCALE,
+                    mob.y * TILE_SIZE * SCALE,
+                    TILE_SIZE * SCALE * 3,
+                    TILE_SIZE * SCALE * 3
+            );
+        }
+    }
+
+    private Image mapMobImage(String skin, String direction) {
+        String key = skin + "/" + direction;
+        if (mapMobImages.containsKey(key)) return mapMobImages.get(key);
+
+        Image image = null;
+        try {
+            image = new Image(getClass().getResourceAsStream(MAP_MOB_PATH + skin + "/" + direction + ".png"));
+        } catch (Exception ignored) {
+        }
+        mapMobImages.put(key, image);
+        return image;
+    }
+
+    private String skinForZone(Map map, int fightId) {
+        String key = mobZoneKey(map, fightId);
+        String skin = mobSkinByZone.get(key);
+        if (skin == null) {
+            skin = randomMobSkin();
+            mobSkinByZone.put(key, skin);
+        }
+        return skin;
+    }
+
+    private String mobZoneKey(Map map, int fightId) {
+        return map.getMapName() + ":" + System.identityHashCode(map) + ":" + fightId;
+    }
+
+    private int findFightId(Map map, int tileX, int tileY) {
+        for (InteractZone zone : map.interactZones) {
+            if (zone.type.equals("fight") && zone.x == tileX && zone.y == tileY) {
+                return zone.id;
+            }
+        }
+        return -1;
+    }
+
+    private boolean isFightDone(Map map, int fightId) {
+        for (InteractZone zone : map.interactZones) {
+            if (zone.type.equals("fight") && zone.id == fightId) {
+                return zone.triggered;
+            }
+        }
+        return false;
+    }
+
+    private static class MapMobMarker {
+        final int fightId, x, y;
+        final String direction;
+
+        MapMobMarker(int fightId, int x, int y, String direction) {
+            this.fightId = fightId;
+            this.x = x;
+            this.y = y;
+            this.direction = direction;
+        }
+    }
+
+    private static class FightBucket {
+        final int id;
+        double totalX, totalY;
+        int tileCount;
+        private final HashMap<String, String> origins = new HashMap<>();
+
+        FightBucket(int id) {
+            this.id = id;
+        }
+
+        void addFightTile(int x, int y) {
+            totalX += x;
+            totalY += y;
+            tileCount++;
+        }
+
+        double centerX() {
+            return tileCount == 0 ? 0 : totalX / tileCount;
+        }
+
+        double centerY() {
+            return tileCount == 0 ? 0 : totalY / tileCount;
+        }
+
+        void addSpriteOrigin(int x, int y, String direction) {
+            origins.put(x + ":" + y, direction);
+        }
+
+        MapMobMarker toMarker() {
+            String bestOrigin = null;
+            double bestDistance = Double.MAX_VALUE;
+
+            for (String origin : origins.keySet()) {
+                String[] parts = origin.split(":");
+                int x = Integer.parseInt(parts[0]);
+                int y = Integer.parseInt(parts[1]);
+                double dx = (x + 1.5) - centerX();
+                double dy = (y + 1.5) - centerY();
+                double distance = dx * dx + dy * dy;
+
+                if (distance < bestDistance) {
+                    bestDistance = distance;
+                    bestOrigin = origin;
+                }
+            }
+
+            if (bestOrigin == null) return null;
+
+            String[] parts = bestOrigin.split(":");
+            return new MapMobMarker(
+                    id,
+                    Integer.parseInt(parts[0]),
+                    Integer.parseInt(parts[1]),
+                    origins.get(bestOrigin)
+            );
         }
     }
 
