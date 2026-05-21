@@ -43,9 +43,9 @@ public abstract class Combatant {
         return currentHp <= 0;
     }
 
-    /**
-     * Kthen hP si perqindje -  Ur welcome Marin
-     */
+
+     // Kthen hP si perqindje -  Ur welcome Marin
+
     public double getHpPercent() {
         return (double) currentHp / maxHp;
     }

@@ -220,14 +220,12 @@ public class BossLoader extends Combatant {
     // -----------------------------------------------------------------------
     // applyClone()
     // Used by JohnMKati's Twining move. Sets isCloned to true and restores HP.
-    // The HP restored = current HP percentage * maxHp (effectively doubles current HP).
-    // Example: John at 200/650 HP (30%) -> restored = 0.30 * 650 = 195 -> new HP = 395.
+    // Current * 2
     // Math.min(maxHp, ...) ensures he never exceeds max HP.
     // -----------------------------------------------------------------------
     public void applyClone() {
         isCloned = true;
-        int restored = (int)(maxHp * getHpPercent()); // restore HP equal to current HP %
-        currentHp = Math.min(maxHp, currentHp + restored); // add it, cap at maxHp
+        currentHp = Math.min(maxHp, currentHp * 2); // add it, cap at maxHp
     }
 
     // applyHeal: used for moves with hitStyle="heal" (like Cassie's Repair Surge).

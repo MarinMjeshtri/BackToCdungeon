@@ -31,12 +31,15 @@ public class optionsController implements Initializable {
 
     @FXML private StackPane optionsMenu;
 
+    private Runnable returnAction;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         volumeSlider.setValue(50);
 
         resNormal.setSelected(true);
+        becomeOp.setSelected(StatsLoader.opMode);
 
         volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             GameMusicManager.setMusicVolume(newValue.doubleValue()/100.0);
@@ -61,6 +64,7 @@ public class optionsController implements Initializable {
 
         becomeOp.setOnAction(event -> {
             StatsLoader.opMode = becomeOp.isSelected();
+            PlayerProgress.getInstance().setCurrentHp(StatsLoader.opMode ? 9999 : -1);
             System.out.println("OP mode: " + StatsLoader.opMode);
         });
 
@@ -83,11 +87,20 @@ public class optionsController implements Initializable {
 
     @FXML
     public void returnToMain() {
+        if (returnAction != null) {
+            returnAction.run();
+            return;
+        }
+
         startingScreen screen = new startingScreen();
         OptionsNStartingController controller = screen.getLoader().getController();
         controller.setStage(theAlmagamation.getStage());
         theAlmagamation.switchTo(screen.getRoot());
 
+    }
+
+    public void setReturnAction(Runnable returnAction) {
+        this.returnAction = returnAction;
     }
 
 

@@ -13,7 +13,7 @@ public class CombatEngineTest extends Application {
     // Which enemy to spawn.
     // Named bosses:  "CassieYarn", "FreakyRelah", "JohnMKati"
     // Mobs:          "Mob1", "Mob2", "Mob3", "Mob4", "Mob5" We stull dont have names
-    private static final String TEST_ENEMY = "Mob1";
+    private static final String TEST_ENEMY = "JohnMKati";
 
     // The level of the spawned enemy.
     // This ONLY affects Mob1-Mob5. Named bosses ignore this value completely.
@@ -27,7 +27,7 @@ public class CombatEngineTest extends Application {
     // NOTE: stat scaling for the player is currently commented out in PlayerProgress.
     // This constant still sets the XP progress correctly, but stats will not change
     // until applyToPlayer() is activated.
-    private static final int TEST_PLAYER_LEVEL = 1;
+    private static final int TEST_PLAYER_LEVEL = 20;
 
     // -----------------------------------------------------------------------
 

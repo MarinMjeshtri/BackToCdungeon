@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="83f77782-6fe6-4347-bc4b-ff9cdb140b91" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Angry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Defeated.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Healing3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Neutral.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Outbrek4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Turret1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Wall2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Angry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Caged2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Defeated.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Feild4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Neutral.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Pistols1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/RPG3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Angry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Defeated.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Fist3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Neutral.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Twin1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Twining4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Yaping2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/MainC.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/mob1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/sprites/characters/Joni2.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/CombatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/CombatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/DialogueBoxController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/DialogueBoxController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/introController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/introController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/animations/premadeAnimation.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/animations/premadeAnimation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/screens/GameScreen$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/screens/GameScreen$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/screens/GameScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/screens/GameScreen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/systems/CombatSystem/BossLoader.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/systems/CombatSystem/BossLoader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/systems/CombatSystem/TurnLog.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/systems/CombatSystem/TurnLog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/world/Map.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/world/Map.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/module-info.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="3DTpipeHPpxqRXvbe4tNn9nd6pT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.chatGptTesting.executor": "Run",
+    "Application.gameLauncher.executor": "Run",
+    "Application.marinMainTesting.executor": "Run",
+    "Application.theAlmagamation.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/marin/Desktop/FINISHED PROJECTS/BackToCDungeons/BackToCdungeon/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\marin\Desktop\FINISHED PROJECTS\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\Sprties_CombatUI\JonMkati" />
+      <recent name="C:\Users\marin\Desktop\FINISHED PROJECTS\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\Sprties_CombatUI\FreakyRelah" />
+      <recent name="C:\Users\marin\Desktop\FINISHED PROJECTS\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\Sprties_CombatUI" />
+      <recent name="C:\Users\marin\Desktop\FINISHED PROJECTS\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\Sprties_CombatUI\Cassie" />
+      <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\maps" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\tiles" />
+      <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\sprites\characters" />
+      <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\sprites\joniFinal" />
+      <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\sprites" />
+      <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\Sprties_CombatUI\Mob1" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.theAlmagamation">
+    <configuration name="marinMainTesting" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dungeons.marinMainTesting" />
+      <module name="cdungeons" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.dungeons.theAlmagamation" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="theAlmagamation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dungeons.theAlmagamation" />
+      <module name="cdungeons" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.dungeons.theAlmagamation" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.theAlmagamation" />
+        <item itemvalue="Application.marinMainTesting" />
+        <item itemvalue="Application.marinMainTesting" />
+        <item itemvalue="Application.marinMainTesting" />
+        <item itemvalue="Application.marinMainTesting" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="83f77782-6fe6-4347-bc4b-ff9cdb140b91" name="Changes" comment="" />
+      <created>1778316044240</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778316044240</updated>
+    </task>
+    <servers />
+  </component>
+</project>

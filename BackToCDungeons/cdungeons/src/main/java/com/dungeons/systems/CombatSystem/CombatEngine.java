@@ -64,6 +64,22 @@ public class CombatEngine {
     // Used by CombatController to decide which animation to play.
     private String lastBossMoveHitStyle = "single";
 
+    private int shieldAbsorbLeft = 0;
+    private int shieldTurnsLeft = 0;
+    private double lifestealPercent = 0.0;
+    private int lifestealTurnsLeft = 0;
+    private double reflectPercent = 0.0;
+    private int reflectTurnsLeft = 0;
+
+    private int lastShieldAbsorbed = 0;
+    private int lastLifestealAmount = 0;
+    private int lastLifestealHeal = 0;
+    private int lastReflectedDamage = 0;
+    private StatusEffect.Type lastAppliedBossEffectType = null;
+    private int lastAppliedBossEffectTurns = 0;
+    private boolean lastGuardBlocked = false;
+    private boolean lastCounterBlocked = false;
+
 
     // -----------------------------------------------------------------------
     // STATUS EFFECT CHANCE CAPS
@@ -119,6 +135,14 @@ public class CombatEngine {
 
         roundNumber++;           // count this as a new round
         lastBossHitList.clear(); // clear previous boss hit list
+        lastShieldAbsorbed = 0;
+        lastLifestealAmount = 0;
+        lastLifestealHeal = 0;
+        lastReflectedDamage = 0;
+        lastAppliedBossEffectType = null;
+        lastAppliedBossEffectTurns = 0;
+        lastGuardBlocked = false;
+        lastCounterBlocked = false;
         talkUsedThisTurn  = false;
         guardUsedThisTurn = false;
 
@@ -202,6 +226,14 @@ public class CombatEngine {
             // Try to apply the move's status effect to the boss.
             // 'false' = this is not a boss move, so no cap is applied to the chance.
             tryApplyEffect(move, boss, false);
+
+            if (lifestealTurnsLeft > 0 && playerDamageDealt > 0) {
+                int healAmount = (int)Math.ceil(playerDamageDealt * lifestealPercent);
+                lastLifestealAmount = healAmount;
+                lastLifestealHeal = player.heal(healAmount);
+                playerHpRestored += lastLifestealHeal;
+                PlayerProgress.getInstance().setCurrentHp(player.getCurrentHp());
+            }
         }
 
         // Reset talkModifier at end of player phase. If talk/insult was used this turn,
@@ -252,11 +284,14 @@ public class CombatEngine {
 
             if ("clone".equals(bossMove.getHitStyle())) {
                 // Clone move: restore HP proportionally, set isCloned flag
+                int healAmt = 80;
+                boss.applyHeal(healAmt);
                 boss.applyClone();
 
             } else if ("heal".equals(bossMove.getHitStyle())) {
                 // Heal move: restore a flat 80 HP
                 // To change the heal amount, change the number here.
+
                 int healAmt = 80;
                 boss.applyHeal(healAmt);
 
@@ -281,6 +316,7 @@ public class CombatEngine {
                     // Regardless of result: guard enters cooldown for 3 turns.
                     if (rng.nextDouble() < 0.55) {
                         bossDamageDealt = 0; // blocked
+                        lastGuardBlocked = true;
                     } else {
                         bossDamageDealt = dealBossDamage(bossMove, raw); // not blocked
                     }
@@ -291,6 +327,7 @@ public class CombatEngine {
                     // Counter: 30% chance to block (lower than guard but no cooldown).
                     if (rng.nextDouble() < 0.30) {
                         bossDamageDealt = 0; // blocked
+                        lastCounterBlocked = true;
                     } else {
                         bossDamageDealt = dealBossDamage(bossMove, raw);
                     }
@@ -312,9 +349,15 @@ public class CombatEngine {
         guardActive   = false;
         counterActive = false;
 
+        tickItemEffects();
 
         // --- STEP 12: Check if player is dead ---
-        if (player.isDefeated()) result = CombatResult.PLAYER_LOSE;
+        if (player.isDefeated()) {
+            result = CombatResult.PLAYER_LOSE;
+        } else if (boss.isDefeated()) {
+            result = CombatResult.PLAYER_WIN;
+            grantRewards();
+        }
 
 
         // --- STEP 13: Package and return TurnLog ---
@@ -335,11 +378,64 @@ public class CombatEngine {
         int total  = 0;
         int perHit = Math.max(1, totalRaw / bossMove.getHits()); // divide damage by hit count
         for (int h = 0; h < bossMove.getHits(); h++) {
-            int hit = player.takeDamage(perHit); // apply defense, deal damage
-            lastBossHitList.add(hit);            // store this hit for the controller
-            total += hit;                        // accumulate total
+            int effective = Math.max(1, perHit - player.getDefense());
+
+            int absorbed = 0;
+            if (shieldAbsorbLeft > 0) {
+                absorbed = Math.min(shieldAbsorbLeft, effective);
+                shieldAbsorbLeft -= absorbed;
+                lastShieldAbsorbed += absorbed;
+            }
+
+            int hit = Math.max(0, effective - absorbed);
+            if (hit > 0) {
+                player.setCurrentHp(Math.max(0, player.getCurrentHp() - hit));
+            }
+
+            if (reflectTurnsLeft > 0 && reflectPercent > 0 && hit > 0) {
+                int reflected = (int)Math.ceil(hit * reflectPercent);
+                boss.setCurrentHp(Math.max(0, boss.getCurrentHp() - reflected));
+                lastReflectedDamage += reflected;
+            }
+
+            lastBossHitList.add(hit);
+            total += hit;
         }
         return total; // total actual damage dealt after all hits and defense
+    }
+
+    public void activateShield(int absorbAmount, int turns) {
+        shieldAbsorbLeft += Math.max(0, absorbAmount);
+        shieldTurnsLeft = Math.max(shieldTurnsLeft, Math.max(1, turns));
+    }
+
+    public void activateLifesteal(double percent, int turns) {
+        lifestealPercent = Math.max(lifestealPercent, percent);
+        lifestealTurnsLeft = Math.max(lifestealTurnsLeft, Math.max(1, turns));
+    }
+
+    public void activateReflect(double percent, int turns) {
+        reflectPercent = Math.max(reflectPercent, percent);
+        reflectTurnsLeft = Math.max(reflectTurnsLeft, Math.max(1, turns));
+    }
+
+    private void tickItemEffects() {
+        if (shieldAbsorbLeft <= 0) {
+            shieldTurnsLeft = 0;
+        } else if (shieldTurnsLeft > 0) {
+            shieldTurnsLeft--;
+            if (shieldTurnsLeft <= 0) shieldAbsorbLeft = 0;
+        }
+
+        if (lifestealTurnsLeft > 0) {
+            lifestealTurnsLeft--;
+            if (lifestealTurnsLeft <= 0) lifestealPercent = 0.0;
+        }
+
+        if (reflectTurnsLeft > 0) {
+            reflectTurnsLeft--;
+            if (reflectTurnsLeft <= 0) reflectPercent = 0.0;
+        }
     }
 
 
@@ -459,7 +555,11 @@ public class CombatEngine {
         // Apply to the correct target type.
         // 'instanceof' checks if the object is of that class at runtime.
         if (target instanceof Player)     ((Player) target).applyEffect(effect);
-        if (target instanceof BossLoader) ((BossLoader) target).applyEffect(effect);
+        if (target instanceof BossLoader) {
+            ((BossLoader) target).applyEffect(effect);
+            lastAppliedBossEffectType = type;
+            lastAppliedBossEffectTurns = move.getDuration();
+        }
     }
 
     // Backward-compatible overload: called without isBossMove flag (defaults to false = player move).
@@ -572,4 +672,17 @@ public class CombatEngine {
 
     // shortcut: true if the fight is still going
     public boolean isOngoing()              { return result == CombatResult.ONGOING; }
+
+    public int getShieldAbsorbLeft()        { return shieldAbsorbLeft; }
+    public int getShieldTurnsLeft()         { return shieldTurnsLeft; }
+    public int getLifestealTurnsLeft()      { return lifestealTurnsLeft; }
+    public int getReflectTurnsLeft()        { return reflectTurnsLeft; }
+    public int getLastShieldAbsorbed()      { return lastShieldAbsorbed; }
+    public int getLastLifestealAmount()     { return lastLifestealAmount; }
+    public int getLastLifestealHeal()       { return lastLifestealHeal; }
+    public int getLastReflectedDamage()     { return lastReflectedDamage; }
+    public StatusEffect.Type getLastAppliedBossEffectType() { return lastAppliedBossEffectType; }
+    public int getLastAppliedBossEffectTurns() { return lastAppliedBossEffectTurns; }
+    public boolean wasLastGuardBlocked() { return lastGuardBlocked; }
+    public boolean wasLastCounterBlocked() { return lastCounterBlocked; }
 }

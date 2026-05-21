@@ -13,8 +13,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 public class shopController {
+
+    private static final String CARD_STYLE = "-fx-background-color: #182539; -fx-border-color: #5c7aa5; -fx-border-width: 2; -fx-background-radius: 6; -fx-border-radius: 6;";
+    private static final String SELECTED_CARD_STYLE = "-fx-background-color: #22345a; -fx-border-color: #7df3ff; -fx-border-width: 3; -fx-background-radius: 6; -fx-border-radius: 6; -fx-effect: dropshadow(gaussian, rgba(125,243,255,0.55), 16, 0.3, 0, 0);";
 
     // Row 1
     @FXML private Label item1, item2, item3;
@@ -31,6 +35,7 @@ public class shopController {
     // Description + purchase
     @FXML private Label descLabel;
     @FXML private Button purchaseBtn;
+    @FXML private StackPane shopRoot;
 
     private ShopManager shopManager;
     private Shop selectedItem;
@@ -45,18 +50,25 @@ public class shopController {
             populateCard(card1, item1, price1, img1, "smallHealthPotion");
             populateCard(card2, item2, price2, img2, "bigHealthPotion");
             populateCard(card3, item3, price3, img3, "strPotion");
+            populateCard(card4, item4, price4, img4, "shieldBattery");
+            populateCard(card5, item5, price5, img5, "leechSerum");
+            populateCard(card6, item6, price6, img6, "mirrorShard");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Row 2
-        // populateCard(card4, item4, price4, img4, "someItem");
-        // populateCard(card5, item5, price5, img5, "someItem");
-        // populateCard(card6, item6, price6, img6, "someItem");
     }
 
     private void populateCard(AnchorPane card, Label nameLabel, Label priceLabel, ImageView imgView, String key) {
+        card.setStyle(CARD_STYLE);
+        card.setUserData(key);
+
         Shop item = shopManager.getItem(key);
-        if (item == null) return;
+        if (item == null) {
+            nameLabel.setText("Missing Item");
+            priceLabel.setText("-- G");
+            card.setOpacity(0.45);
+            return;
+        }
 
         nameLabel.setText(item.displayName);
         priceLabel.setText(item.price + " G");
@@ -78,13 +90,13 @@ public class shopController {
 
         // Deselect previous card
         if (selectedCard != null) {
-            selectedCard.setStyle("");
+            selectedCard.setStyle(CARD_STYLE);
         }
 
         // Select new card
         selectedItem = item;
         selectedCard = clickedCard;
-        selectedCard.setStyle("-fx-border-color: #759cd5; -fx-border-width: 2;");
+        selectedCard.setStyle(SELECTED_CARD_STYLE);
 
         descLabel.setText(item.desc);
     }
@@ -104,28 +116,39 @@ public class shopController {
             return;
         }
 
-
-
-        progress.addGold(-selectedItem.price);
-
-        // TODO: add to inventory
-
         if (inventory.isFull()) {
-            descLabel.setText("Inventory is full!");
+            descLabel.setText("Hotbar is full! Use an item before buying another.");
             return;
         }
 
-        inventory.addItem(selectedItem);
+        progress.addGold(-selectedItem.price);
 
-        GameScreen.getInstance().getOverlayController().updateUI();
+        if (!inventory.addItem(selectedItem)) {
+            progress.addGold(selectedItem.price);
+            descLabel.setText("Hotbar is full! Use an item before buying another.");
+            return;
+        }
 
-        // For now just confirm
-        descLabel.setText("Purchased: " + selectedItem.displayName + " for " + selectedItem.price + " G");
+        if (GameScreen.getInstance() != null && GameScreen.getInstance().getOverlayController() != null) {
+            GameScreen.getInstance().getOverlayController().updateUI();
+        }
+
+        descLabel.setText("Added " + selectedItem.displayName + " to your hotbar.");
 
         selectedItem = null;
         if (selectedCard != null) {
-            selectedCard.setStyle("");
+            selectedCard.setStyle(CARD_STYLE);
             selectedCard = null;
+        }
+    }
+
+    @FXML
+    private void handleExit() {
+        if (shopRoot != null) {
+            shopRoot.setVisible(false);
+            if (shopRoot.getParent() != null) {
+                shopRoot.getParent().setVisible(false);
+            }
         }
     }
 }
