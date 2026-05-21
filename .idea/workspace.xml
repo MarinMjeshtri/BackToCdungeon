@@ -5,40 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83f77782-6fe6-4347-bc4b-ff9cdb140b91" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Angry.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Defeated.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Healing3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Neutral.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Outbrek4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Turret1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Wall2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Angry.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Caged2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Defeated.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Feild4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Neutral.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Pistols1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/RPG3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Angry.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Defeated.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Fist3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Neutral.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Twin1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Twining4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Yaping2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/MainC.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/mob1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/sprites/characters/Joni2.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/CombatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/CombatController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/DialogueBoxController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/DialogueBoxController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/introController.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/Controllers/introController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/animations/premadeAnimation.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/animations/premadeAnimation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/screens/GameScreen$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/screens/GameScreen$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/screens/GameScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/screens/GameScreen.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/systems/CombatSystem/BossLoader.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/systems/CombatSystem/BossLoader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/systems/CombatSystem/TurnLog.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/systems/CombatSystem/TurnLog.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/world/Map.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/com/dungeons/world/Map.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,11 +59,11 @@
       <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\maps" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\marin\Desktop\FINISHED PROJECTS\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\Sprties_CombatUI\Mob1" />
       <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\tiles" />
       <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\sprites\characters" />
       <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\sprites\joniFinal" />
       <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\sprites" />
-      <recent name="C:\Users\marin\Downloads\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\Sprties_CombatUI\Mob1" />
     </key>
   </component>
   <component name="RunManager" selected="Application.theAlmagamation">
