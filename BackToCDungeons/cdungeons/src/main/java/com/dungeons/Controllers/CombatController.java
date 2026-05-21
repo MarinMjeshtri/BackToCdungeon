@@ -7,6 +7,7 @@ import com.dungeons.screens.bossRewardScreen;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -561,6 +562,7 @@ public class CombatController {
                             "+" + engine.getLastLifestealHeal() + " HP", 54, 88, 22);
                 }
 
+                playBossStatusProcBanner(bossPane);
                 updateBossSpriteMood();
                 updatePlayerSpriteMood();
 
@@ -633,6 +635,14 @@ public class CombatController {
                 afterPopup.play();
             });
             wait.play();
+
+        } else if (engine.wasLastGuardBlocked()) {
+
+            showGuardBlockEffect(playerPane, turnLog);
+
+        } else if (engine.wasLastCounterBlocked()) {
+
+            showCounterBlockEffect(playerPane, turnLog);
 
         } else if (!hits.isEmpty()) {
 
@@ -846,6 +856,188 @@ public class CombatController {
         clearGlow.play();
     }
 
+    private void playBossStatusProcBanner(AnchorPane bossPane) {
+        StatusEffect.Type type = engine.getLastAppliedBossEffectType();
+        if (type == null) return;
+
+        if (type == StatusEffect.Type.DOT) {
+            playStatusBanner(bossPane,
+                    "BURNING",
+                    "Shock Jab burns for " + engine.getLastAppliedBossEffectTurns() + " turns",
+                    "#7f1d1d",
+                    "#fed7aa");
+        } else if (type == StatusEffect.Type.HALF_DMG) {
+            playStatusBanner(bossPane,
+                    "ARMOR BREAK",
+                    "Boss damage halved for " + engine.getLastAppliedBossEffectTurns() + " turn",
+                    "#1e3a8a",
+                    "#dbeafe");
+        }
+    }
+
+    private void playStatusBanner(AnchorPane parent, String title, String detail,
+                                  String background, String textColor) {
+        Label banner = new Label(title + "\n" + detail);
+        banner.setAlignment(Pos.CENTER);
+        banner.setTextAlignment(TextAlignment.CENTER);
+        banner.setWrapText(true);
+        banner.setLayoutX(22);
+        banner.setLayoutY(16);
+        banner.setPrefWidth(248);
+        banner.setMinHeight(58);
+        banner.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
+        banner.setTextFill(Color.web(textColor));
+        banner.setStyle(
+                "-fx-background-color: " + background + ";" +
+                "-fx-background-radius: 8;" +
+                "-fx-border-color: rgba(255,255,255,0.75);" +
+                "-fx-border-radius: 8;" +
+                "-fx-border-width: 2;" +
+                "-fx-padding: 6 10 6 10;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 12, 0.45, 0, 3);"
+        );
+
+        parent.getChildren().add(banner);
+        banner.toFront();
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(140), banner);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+
+        ScaleTransition pop = new ScaleTransition(Duration.millis(180), banner);
+        pop.setFromX(0.88);
+        pop.setFromY(0.88);
+        pop.setToX(1.0);
+        pop.setToY(1.0);
+
+        PauseTransition hold = new PauseTransition(Duration.millis(700));
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), banner);
+        fadeOut.setToValue(0.0);
+
+        TranslateTransition rise = new TranslateTransition(Duration.millis(300), banner);
+        rise.setByY(-18);
+
+        SequentialTransition sequence = new SequentialTransition(
+                new ParallelTransition(fadeIn, pop),
+                hold,
+                new ParallelTransition(fadeOut, rise)
+        );
+        sequence.setOnFinished(e -> parent.getChildren().remove(banner));
+        sequence.play();
+    }
+
+    private void showGuardBlockEffect(AnchorPane playerPane, TurnLog turnLog) {
+        spawnDamageLabel("GUARD BLOCK", playerPane, Color.CYAN, 24, 76, 21);
+
+        Rectangle shield = new Rectangle(218, 246);
+        shield.setArcWidth(22);
+        shield.setArcHeight(22);
+        shield.setLayoutX(34);
+        shield.setLayoutY(18);
+        shield.setFill(Color.rgb(44, 205, 255, 0.16));
+        shield.setStroke(Color.CYAN);
+        shield.setStrokeWidth(3);
+        shield.setMouseTransparent(true);
+        playerPane.getChildren().add(shield);
+        shield.toFront();
+        playercharacterSprite.toFront();
+
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.CYAN);
+        glow.setRadius(24);
+        glow.setSpread(0.38);
+        playercharacterSprite.setEffect(glow);
+
+        Timeline shake = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(playercharacterSprite.translateXProperty(), 0)),
+                new KeyFrame(Duration.millis(45), new KeyValue(playercharacterSprite.translateXProperty(), -10)),
+                new KeyFrame(Duration.millis(90), new KeyValue(playercharacterSprite.translateXProperty(), 10)),
+                new KeyFrame(Duration.millis(135), new KeyValue(playercharacterSprite.translateXProperty(), -7)),
+                new KeyFrame(Duration.millis(180), new KeyValue(playercharacterSprite.translateXProperty(), 7)),
+                new KeyFrame(Duration.millis(250), new KeyValue(playercharacterSprite.translateXProperty(), 0))
+        );
+
+        FadeTransition shieldFade = new FadeTransition(Duration.millis(520), shield);
+        shieldFade.setFromValue(1.0);
+        shieldFade.setToValue(0.0);
+
+        ScaleTransition shieldPop = new ScaleTransition(Duration.millis(220), shield);
+        shieldPop.setFromX(0.86);
+        shieldPop.setFromY(0.86);
+        shieldPop.setToX(1.08);
+        shieldPop.setToY(1.08);
+
+        ParallelTransition block = new ParallelTransition(shake, shieldFade, shieldPop);
+        block.setOnFinished(e -> {
+            playerPane.getChildren().remove(shield);
+            playercharacterSprite.setEffect(null);
+            boss.clearAbilitySprite();
+            updateBossSpriteMood();
+            updatePlayerSpriteMood();
+            finishTurnUpdate(turnLog);
+        });
+        block.play();
+    }
+
+    private void showCounterBlockEffect(AnchorPane playerPane, TurnLog turnLog) {
+        spawnDamageLabel("COUNTER", playerPane, Color.GOLD, 60, 76, 24);
+
+        Rectangle flash = new Rectangle(228, 40);
+        flash.setArcWidth(14);
+        flash.setArcHeight(14);
+        flash.setLayoutX(28);
+        flash.setLayoutY(120);
+        flash.setFill(Color.rgb(255, 210, 64, 0.22));
+        flash.setStroke(Color.MEDIUMPURPLE);
+        flash.setStrokeWidth(4);
+        flash.setRotate(-16);
+        flash.setMouseTransparent(true);
+        playerPane.getChildren().add(flash);
+        flash.toFront();
+        playercharacterSprite.toFront();
+
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.MEDIUMPURPLE);
+        glow.setRadius(26);
+        glow.setSpread(0.42);
+        playercharacterSprite.setEffect(glow);
+
+        Timeline shake = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(playercharacterSprite.translateXProperty(), 0)),
+                new KeyFrame(Duration.millis(35), new KeyValue(playercharacterSprite.translateXProperty(), 12)),
+                new KeyFrame(Duration.millis(70), new KeyValue(playercharacterSprite.translateXProperty(), -12)),
+                new KeyFrame(Duration.millis(110), new KeyValue(playercharacterSprite.translateXProperty(), 9)),
+                new KeyFrame(Duration.millis(150), new KeyValue(playercharacterSprite.translateXProperty(), -6)),
+                new KeyFrame(Duration.millis(220), new KeyValue(playercharacterSprite.translateXProperty(), 0))
+        );
+
+        FadeTransition flashFade = new FadeTransition(Duration.millis(520), flash);
+        flashFade.setFromValue(1.0);
+        flashFade.setToValue(0.0);
+
+        ScaleTransition flashPop = new ScaleTransition(Duration.millis(220), flash);
+        flashPop.setFromX(0.72);
+        flashPop.setFromY(0.72);
+        flashPop.setToX(1.28);
+        flashPop.setToY(1.28);
+
+        RotateTransition slash = new RotateTransition(Duration.millis(260), flash);
+        slash.setFromAngle(-28);
+        slash.setToAngle(18);
+
+        ParallelTransition counter = new ParallelTransition(shake, flashFade, flashPop, slash);
+        counter.setOnFinished(e -> {
+            playerPane.getChildren().remove(flash);
+            playercharacterSprite.setEffect(null);
+            boss.clearAbilitySprite();
+            updateBossSpriteMood();
+            updatePlayerSpriteMood();
+            finishTurnUpdate(turnLog);
+        });
+        counter.play();
+    }
+
     private void finishTurnUpdate(TurnLog turnLog) {
         guardUsedThisTurn = false;
         setTurnNr(turnLog.getRoundNumber());
@@ -873,6 +1065,23 @@ public class CombatController {
         if (pe != null) sb.append("Status on you: ").append(pe.getLabel()).append("\n");
         if (be != null) sb.append("Status on ").append(boss.getName())
                 .append(": ").append(be.getLabel()).append("\n");
+        if (engine.getLastAppliedBossEffectType() == StatusEffect.Type.DOT) {
+            sb.append("Shock Jab ignited ").append(boss.getName())
+                    .append(" for ")
+                    .append(engine.getLastAppliedBossEffectTurns())
+                    .append(" turns.\n");
+        } else if (engine.getLastAppliedBossEffectType() == StatusEffect.Type.HALF_DMG) {
+            sb.append("Armor Break weakened ").append(boss.getName())
+                    .append(". Boss damage is halved for ")
+                    .append(engine.getLastAppliedBossEffectTurns())
+                    .append(" turn.\n");
+        }
+        if (engine.wasLastGuardBlocked()) {
+            sb.append("Guard blocked the attack completely.\n");
+        }
+        if (engine.wasLastCounterBlocked()) {
+            sb.append("Counter parried the attack completely.\n");
+        }
 
         if (engine.getLastLifestealAmount() > 0) {
             sb.append("Leech Serum converted ")
