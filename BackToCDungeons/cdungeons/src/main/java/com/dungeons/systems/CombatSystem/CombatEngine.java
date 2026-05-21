@@ -75,6 +75,10 @@ public class CombatEngine {
     private int lastLifestealAmount = 0;
     private int lastLifestealHeal = 0;
     private int lastReflectedDamage = 0;
+    private StatusEffect.Type lastAppliedBossEffectType = null;
+    private int lastAppliedBossEffectTurns = 0;
+    private boolean lastGuardBlocked = false;
+    private boolean lastCounterBlocked = false;
 
 
     // -----------------------------------------------------------------------
@@ -135,6 +139,10 @@ public class CombatEngine {
         lastLifestealAmount = 0;
         lastLifestealHeal = 0;
         lastReflectedDamage = 0;
+        lastAppliedBossEffectType = null;
+        lastAppliedBossEffectTurns = 0;
+        lastGuardBlocked = false;
+        lastCounterBlocked = false;
         talkUsedThisTurn  = false;
         guardUsedThisTurn = false;
 
@@ -308,6 +316,7 @@ public class CombatEngine {
                     // Regardless of result: guard enters cooldown for 3 turns.
                     if (rng.nextDouble() < 0.55) {
                         bossDamageDealt = 0; // blocked
+                        lastGuardBlocked = true;
                     } else {
                         bossDamageDealt = dealBossDamage(bossMove, raw); // not blocked
                     }
@@ -318,6 +327,7 @@ public class CombatEngine {
                     // Counter: 30% chance to block (lower than guard but no cooldown).
                     if (rng.nextDouble() < 0.30) {
                         bossDamageDealt = 0; // blocked
+                        lastCounterBlocked = true;
                     } else {
                         bossDamageDealt = dealBossDamage(bossMove, raw);
                     }
@@ -545,7 +555,11 @@ public class CombatEngine {
         // Apply to the correct target type.
         // 'instanceof' checks if the object is of that class at runtime.
         if (target instanceof Player)     ((Player) target).applyEffect(effect);
-        if (target instanceof BossLoader) ((BossLoader) target).applyEffect(effect);
+        if (target instanceof BossLoader) {
+            ((BossLoader) target).applyEffect(effect);
+            lastAppliedBossEffectType = type;
+            lastAppliedBossEffectTurns = move.getDuration();
+        }
     }
 
     // Backward-compatible overload: called without isBossMove flag (defaults to false = player move).
@@ -667,4 +681,8 @@ public class CombatEngine {
     public int getLastLifestealAmount()     { return lastLifestealAmount; }
     public int getLastLifestealHeal()       { return lastLifestealHeal; }
     public int getLastReflectedDamage()     { return lastReflectedDamage; }
+    public StatusEffect.Type getLastAppliedBossEffectType() { return lastAppliedBossEffectType; }
+    public int getLastAppliedBossEffectTurns() { return lastAppliedBossEffectTurns; }
+    public boolean wasLastGuardBlocked() { return lastGuardBlocked; }
+    public boolean wasLastCounterBlocked() { return lastCounterBlocked; }
 }
