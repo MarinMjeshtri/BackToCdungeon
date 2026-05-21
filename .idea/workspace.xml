@@ -6,6 +6,55 @@
   <component name="ChangeListManager">
     <list default="true" id="83f77782-6fe6-4347-bc4b-ff9cdb140b91" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/Controllers/chestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/Controllers/chestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/Controllers/uiOverlayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/Controllers/uiOverlayController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/JoniCharacterDialougeSprite-Talk.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/LabDung work.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/ReadMeMemberRolesandWork.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/marinMainTesting.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/CharacterStats/Stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/CharacterStats/Stats.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Angry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Attack1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Attack2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Attack3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Attack4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Defeated.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Healing3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Neutral.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Neutral.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Outbrek4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Turret1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Cassie/Wall2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Angry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Attack1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Attack2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Attack3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Attack4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Caged2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Defeated.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Feild4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Neutral.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/Pistols1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/FreakyRelah/RPG3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Angry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Attack1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Attack2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Attack3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Attack4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Defeated.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Fist3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Neutral.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Twin1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Twining4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati/Yaping2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/MainC.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/MainC_HUD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Mob1/mobClaw.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Mob1/mobDef.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Mob1/mobNeutral.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ourMC/jonDying.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ourMC/jonHealthy.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ourMC/jonKindaDMG.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ourMC/jonLilDMG.jpeg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,21 +84,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.chatGptTesting.executor": "Run",
-    "Application.gameLauncher.executor": "Run",
-    "Application.marinMainTesting.executor": "Run",
-    "Application.theAlmagamation.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/marin/Desktop/FINISHED PROJECTS/BackToCDungeons/BackToCdungeon/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.chatGptTesting.executor&quot;: &quot;Run&quot;,
+    &quot;Application.gameLauncher.executor&quot;: &quot;Run&quot;,
+    &quot;Application.marinMainTesting.executor&quot;: &quot;Run&quot;,
+    &quot;Application.theAlmagamation.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/marin/Desktop/FINISHED PROJECTS/BackToCDungeons/BackToCdungeon/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/JonMkati&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\marin\Desktop\FINISHED PROJECTS\BackToCDungeons\BackToCdungeon\BackToCDungeons\cdungeons\src\main\resources\Sprties_CombatUI\JonMkati" />
