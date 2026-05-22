@@ -188,7 +188,11 @@ public class CombatEngine {
             // and let the boss act normally this turn.
 
 
-            // Case C: player chose to use an item via the old engine path (moveIndex -1, itemId set)
+            // Case C: player used a defensive action from the Act hand.
+        } else if (moveIndex == -2) {
+            playerMoveName = (itemId == null || itemId.isEmpty()) ? "Defend" : itemId;
+
+            // Case D: player chose to use an item via the old engine path (moveIndex -1, itemId set)
         } else if (moveIndex == -1 && itemId != null) {
             Item item = findItem(itemId);
             if (item == null || !item.isAvailable()) {
@@ -198,7 +202,7 @@ public class CombatEngine {
                 playerHpRestored = player.useItem(itemId);
             }
 
-            // Case C: player used a move (normal attack)
+            // Case E: player used a move (normal attack)
         } else {
             Move move = getMoveByIndex(moveIndex); // get the Move object for this index
             playerMoveName = move.getName();
@@ -235,11 +239,6 @@ public class CombatEngine {
                 PlayerProgress.getInstance().setCurrentHp(player.getCurrentHp());
             }
         }
-
-        // Reset talkModifier at end of player phase. If talk/insult was used this turn,
-        // its effect applies to the boss action below, then is cleared for next turn.
-        talkModifier = 1.0;
-
 
         // --- STEP 7: Check if boss is dead ---
         // If the boss was killed by the player's move, grant rewards and end the fight.
@@ -305,21 +304,15 @@ public class CombatEngine {
                 // If boss has halfDmg effect (from player's Armor Break), cut damage in half.
                 if (boss.isHalfDmg()) { raw /= 2; boss.tickEffect(); }
 
-                // Apply talkModifier (from activateTalk or activateInsult this turn).
+                // Apply talkModifier (from Talk or a failed Run this turn).
                 // 1.0 = no change, 0.5 = half damage, 2.0 = double damage.
                 raw = (int)(raw * talkModifier);
 
                 // Apply guard or counter reduction:
                 if (guardActive) {
-                    // Guard: 55% chance to completely block the attack (0 damage through).
-                    // On fail: damage goes through normally.
-                    // Regardless of result: guard enters cooldown for 3 turns.
-                    if (rng.nextDouble() < 0.55) {
-                        bossDamageDealt = 0; // blocked
-                        lastGuardBlocked = true;
-                    } else {
-                        bossDamageDealt = dealBossDamage(bossMove, raw); // not blocked
-                    }
+                    // Guard is a spent Act card now, so it fully blocks the next boss attack.
+                    bossDamageDealt = 0;
+                    lastGuardBlocked = true;
                     guardActive = false;
                     guardCooldownLeft = 3; // guard locked for 3 turns after use
 
@@ -348,6 +341,7 @@ public class CombatEngine {
         // Even if guard was not triggered (boss was stunned), clear it.
         guardActive   = false;
         counterActive = false;
+        talkModifier = 1.0;
 
         tickItemEffects();
 
@@ -485,23 +479,8 @@ public class CombatEngine {
         }
     }
 
-
-    // -----------------------------------------------------------------------
-    // activateInsult()
-    // Higher risk/reward version of talk.
-    // 35% chance: boss gets sad, only 30% damage comes through.
-    // 65% chance: boss gets furious, damage doubles.
-    // -----------------------------------------------------------------------
-    public String activateInsult() {
-        if (talkUsedThisTurn) return "You already used talk this turn.";
-        talkUsedThisTurn = true;
-        if (rng.nextDouble() < 0.35) {        // 35% success chance (lower than talk)
-            talkModifier = 0.3;               // boss deals only 30% damage this turn
-            return "You insulted " + boss.getName() + " and they got sad. Only 30% damage incoming.";
-        } else {
-            talkModifier = 2.0;               // boss deals double damage this turn
-            return "Bad idea. " + boss.getName() + " is furious. Damage doubled.";
-        }
+    public void activateRunFailurePenalty() {
+        talkModifier = 1.2;
     }
 
 

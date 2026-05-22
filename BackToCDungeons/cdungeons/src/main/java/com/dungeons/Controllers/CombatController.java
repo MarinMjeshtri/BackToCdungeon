@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import com.dungeons.shopItemsManager.PlayerInventory;
 import com.dungeons.shopItemsManager.Shop;
@@ -71,6 +72,35 @@ public class CombatController {
     private List<Button> abilityButtons;
     private Button guardBtn;
     private Button counterBtn;
+    private final Random handRng = new Random();
+
+    private static final int ACTION_HAND_SIZE = 3;
+    private static final String ACTION_CARD_ROOT = "/Sprties_CombatUI/ActionCards/";
+    private static final String RUN_FAIL_SPRITE = "/Sprties_CombatUI/Run/runTrip.png";
+    private static final double RUN_SUCCESS_CHANCE = 0.40;
+
+    private enum PlayerActionType {
+        ATTACK,
+        GUARD,
+        COUNTER
+    }
+
+    private static class PlayerActionCard {
+        private final PlayerActionType type;
+        private final int moveIndex;
+        private final String name;
+        private final String description;
+        private final String iconPath;
+
+        private PlayerActionCard(PlayerActionType type, int moveIndex,
+                                 String name, String description, String iconPath) {
+            this.type = type;
+            this.moveIndex = moveIndex;
+            this.name = name;
+            this.description = description;
+            this.iconPath = iconPath;
+        }
+    }
 
     private boolean guardUsedThisTurn = false;
     private int pendingAtkRestore = -1; // -1 means no ATK boost pending
@@ -416,27 +446,216 @@ public class CombatController {
     }
 
     private void wireAbilityButtons() {
-        abilityButtons = pressAttack.getChildren().stream()
-                .filter(n -> n instanceof Button &&
-                        !((Button) n).getText().equals("GO BACK"))
-                .map(n -> (Button) n)
-                .collect(Collectors.toList());
+        abilityButtons = new ArrayList<>();
+    }
 
+    private List<PlayerActionCard> buildActionPool() {
+        List<PlayerActionCard> pool = new ArrayList<>();
         List<Move> moves = player.getMoves();
-        for (int i = 0; i < abilityButtons.size(); i++) {
-            Button btn = abilityButtons.get(i);
-            addHoverScale(btn);
-            if (i < moves.size()) {
-                Move move = moves.get(i);
-                btn.setText(move.getName());
-                addTooltip(btn, move.getDescription());
-                final int index = i;
-                btn.setOnAction(e -> handlePlayerAttack(index));
-            } else {
-                btn.setText("--");
-                btn.setDisable(true);
+        for (int i = 0; i < moves.size(); i++) {
+            if (i == 3 && !engine.isMove4Available()) {
+                continue;
             }
+            Move move = moves.get(i);
+            pool.add(new PlayerActionCard(
+                    PlayerActionType.ATTACK,
+                    i,
+                    move.getName(),
+                    move.getDescription(),
+                    iconForMove(move.getName())
+            ));
         }
+
+        if (engine.isGuardAvailable()) {
+            pool.add(new PlayerActionCard(
+                    PlayerActionType.GUARD,
+                    -1,
+                    "Guard",
+                    "Block the boss attack. Has a 3 turn cooldown.",
+                    ACTION_CARD_ROOT + "guard.png"
+            ));
+        }
+
+        pool.add(new PlayerActionCard(
+                PlayerActionType.COUNTER,
+                -1,
+                "Counter",
+                "30% chance to negate the boss attack. No cooldown.",
+                ACTION_CARD_ROOT + "counter.png"
+        ));
+
+        if (pool.isEmpty() && !moves.isEmpty()) {
+            Move fallback = moves.get(0);
+            pool.add(new PlayerActionCard(
+                    PlayerActionType.ATTACK,
+                    0,
+                    fallback.getName(),
+                    fallback.getDescription(),
+                    iconForMove(fallback.getName())
+            ));
+        }
+        return pool;
+    }
+
+    private String iconForMove(String moveName) {
+        switch (moveName) {
+            case "Quick Strike":   return ACTION_CARD_ROOT + "quickStrike.png";
+            case "Shock Jab":      return ACTION_CARD_ROOT + "shockJab.png";
+            case "Armor Break":    return ACTION_CARD_ROOT + "armorBreak.png";
+            case "Overload Burst": return ACTION_CARD_ROOT + "overloadBurst.png";
+            default:               return ACTION_CARD_ROOT + "quickStrike.png";
+        }
+    }
+
+    private void drawActionHand() {
+        pressAttack.getChildren().clear();
+
+        List<PlayerActionCard> pool = buildActionPool();
+        for (int i = 0; i < ACTION_HAND_SIZE && !pool.isEmpty(); i++) {
+            PlayerActionCard card = pool.get(handRng.nextInt(pool.size()));
+            AnchorPane cardNode = createActionCard(card, 22 + i * 255, 8);
+            cardNode.setOpacity(0.0);
+            cardNode.setScaleX(0.9);
+            cardNode.setScaleY(0.9);
+            cardNode.setTranslateX((1 - i) * 42.0);
+            cardNode.setTranslateY(34.0);
+            pressAttack.getChildren().add(cardNode);
+            animateCardIn(cardNode, i);
+        }
+
+        Button back = new Button("BACK");
+        back.setLayoutX(677);
+        back.setLayoutY(242);
+        back.setPrefSize(78, 30);
+        back.getStyleClass().add("button");
+        back.setOnAction(e -> goBack());
+        addHoverScale(back);
+        pressAttack.getChildren().add(back);
+    }
+
+    private void animateCardIn(Node card, int index) {
+        Timeline spread = new Timeline(
+                new KeyFrame(Duration.millis(70L * index),
+                        new KeyValue(card.opacityProperty(), 0.0),
+                        new KeyValue(card.scaleXProperty(), 0.9),
+                        new KeyValue(card.scaleYProperty(), 0.9),
+                        new KeyValue(card.translateXProperty(), card.getTranslateX()),
+                        new KeyValue(card.translateYProperty(), card.getTranslateY())),
+                new KeyFrame(Duration.millis(260L + 70L * index),
+                        new KeyValue(card.opacityProperty(), 1.0, Interpolator.EASE_BOTH),
+                        new KeyValue(card.scaleXProperty(), 1.0, Interpolator.EASE_BOTH),
+                        new KeyValue(card.scaleYProperty(), 1.0, Interpolator.EASE_BOTH),
+                        new KeyValue(card.translateXProperty(), 0.0, Interpolator.EASE_BOTH),
+                        new KeyValue(card.translateYProperty(), 0.0, Interpolator.EASE_BOTH))
+        );
+        spread.playFromStart();
+    }
+
+    private AnchorPane createActionCard(PlayerActionCard action, double x, double y) {
+        AnchorPane card = new AnchorPane();
+        card.setLayoutX(x);
+        card.setLayoutY(y);
+        card.setPrefSize(220, 265);
+        card.setStyle(
+                "-fx-background-color: linear-gradient(to bottom, #161b25, #252b37);" +
+                "-fx-border-color: #d7c89a;" +
+                "-fx-border-width: 2;" +
+                "-fx-background-radius: 6;" +
+                "-fx-border-radius: 6;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 12, 0.35, 0, 4);"
+        );
+
+        ImageView icon = new ImageView();
+        try (InputStream is = getClass().getResourceAsStream(action.iconPath)) {
+            if (is != null) icon.setImage(new Image(is));
+        } catch (Exception ignored) {}
+        icon.setFitWidth(200);
+        icon.setFitHeight(200);
+        icon.setPreserveRatio(false);
+        icon.setSmooth(false);
+        icon.setLayoutX(10);
+        icon.setLayoutY(8);
+
+        Label name = new Label(action.name);
+        name.setLayoutX(10);
+        name.setLayoutY(209);
+        name.setPrefSize(200, 22);
+        name.setAlignment(Pos.CENTER);
+        name.setTextFill(Color.web("#ffffff"));
+        name.setFont(Font.font("Arial Black", FontWeight.BOLD, 13));
+        name.setStyle("-fx-effect: dropshadow(gaussian, black, 3, 0.7, 1, 1);");
+
+        Label desc = new Label(shortCardDescription(action));
+        desc.setLayoutX(12);
+        desc.setLayoutY(231);
+        desc.setPrefSize(196, 30);
+        desc.setWrapText(true);
+        desc.setAlignment(Pos.TOP_CENTER);
+        desc.setTextFill(Color.web("#ffffff"));
+        desc.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+        desc.setStyle("-fx-effect: dropshadow(gaussian, black, 3, 0.65, 1, 1);");
+
+        card.getChildren().addAll(icon, name, desc);
+        addHoverScale(card);
+        addTooltip(card, action.description);
+        card.setOnMouseClicked(e -> handleActionCard(action));
+        return card;
+    }
+
+    private String shortCardDescription(PlayerActionCard action) {
+        if (action.type == PlayerActionType.GUARD) {
+            return "Blocks the next boss attack. 3 turn cooldown.";
+        }
+        if (action.type == PlayerActionType.COUNTER) {
+            return "30% block chance. No cooldown.";
+        }
+        switch (action.name) {
+            case "Quick Strike":   return "Fast hit. Deals 70 base damage.";
+            case "Shock Jab":      return "60 damage. 30% burn chance.";
+            case "Armor Break":    return "55 damage. 40% weaken chance.";
+            case "Overload Burst": return "Massive 130 damage hit.";
+            default:               return action.description;
+        }
+    }
+
+    private void handleActionCard(PlayerActionCard action) {
+        if (action.type == PlayerActionType.ATTACK) {
+            handlePlayerAttack(action.moveIndex);
+        } else if (action.type == PlayerActionType.GUARD) {
+            handleDefensiveAction(action, true);
+        } else {
+            handleDefensiveAction(action, false);
+        }
+    }
+
+    private void handleDefensiveAction(PlayerActionCard action, boolean guard) {
+        if (!engine.isOngoing()) return;
+        if (guard && !engine.isGuardAvailable()) {
+            log("Guard is on cooldown.");
+            drawActionHand();
+            return;
+        }
+
+        lockAllActions(true);
+        showBossThinking();
+
+        PauseTransition waitThink = new PauseTransition(Duration.millis(800));
+        waitThink.setOnFinished(e -> {
+            if (guard) {
+                engine.activateGuard();
+            } else {
+                engine.activateCounter();
+            }
+
+            TurnLog turnLog = engine.processTurnByIndex(-2, action.name);
+            updateBossSpriteMood();
+            updatePlayerSpriteMood();
+
+            PauseTransition waitBoss = new PauseTransition(Duration.millis(600));
+            waitBoss.setOnFinished(ev -> executeBossTurn(turnLog));
+            waitBoss.play();
+        });
+        waitThink.play();
     }
 
     private void wirePlaceholderButtons() {
@@ -514,9 +733,43 @@ public class CombatController {
 
         if (talkButtons.size() >= 2) {
             addHoverScale(talkButtons.get(1));
-            addTooltip(talkButtons.get(1), "Insult: 35% only 30% damage, 65% double damage. Once per turn.");
-            talkButtons.get(1).setOnAction(e -> { log(engine.activateInsult()); goBack(); });
+            addTooltip(talkButtons.get(1), "Run: 40% chance to escape. On failure, you trip and the boss deals +20% damage.");
+            talkButtons.get(1).setText("RUN");
+            talkButtons.get(1).setOnAction(e -> handleRunAttempt());
         }
+    }
+
+    private void handleRunAttempt() {
+        if (!engine.isOngoing()) return;
+
+        if (handRng.nextDouble() < RUN_SUCCESS_CHANCE) {
+            log("Run succeeded. You escaped with no rewards.");
+            lockAllActions(true);
+
+            PauseTransition leave = new PauseTransition(Duration.millis(450));
+            leave.setOnFinished(e -> {
+                GameScreen gs = GameScreen.getInstance();
+                if (gs != null) {
+                    gs.returnFromCombat();
+                }
+            });
+            leave.play();
+            return;
+        }
+
+        lockAllActions(true);
+        loadSpriteOnto(playercharacterSprite, RUN_FAIL_SPRITE);
+        engine.activateRunFailurePenalty();
+        showBossThinking();
+
+        PauseTransition waitThink = new PauseTransition(Duration.millis(800));
+        waitThink.setOnFinished(e -> {
+            TurnLog turnLog = engine.processTurnByIndex(-2, "Run");
+            PauseTransition waitBoss = new PauseTransition(Duration.millis(600));
+            waitBoss.setOnFinished(ev -> executeBossTurn(turnLog));
+            waitBoss.play();
+        });
+        waitThink.play();
     }
 
     private void handlePlayerAttack(int moveIndex) {
@@ -587,6 +840,12 @@ public class CombatController {
 
         AnchorPane playerPane = (AnchorPane) playercharacterSprite.getParent();
         AnchorPane bossPane   = (AnchorPane) enemycharacterSprite.getParent();
+
+        if ("Run".equals(turnLog.getPlayerMoveName())
+                && turnLog.getBossMoveName() != null
+                && !"STUNNED".equals(turnLog.getBossMoveName())) {
+            playRunFailureBanner(playerPane);
+        }
 
         if (abilityPath != null && !abilityPath.isEmpty()) {
             loadSpriteOnto(enemycharacterSprite, abilityPath);
@@ -927,6 +1186,14 @@ public class CombatController {
         sequence.play();
     }
 
+    private void playRunFailureBanner(AnchorPane playerPane) {
+        playStatusBanner(playerPane,
+                "RUN FAILED",
+                "Tripped. Incoming damage +20%",
+                "#991b1b",
+                "#fee2e2");
+    }
+
     private void showGuardBlockEffect(AnchorPane playerPane, TurnLog turnLog) {
         spawnDamageLabel("GUARD BLOCK", playerPane, Color.CYAN, 24, 76, 21);
 
@@ -1055,6 +1322,11 @@ public class CombatController {
         } else if (turnLog.getItemUsed() != null) {
             sb.append("You used ").append(turnLog.getItemUsed())
                     .append(". Restored ").append(turnLog.getPlayerHpRestored()).append(" HP.\n");
+        } else if ("Run".equals(turnLog.getPlayerMoveName())) {
+            sb.append("Run failed. You tripped and lost your turn.\n");
+        } else if ("Guard".equals(turnLog.getPlayerMoveName())
+                || "Counter".equals(turnLog.getPlayerMoveName())) {
+            sb.append(turnLog.getPlayerMoveName()).append(" activated.\n");
         } else if (turnLog.getPlayerMoveName() != null) {
             sb.append("You used ").append(turnLog.getPlayerMoveName())
                     .append(". Dealt ").append(turnLog.getPlayerDamageDealt()).append(" damage.\n");
@@ -1081,6 +1353,15 @@ public class CombatController {
         }
         if (engine.wasLastCounterBlocked()) {
             sb.append("Counter parried the attack completely.\n");
+        } else if ("Counter".equals(turnLog.getPlayerMoveName())
+                && turnLog.getBossMoveName() != null
+                && turnLog.getBossDamageDealt() > 0) {
+            sb.append("Counter failed to save you.\n");
+        }
+        if ("Run".equals(turnLog.getPlayerMoveName())
+                && turnLog.getBossMoveName() != null
+                && turnLog.getBossDamageDealt() > 0) {
+            sb.append("The hit landed with +20% damage.\n");
         }
 
         if (engine.getLastLifestealAmount() > 0) {
@@ -1408,6 +1689,8 @@ public class CombatController {
     @FXML public void openAttack() {
         mainAnchor.setVisible(false);  mainAnchor.setDisable(true);
         pressAttack.setVisible(true);  pressAttack.setDisable(false);
+        pressAttack.toFront();
+        drawActionHand();
     }
 
     @FXML public void openDefense() {
@@ -1425,11 +1708,16 @@ public class CombatController {
         pressTalk.setVisible(true);    pressTalk.setDisable(false);
     }
 
+    @FXML public void openAwakening() {
+        log("Awakening is not ready yet.");
+    }
+
     @FXML public void goBack() {
         pressAttack.setVisible(false);  pressAttack.setDisable(true);
         pressDefense.setVisible(false); pressDefense.setDisable(true);
         pressItem.setVisible(false);    pressItem.setDisable(true);
         pressTalk.setVisible(false);    pressTalk.setDisable(true);
+        pressAttack.getChildren().clear();
         mainAnchor.setVisible(true);    mainAnchor.setDisable(false);
     }
 }

@@ -25,22 +25,14 @@
                   </children>
               </AnchorPane>
       
-                    <!-- ATTACK MENU -->
-              <AnchorPane fx:id="pressAttack" disable="true" layoutX="324.0" layoutY="319.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel" visible="false">
-                  <children>
-                      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="ABILITY1" />
-                      <Button layoutX="235.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="ABILITY2" />
-                      <Button layoutX="14.0" layoutY="62.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="ABILITY3" />
-                      <Button layoutX="235.0" layoutY="62.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="214.0" styleClass="button" text="ABILITY4" />
-                      <Button layoutX="14.0" layoutY="110.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
-                  </children>
-              </AnchorPane>
+                    <!-- ACT CARD MENU -->
+              <AnchorPane fx:id="pressAttack" disable="true" layoutX="14.0" layoutY="319.0" prefHeight="285.0" prefWidth="774.0" styleClass="panel" visible="false" />
       
                     <!-- TALK MENU -->
               <AnchorPane fx:id="pressTalk" disable="true" layoutX="324.0" layoutY="319.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel" visible="false">
                   <children>
                       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="214.0" styleClass="button" text="TALK" />
-                      <Button layoutX="235.0" layoutY="14.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="214.0" styleClass="button" text="INSULT" />
+                      <Button layoutX="235.0" layoutY="14.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="214.0" styleClass="button" text="RUN" />
                       <Button layoutX="14.0" layoutY="117.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="436.0" styleClass="button" text="GO BACK" />
                   </children>
               </AnchorPane>
@@ -57,10 +49,10 @@
               <!-- MAIN ACTION MENU -->
               <AnchorPane fx:id="mainAnchor" layoutX="324.0" layoutY="319.0" prefHeight="178.0" prefWidth="464.0" styleClass="panel">
                   <children>
-                      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#openAttack" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="ATTACK" />
+                      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#openAttack" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="ACT" />
                       <Button layoutX="235.0" layoutY="14.0" mnemonicParsing="false" onAction="#openItems" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="ITEMS" />
-                      <Button layoutX="14.0" layoutY="89.0" mnemonicParsing="false" onAction="#openDefense" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="GUARD" />
-                      <Button layoutX="235.0" layoutY="89.0" mnemonicParsing="false" onAction="#openTalk" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="TALK" />
+                      <Button layoutX="14.0" layoutY="89.0" mnemonicParsing="false" onAction="#openTalk" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="TALK" />
+                      <Button layoutX="235.0" layoutY="89.0" mnemonicParsing="false" onAction="#openAwakening" prefHeight="70.0" prefWidth="214.0" styleClass="button" text="AWAKENING" />
                   </children>
               </AnchorPane>
       

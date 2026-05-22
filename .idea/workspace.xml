@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd8bd667-0875-41e6-969a-d2be044b8a0d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/screens/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/screens/GameScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/CharacterStats/Stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/CharacterStats/Stats.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/theAlmagamation/app/classes/CharacterStats/Stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/theAlmagamation/app/classes/CharacterStats/Stats.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/Controllers/CombatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/Controllers/CombatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/systems/CombatSystem/CombatEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/systems/CombatSystem/CombatEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/theAlmagamation.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/theAlmagamation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/screens/battleScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/screens/battleScreen.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,21 +19,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Astrallol88"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Astrallol88&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/MarinMjeshtri/BackToCdungeon.git",
-    "accountId": "c1fe2959-7e0d-449b-827b-8d18de5fb950"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/MarinMjeshtri/BackToCdungeon.git&quot;,
+    &quot;accountId&quot;: &quot;c1fe2959-7e0d-449b-827b-8d18de5fb950&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="3E37RIS2LnxqlborflSl4PlIn5s" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -39,6 +41,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.theAlmagamation.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "Migel",
