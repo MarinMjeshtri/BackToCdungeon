@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd8bd667-0875-41e6-969a-d2be044b8a0d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/Controllers/CombatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/Controllers/CombatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/systems/CombatSystem/CombatEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/systems/CombatSystem/CombatEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/theAlmagamation.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/java/com/dungeons/theAlmagamation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/screens/battleScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/screens/battleScreen.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/armorBreak.png" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/armorBreak.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/counter.png" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/counter.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/guard.png" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/guard.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/overloadBurst.png" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/overloadBurst.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/quickStrike.png" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/quickStrike.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/shockJab.png" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/ActionCards/shockJab.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Run/runTrip.png" beforeDir="false" afterPath="$PROJECT_DIR$/BackToCDungeons/cdungeons/src/main/resources/Sprties_CombatUI/Run/runTrip.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +45,7 @@
   "keyToString": {
     "Application.theAlmagamation.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "Migel",
     "kotlin-language-version-configured": "true",
