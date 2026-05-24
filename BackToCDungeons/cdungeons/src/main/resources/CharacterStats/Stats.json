@@ -1,4 +1,4 @@
-{
+﻿{
   "characters": {
 
     "Player": {
@@ -8,7 +8,7 @@
         "hp": 200
       },
       "sprites": {
-        "neutral": "/Sprties_CombatUI/MainC.png",
+        "neutral": "/Sprties_CombatUI/MainC.jpg",
         "angry": "",
         "defeated": ""
       },
@@ -68,9 +68,9 @@
       },
       "sprites": {
         "neutral": "/Sprties_CombatUI/Cassie/Neutral.jpeg",
-        "angry":   "/Sprties_CombatUI/Cassie/Angry.png",
+        "angry":   "/Sprties_CombatUI/Cassie/Angry.jpg",
         "thinking": "",
-        "defeated": "/Sprties_CombatUI/Cassie/Defeated.png"
+        "defeated": "/Sprties_CombatUI/Cassie/Defeated.jpg"
       },
       "abilities": [
         {
@@ -80,7 +80,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack1.png",
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack1.jpg",
           "hitStyle": "rapid",
           "cooldown": 0
         },
@@ -91,7 +91,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack2.png",
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack2.jpg",
           "hitStyle": "single",
           "cooldown": 0
         },
@@ -102,7 +102,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack3.png",
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack3.jpg",
           "hitStyle": "heal",
           "cooldown": 0
         },
@@ -113,7 +113,7 @@
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.35,
-          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack4.png",
+          "abilitySprite": "/Sprties_CombatUI/Cassie/Attack4.jpg",
           "hitStyle": "single",
           "cooldown": 0
         }
@@ -127,10 +127,10 @@
         "hp": 800
       },
       "sprites": {
-        "neutral":  "/Sprties_CombatUI/FreakyRelah/Neutral.png",
-        "angry":    "/Sprties_CombatUI/FreakyRelah/Angry.png",
+        "neutral":  "/Sprties_CombatUI/FreakyRelah/Neutral.jpg",
+        "angry":    "/Sprties_CombatUI/FreakyRelah/Angry.jpg",
         "thinking": "",
-        "defeated": "/Sprties_CombatUI/FreakyRelah/Defeated.png"
+        "defeated": "/Sprties_CombatUI/FreakyRelah/Defeated.jpg"
       },
       "abilities": [
         {
@@ -140,7 +140,7 @@
           "statusEffect": "DOT",
           "duration": 2,
           "chance": 0.45,
-          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack1.png",
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack1.jpg",
           "hitStyle": "rapid",
           "cooldown": 0
         },
@@ -151,7 +151,7 @@
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.4,
-          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack2.png",
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack2.jpg",
           "hitStyle": "single",
           "cooldown": 0
         },
@@ -162,7 +162,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack3.png",
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack3.jpg",
           "hitStyle": "single",
           "cooldown": 0
         },
@@ -173,7 +173,7 @@
           "statusEffect": "halfDmg",
           "duration": 2,
           "chance": 0.5,
-          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack4.png",
+          "abilitySprite": "/Sprties_CombatUI/FreakyRelah/Attack4.jpg",
           "hitStyle": "single",
           "cooldown": 0
         }
@@ -183,10 +183,10 @@
     "JohnMKati": {
       "stats": { "atk": 28, "def": 12, "hp": 1000 },
       "sprites": {
-        "neutral":  "/Sprties_CombatUI/JonMkati/Neutral.jpeg",
-        "angry":    "/Sprties_CombatUI/JonMkati/Angry.jpeg",
+        "neutral":  "/Sprties_CombatUI/JonMkati/Neutral.jpg",
+        "angry":    "/Sprties_CombatUI/JonMkati/Angry.jpg",
         "thinking": "",
-        "defeated": "/Sprties_CombatUI/JonMkati/Defeated.jpeg"
+        "defeated": "/Sprties_CombatUI/JonMkati/Defeated.jpg"
       },
       "abilities": [
         {
@@ -196,7 +196,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack1.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack1.jpg",
           "hitStyle": "rapid",
           "cooldown": 0
         },
@@ -207,7 +207,7 @@
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack2.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack2.jpg",
           "hitStyle": "rapid",
           "cooldown": 0
         },
@@ -218,7 +218,7 @@
           "statusEffect": "skip",
           "duration": 1,
           "chance": 0.35,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack3.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack3.jpg",
           "hitStyle": "single",
           "cooldown": 0
         },
@@ -229,7 +229,7 @@
           "statusEffect": null,
           "duration": 0,
           "chance": 0.0,
-          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack4.png",
+          "abilitySprite": "/Sprties_CombatUI/JonMkati/Attack4.jpg",
           "hitStyle": "clone",
           "cooldown": 0
         }
@@ -273,10 +273,10 @@
       "Mob1": {
   "stats": { "atk": 12, "def": 5, "hp": 100 },
   "sprites": {
-    "neutral": "/Sprties_CombatUI/Mob1/mobNeutral200.png",
+    "neutral": "/Sprties_CombatUI/Mob1/mobNeutral.jpg",
     "angry":   "",
     "thinking": "",
-    "defeated": "/Sprties_CombatUI/Mob1/mobDef200.png",
+    "defeated": "/Sprties_CombatUI/Mob1/mobDef.jpg",
     "cloned":   ""
   },
   "abilities": [
@@ -287,26 +287,25 @@
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
-      "abilitySprite": "/Sprties_CombatUI/Mob1/mobClaw200.png",
+      "abilitySprite": "/Sprties_CombatUI/Mob1/mobClaw.jpg",
       "hitStyle": "single",
       "cooldown": 0
     }
   ]
 },
    "Mob2": {
-  "stats": { "atk": 12, "def": 5, "hp": 100 },
+  "stats": { "atk": 12, "def": 5, "hp": 120 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mob2/mobNeutral.png",
     "angry":   "",
     "thinking": "",
-    "defeated": "/Sprties_CombatUI/Mob2/mobDef.png",
-    "cloned":   ""
+    "defeated": "/Sprties_CombatUI/Mob2/mobDef.png"
   },
   "abilities": [
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 30 },
+      "effects": { "damage": 40 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
@@ -317,7 +316,7 @@
   ]
 },
 "Mob3": {
-  "stats": { "atk": 12, "def": 5, "hp": 100 },
+  "stats": { "atk": 12, "def": 5, "hp": 130 },
   "sprites": {
     "neutral": "/Sprties_CombatUI/Mob3/mobNeutral.png",
     "angry":   "",
@@ -329,7 +328,7 @@
     {
       "name": "Scratch",
       "desc": "A weak scratch.",
-      "effects": { "damage": 30 },
+      "effects": { "damage": 50 },
       "statusEffect": null,
       "duration": 0,
       "chance": 0.0,
@@ -342,8 +341,8 @@
    "Mob4": {
   "stats": { "atk": 12, "def": 5, "hp": 150 },
   "sprites": {
-    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
-    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.jpg",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.jpg",
     "thinking": "",
     "defeated": "",
     "cloned":   ""
@@ -365,8 +364,8 @@
    "Mob5": {
   "stats": { "atk": 12, "def": 5, "hp": 170 },
   "sprites": {
-    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.png",
-    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.png",
+    "neutral": "/Sprties_CombatUI/Mobs/mob1_neutral.jpg",
+    "angry":   "/Sprties_CombatUI/Mobs/mob1_angry.jpg",
     "thinking": "",
     "defeated": "",
     "cloned":   ""

@@ -11,7 +11,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class        theAlmagamation extends Application {
+public class theAlmagamation extends Application {
 
 
 

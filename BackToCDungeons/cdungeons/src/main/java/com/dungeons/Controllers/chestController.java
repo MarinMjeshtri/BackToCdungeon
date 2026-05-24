@@ -1,21 +1,12 @@
 package com.dungeons.Controllers;
 
-import com.dungeons.screens.shopScreen;
-import com.dungeons.screens.GameScreen;
-import com.dungeons.marinMainTesting;
 import com.dungeons.systems.items.itemPicker;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import javafx.scene.image.ImageView;
-import java.io.IOException;
 
 public class chestController {
     @FXML Label descItem;

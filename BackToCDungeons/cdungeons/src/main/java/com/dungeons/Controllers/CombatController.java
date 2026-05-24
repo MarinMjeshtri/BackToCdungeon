@@ -76,6 +76,7 @@ public class CombatController {
 
     private static final int ACTION_HAND_SIZE = 3;
     private static final String ACTION_CARD_ROOT = "/Sprties_CombatUI/ActionCards/";
+    private static final String ACTION_EFFECT_ROOT = "/Sprties_CombatUI/Effects/";
     private static final String RUN_FAIL_SPRITE = "/Sprties_CombatUI/Run/runTrip.png";
     private static final double RUN_SUCCESS_CHANCE = 0.40;
 
@@ -507,6 +508,16 @@ public class CombatController {
         }
     }
 
+    private String effectForMove(String moveName) {
+        switch (moveName) {
+            case "Quick Strike":   return ACTION_EFFECT_ROOT + "effectQuickStrike.png";
+            case "Shock Jab":      return ACTION_EFFECT_ROOT + "effectShockJab.png";
+            case "Armor Break":    return ACTION_EFFECT_ROOT + "effectArmorBreak.png";
+            case "Overload Burst": return ACTION_EFFECT_ROOT + "effectOverloadBurst.png";
+            default:               return "";
+        }
+    }
+
     private void drawActionHand() {
         pressAttack.getChildren().clear();
 
@@ -797,6 +808,7 @@ public class CombatController {
             if (turnLog.getPlayerDamageDealt() > 0) {
 
                 GameMusicManager.playHitSound();
+                playActionOverlay(effectForMove(turnLog.getPlayerMoveName()), bossPane);
                 flashHit(enemycharacterSprite);
                 playDamageEffect(bossHP, bossPane,
                         "-" + turnLog.getPlayerDamageDealt(), 70, 90, 26);
@@ -1115,6 +1127,59 @@ public class CombatController {
         clearGlow.play();
     }
 
+    private void playActionOverlay(String effectPath, AnchorPane targetPane) {
+        if (effectPath == null || effectPath.isEmpty() || targetPane == null) return;
+
+        try (InputStream is = getClass().getResourceAsStream(effectPath)) {
+            if (is == null) {
+                System.out.println("Effect not found: " + effectPath);
+                return;
+            }
+
+            ImageView effect = new ImageView(new Image(is));
+            double size = Math.min(targetPane.getPrefWidth(), targetPane.getPrefHeight()) * 0.9;
+            effect.setFitWidth(size);
+            effect.setFitHeight(size);
+            effect.setPreserveRatio(true);
+            effect.setSmooth(false);
+            effect.setMouseTransparent(true);
+            effect.setOpacity(0.0);
+            effect.setLayoutX((targetPane.getPrefWidth() - size) / 2.0);
+            effect.setLayoutY((targetPane.getPrefHeight() - size) / 2.0);
+            targetPane.getChildren().add(effect);
+            effect.toFront();
+
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(80), effect);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+
+            ScaleTransition pop = new ScaleTransition(Duration.millis(180), effect);
+            pop.setFromX(0.76);
+            pop.setFromY(0.76);
+            pop.setToX(1.12);
+            pop.setToY(1.12);
+
+            PauseTransition hold = new PauseTransition(Duration.millis(180));
+
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(330), effect);
+            fadeOut.setToValue(0.0);
+
+            ScaleTransition expand = new ScaleTransition(Duration.millis(330), effect);
+            expand.setToX(1.32);
+            expand.setToY(1.32);
+
+            SequentialTransition sequence = new SequentialTransition(
+                    new ParallelTransition(fadeIn, pop),
+                    hold,
+                    new ParallelTransition(fadeOut, expand)
+            );
+            sequence.setOnFinished(e -> targetPane.getChildren().remove(effect));
+            sequence.play();
+        } catch (Exception ex) {
+            System.out.println("Failed to play effect: " + effectPath);
+        }
+    }
+
     private void playBossStatusProcBanner(AnchorPane bossPane) {
         StatusEffect.Type type = engine.getLastAppliedBossEffectType();
         if (type == null) return;
@@ -1195,8 +1260,6 @@ public class CombatController {
     }
 
     private void showGuardBlockEffect(AnchorPane playerPane, TurnLog turnLog) {
-        spawnDamageLabel("GUARD BLOCK", playerPane, Color.CYAN, 24, 76, 21);
-
         Rectangle shield = new Rectangle(218, 246);
         shield.setArcWidth(22);
         shield.setArcHeight(22);
@@ -1209,6 +1272,8 @@ public class CombatController {
         playerPane.getChildren().add(shield);
         shield.toFront();
         playercharacterSprite.toFront();
+        playActionOverlay(ACTION_EFFECT_ROOT + "effectGuard.png", playerPane);
+        spawnDamageLabel("GUARD BLOCK", playerPane, Color.CYAN, 24, 76, 21);
 
         DropShadow glow = new DropShadow();
         glow.setColor(Color.CYAN);
@@ -1248,8 +1313,6 @@ public class CombatController {
     }
 
     private void showCounterBlockEffect(AnchorPane playerPane, TurnLog turnLog) {
-        spawnDamageLabel("COUNTER", playerPane, Color.GOLD, 60, 76, 24);
-
         Rectangle flash = new Rectangle(228, 40);
         flash.setArcWidth(14);
         flash.setArcHeight(14);
@@ -1263,6 +1326,8 @@ public class CombatController {
         playerPane.getChildren().add(flash);
         flash.toFront();
         playercharacterSprite.toFront();
+        playActionOverlay(ACTION_EFFECT_ROOT + "effectCounter.png", playerPane);
+        spawnDamageLabel("COUNTER", playerPane, Color.GOLD, 60, 76, 24);
 
         DropShadow glow = new DropShadow();
         glow.setColor(Color.MEDIUMPURPLE);

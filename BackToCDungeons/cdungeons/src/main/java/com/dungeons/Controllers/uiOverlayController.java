@@ -70,16 +70,16 @@ public class uiOverlayController {
             double hpPercent = (double) progress.getCurrentHp() / progress.getScaledHp();
 
             if (hpPercent > 0.75) {
-                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonHealthy.jpeg")));
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonHealthy.jpg")));
             } else if (hpPercent > 0.50) { // Changed from 5 to 0.50
-                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonLilDMG.jpeg")));
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonLilDMG.jpg")));
             } else if (hpPercent > 0.25) {
-                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonKindaDMG.jpeg")));
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonKindaDMG.jpg")));
             } else if (hpPercent > 0.01) {
-                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonDying.jpeg")));
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonDying.jpg")));
             }
             else
-                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonHealthy.jpeg")));
+                character.setImage(new Image(getClass().getResourceAsStream("/Sprties_CombatUI/ourMC/jonHealthy.jpg")));
 
         }
 
